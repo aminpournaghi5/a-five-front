@@ -70,7 +70,7 @@ export const logoutUser = async (): Promise<void> => {
       {},
       {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
+   
       }
     );
 
