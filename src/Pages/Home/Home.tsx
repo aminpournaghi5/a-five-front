@@ -1,0 +1,155 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Box, Typography, Grid } from "@mui/material";
+
+import CarouselComponent, {
+  VideoCardProps,
+} from "../../components/CarouselComponent/CarouselComponent";
+import squat from "../../../public/Squat.gif";
+import deadlift from "../../../public/Deadlift.gif";
+import chest from "../../../public/Chest.gif";
+import biceps from "../../../public/Biceps.gif";
+import CarouselComponentSkeleton from "../../components/CarouselComponent/CarouselComponentSkeleton";
+import { fontFamilies } from "../../../theme";
+
+interface CounterProps {
+  target: number;
+}
+
+const toPersianNumber = (num: number): string => {
+  return num.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
+};
+
+const Counter: React.FC<CounterProps> = ({ target }) => {
+  const [count, setCount] = useState(0);
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          intervalRef.current = window.setInterval(() => {
+            setCount((prev) => {
+              if (prev < target) {
+                return prev + 30;
+              } else {
+                if (intervalRef.current) clearInterval(intervalRef.current);
+                return target;
+              }
+            });
+          }, 40);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const element = document.querySelector("#counter");
+    if (element) observer.observe(element);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [target]);
+
+  return <span id="counter">{toPersianNumber(count)}</span>;
+};
+
+const Home: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const myvideos: VideoCardProps[] = [
+    {
+      name: "اسکوات هالتر",
+      abzar: "هالتر",
+      body: "ران",
+      media: squat,
+    },
+    {
+      name: "پرس سینه دمبل",
+      abzar: "دمبل",
+      body: "سینه",
+      media: chest,
+    },
+
+    {
+      name: "ددلیفت رومانیایی",
+      body: "ران",
+      abzar: "هالتر",
+      media: deadlift,
+    },
+    {
+      name: "جلو بازو دمبل تمرکزی ",
+      body: "بازو",
+      abzar: "دمبل",
+      media: biceps,
+    },
+  ];
+
+  useEffect(() => {
+    // شبیه‌سازی بارگذاری
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 ثانیه بعد از بارگذاری
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <>
+      {/* Business Theme Section */}
+      <Box sx={{ padding: 6 }}>
+        <Grid container spacing={1}>
+          {/* Text Section */}
+          <Grid container>
+            <Grid item xs={12} md={6}>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: { xs: "20px", sm: "30px" },
+                  FontFamily: fontFamilies.extraBold,
+                }}
+                gutterBottom
+              >
+                <Counter target={4500} />+ <br /> تصویر متحرک
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  textAlign: "justify",
+                  fontSize: { xs: "15px", sm: "20px" },
+                }}
+              >
+                تصاویر متحرک از تمرینات ورزشی به شما کمک می‌کنند تا تکنیک‌های
+                صحیح و نحوه اجرای هر حرکت را به درستی یاد بگیرید. این مجموعه
+                شامل تمرینات قدرتی، تمرینات هوازی، و حرکات انعطاف‌پذیری است که
+                به‌صورت بصری شما را با روش اجرای صحیح هر تمرین آشنا می‌کنند.
+                استفاده از این تصاویر در برنامه تمرینی‌تان به بهبود تکنیک‌ها و
+                دستیابی به نتایج بهتر کمک می‌کند.
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  my: 1,
+                }}
+              >
+                {isLoading ? (
+                  <CarouselComponentSkeleton />
+                ) : (
+                  <CarouselComponent myvideos={myvideos} />
+                )}
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
+  );
+};
+
+export default Home;
