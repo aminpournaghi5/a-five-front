@@ -185,7 +185,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
           >
             حساب کاربری ندارید؟ عضویت
           </Button>
-          <Typographys
+          <Typography
             variant="body2"
             color={theme.palette.primary.contrastText}
             textAlign="right"
