@@ -23,7 +23,9 @@ const handleAxiosError = (error: any): void => {
     throw new Error(error.response.data.message);
   } else if (error.request) {
     // خطای شبکه بدون پاسخ از سرور
-    throw new Error("مشکلی در ارتباط با سرور وجود دارد. لطفاً دوباره تلاش کنید.");
+    throw new Error(
+      "مشکلی در ارتباط با سرور وجود دارد. لطفاً دوباره تلاش کنید."
+    );
   } else {
     // خطاهای ناشناخته
     throw new Error("خطای ناشناخته‌ای رخ داده است.");
@@ -36,7 +38,10 @@ const handleAxiosError = (error: any): void => {
  * @param password رمز عبور کاربر
  * @throws خطای سرور یا ارتباط
  */
-export const loginUser = async (email: string, password: string): Promise<void> => {
+export const loginUser = async (
+  email: string,
+  password: string
+): Promise<void> => {
   const loginRequest: LoginRequest = { email, password };
 
   try {
@@ -51,7 +56,6 @@ export const loginUser = async (email: string, password: string): Promise<void> 
       // ذخیره توکن در localStorage
       localStorage.setItem("token", token);
     } else {
-      
       throw new Error("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
     }
   } catch (error: any) {
@@ -70,7 +74,6 @@ export const logoutUser = async (): Promise<void> => {
       {},
       {
         headers: { "Content-Type": "application/json" },
-   
       }
     );
 
