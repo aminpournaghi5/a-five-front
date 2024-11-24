@@ -20,7 +20,7 @@ export const exerciseListSlice = createSlice({
         rows: [
           {
             index: 1,
-            set: 1,  // Initial set value
+            set: 1, // Initial set value
             reps: 0, // Initial reps value
           },
         ],
@@ -44,34 +44,39 @@ export const exerciseListSlice = createSlice({
     addRow: (state, action: PayloadAction<number>) => {
       // action.payload will be the index of the exercise in the list to which we want to add a new row
       const exercise = state.exerciselist[action.payload];
-      
+
       if (exercise) {
         const newIndex = exercise.rows.length + 1; // Calculate the new index
         const newRow = {
           index: newIndex,
-          set: newIndex,  // The set value is equal to the index
-          reps: 0,        // Initial reps value
+          set: newIndex, // The set value is equal to the index
+          reps: 0, // Initial reps value
         };
-        
+
         // Add the new row to the 'rows' array
         exercise.rows.push(newRow);
       }
     },
     updateReps: (
       state,
-      action: PayloadAction<{ exerciseIndex: number; rowIndex: number; reps: number }>
+      action: PayloadAction<{
+        rowIndex: number;
+        reps: number;
+      }>
     ) => {
-      const { exerciseIndex, rowIndex, reps } = action.payload;
-      const exercise = state.exerciselist[exerciseIndex];
+      const { rowIndex, reps } = action.payload;
+
+      // اطمینان حاصل کنید که ردیف مورد نظر وجود دارد
+      const exercise = state.exerciselist[0]; // فرض می‌کنیم که فقط یک تمرین وجود دارد یا باید به تمرین مورد نظر دسترسی پیدا کنید
 
       if (exercise && exercise.rows[rowIndex]) {
-        // Update the reps for the specified row in the specified exercise
         exercise.rows[rowIndex].reps = reps;
       }
     },
   },
 });
 
-export const { add, remove, reorder, addRow, updateReps } = exerciseListSlice.actions;
+export const { add, remove, reorder, addRow, updateReps } =
+  exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

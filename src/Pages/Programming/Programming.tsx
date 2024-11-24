@@ -24,14 +24,14 @@ import {
   reorder,
   updateReps,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
-import { IExercise } from "../../Type/Type";
+
 import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
 import { MoreVert } from "@mui/icons-material";
 
 function Programing() {
   const exerciselist = useSelector(
     (state: RootState) => state.exerciseList.exerciselist
-  ) as IExercise[];
+  );
   const dispatch = useDispatch();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -74,233 +74,260 @@ function Programing() {
     dispatch(addRow(exerciseIndex)); // Assuming addRow action is available
   };
 
+  function handleRepsChange(event: any, rowIndex: number) {
+    const reps = parseInt(event.target.value);
+    dispatch(updateReps({ rowIndex, reps }));
+  }
+
   return (
-    <Box sx={{ textAlign: "center", marginTop: "20px" }} padding={6}>
-      {exerciselist.length ? (
-        <>
-          <PersonInformationFeild />
-          <Box
-            sx={{
-              marginTop: "20px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-              maxWidth: 1200,
-            }}
-          >
-            {exerciselist.map((exercise, index) => (
-              <>
-                <Box
-                  key={exercise.ID}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-
-                    width: "100%",
-                    backgroundColor: hoveredIndex === index ? "gey" : "white",
-                    marginBottom: "10px",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
-                    margin: "5px",
-                  }}
-                >
-                  <Box display={"flex"} alignItems={"center"} flexGrow={1}>
-                    <Box sx={{ textAlign: "center", width: "50px" }}>
-                      <Typography
-                        sx={{
-                          fontFamily: fontFamilies.bold,
-                          fontSize: "16px",
-                        }}
-                      >
-                        {toPersianDigits(index + 1)}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Link to={`/exercise/${exercise._id}`}>
-                        <Card
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            boxShadow: "none",
-                            backgroundColor: "transparent",
-                          }}
-                        >
-                          <CardMedia
-                            sx={{
-                              width: "100px",
-                              height: "100px",
-                              objectFit: "contain",
-                              borderRadius: "50%",
-                              padding: "5px",
-                              boxShadow:
-                                "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
-                              margin: "5px",
-                            }}
-                            component="img"
-                            image={`/public/Workouts/${exercise.ID}.gif`}
-                            alt={exercise.NameFarsi}
-                            onError={(
-                              e: React.SyntheticEvent<HTMLImageElement>
-                            ) => {
-                              e.currentTarget.onerror = null;
-                              e.currentTarget.src =
-                                "/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg";
-                            }}
-                          />
-                          <Typography
-                            sx={{
-                              fontFamily: fontFamilies.bold,
-                              fontSize: "16px",
-                              textAlign: "center",
-                              marginRight: "15px",
-                            }}
-                          >
-                            {exercise.NameFarsi}
-                          </Typography>
-                        </Card>
-                      </Link>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginRight: "auto",
-                      }}
-                    >
-                      <IconButton
-                        component="div"
-                        aria-label="reorder"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, index)}
-                        onDragOver={handleDragOver}
-                        onDrop={(e) => handleDrop(e, index)}
-                        onDragEnter={() => setHoveredIndex(index)}
-                        onDragLeave={() => setHoveredIndex(null)}
-                      >
-                        <ReorderIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeleteExercise(index)}
-                        color="error"
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton aria-label="more">
-                        <MoreVert fontSize="small" />
-                      </IconButton>
-                    </Box>
-                  </Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{ marginTop: "20px", width: "100%", maxWidth: 1200 }}
+        padding={2}
+      >
+        {exerciselist.length ? (
+          <>
+            {/* <PersonInformationFeild /> */}
+            <Box
+              sx={{
+                marginTop: "20px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {exerciselist.map((exercise, index) => (
+                <>
                   <Box
+                    key={index}
                     sx={{
-                      alignItems: "center",
-                      direction: "rtl", // افزودن راست چین بودن برای جهت کلی
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                      backgroundColor: hoveredIndex === index ? "gey" : "white",
+                      marginBottom: "10px",
+                      borderRadius: "8px",
+                      boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+                      margin: "5px",
                     }}
                   >
-                    <Table sx={{ width: "50%" }}>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell
-                            sx={{
-                              fontFamily: "bold",
-                              textAlign: "center",
-                            }}
-                          >
-                            ست
-                          </TableCell>
-                          <TableCell
-                            sx={{
-                              fontFamily: "bold",
-                              textAlign: "center",
-                            }}
-                          >
-                            تکرار
-                          </TableCell>
-                        </TableRow>
+                    <Box display={"flex"} alignItems={"center"} flexGrow={1}>
+                      <Box sx={{ textAlign: "center", width: "50px" }}>
+                        <Typography
+                          sx={{
+                            fontFamily: fontFamilies.bold,
+                            fontSize: { xs: "12px", sm: "16px" },
+                          }}
+                        >
+                          {toPersianDigits(index + 1)}
+                        </Typography>
+                      </Box>
 
-                        {/* Map over rows dynamically */}
-                        {exercise.rows.map((row) => (
-                          <TableRow key={row.index}>
-                            <TableCell sx={{ textAlign: "center" }}>
-                              {row.set}
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Link to={`/exercise/${exercise._id}`}>
+                          <Card
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              boxShadow: "none",
+                              backgroundColor: "transparent",
+                              margin: 2,
+                            }}
+                          >
+                            <CardMedia
+                              sx={{
+                                width: { xs: "60px", sm: "100px" },
+                                height: { xs: "60px", sm: "100px" },
+                                objectFit: "contain",
+                                borderRadius: "50%",
+                                padding: "5px",
+                                boxShadow:
+                                  "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+                              }}
+                              component="img"
+                              image={`/public/Workouts/${exercise.ID}.gif`}
+                              alt={exercise.NameFarsi}
+                              onError={(
+                                e: React.SyntheticEvent<HTMLImageElement>
+                              ) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src =
+                                  "/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg";
+                              }}
+                            />
+                            <Typography
+                              sx={{
+                                fontFamily: fontFamilies.bold,
+                                fontSize: { xs: "10px", md: "18px" },
+                                textAlign: "center",
+                                marginRight: "15px",
+                              }}
+                            >
+                              {exercise.NameFarsi}
+                            </Typography>
+                          </Card>
+                        </Link>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          marginRight: "auto",
+                          display: { xs: "none", sm: "flex" },
+                        }}
+                      >
+                        <IconButton
+                          component="div"
+                          aria-label="reorder"
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={handleDragOver}
+                          onDrop={(e) => handleDrop(e, index)}
+                          onDragEnter={() => setHoveredIndex(index)}
+                          onDragLeave={() => setHoveredIndex(null)}
+                        >
+                          <ReorderIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => handleDeleteExercise(index)}
+                          color="error"
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton aria-label="more">
+                          <MoreVert fontSize="small" />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        alignItems: "center",
+                        direction: "rtl", // افزودن راست چین بودن برای جهت کلی
+                      }}
+                    >
+                      <Table sx={{ width: "50%" }}>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell
+                              sx={{
+                                fontFamily: fontFamilies.bold,
+                                textAlign: "center",
+                                fontSize: { xs: "10px", md: "16px" },
+                              }}
+                            >
+                              ست
                             </TableCell>
-                            <TableCell sx={{ textAlign: "center" }}>
-                              <TextField size="small" value={row.reps} />
+                            <TableCell
+                              sx={{
+                                fontFamily: fontFamilies.bold,
+                                textAlign: "center",
+                                fontSize: { xs: "10px", md: "16px" },
+                              }}
+                            >
+                              تکرار
                             </TableCell>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </Box>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleAddRow(index)}
-                  >
-                    اضافه کردن ست جدید
-                  </Button>
-                </Box>
-              </>
-            ))}
-          </Box>
 
+                          {/* Map over rows dynamically */}
+                          {exercise.rows.map((row: any, index) => (
+                            <TableRow key={row.index}>
+                              <TableCell
+                                sx={{
+                                  textAlign: "center",
+                                  fontSize: { xs: "10px", md: "16px" },
+                                }}
+                              >
+                                {toPersianDigits(row.set)}
+                              </TableCell>
+                              <TableCell sx={{ textAlign: "center" }}>
+                                <TextField
+                                  onChange={(e) => handleRepsChange(e, index)}
+                                  type="number"
+                                />
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                    <Button
+                      onClick={() => handleAddRow(index)}
+                      sx={{ fontSize: { xs: "12px", md: "16px" } }}
+                    >
+                      اضافه کردن ست جدید
+                    </Button>
+                  </Box>
+                </>
+              ))}
+            </Box>
+
+            <Box
+              display={"flex"}
+              justifyContent={"center"}
+              my={"15px"}
+              alignItems={"center"}
+            >
+              <Link to={"/exercises"}>
+                <Button
+                  sx={{
+                    backgroundColor: theme.palette.primary.light,
+                    color: "white",
+                    fontFamily: fontFamilies.bold,
+                    mx: "5px",
+                    fontSize: { xs: "10px", md: "16px" },
+                  }}
+                >
+                  افزودن تمرین جدید
+                </Button>
+              </Link>
+              <Button
+                variant="outlined"
+                sx={{ mx: "5px", fontSize: { xs: "10px", md: "16px" } }}
+              >
+                چاپ
+              </Button>
+            </Box>
+          </>
+        ) : (
           <Box
             display={"flex"}
             justifyContent={"center"}
             my={"15px"}
             alignItems={"center"}
+            flexDirection={"column"}
           >
+            <Box
+              component={"img"}
+              sx={{ height: "300px", width: "auto" }}
+              src="../../../public/noprogram.png"
+            ></Box>
+            <Typography sx={{ my: "10px" }}>
+              در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
+            </Typography>
             <Link to={"/exercises"}>
               <Button
                 sx={{
-                  backgroundColor: theme.palette.primary.light,
+                  width: "500px",
+                  backgroundColor: theme.palette.secondary.main,
                   color: "white",
                   fontFamily: fontFamilies.bold,
-                  mx: "5px",
                 }}
               >
                 افزودن تمرین جدید
               </Button>
             </Link>
-            <Button variant="outlined" sx={{ mx: "5px" }}>
-              چاپ
-            </Button>
           </Box>
-        </>
-      ) : (
-        <Box
-          display={"flex"}
-          justifyContent={"center"}
-          my={"15px"}
-          alignItems={"center"}
-          flexDirection={"column"}
-        >
-          <Box
-            component={"img"}
-            sx={{ height: "300px", width: "auto" }}
-            src="../../../public/noprogram.png"
-          ></Box>
-          <Typography sx={{ my: "10px" }}>
-            در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
-          </Typography>
-          <Link to={"/exercises"}>
-            <Button
-              sx={{
-                width: "500px",
-                backgroundColor: theme.palette.secondary.main,
-                color: "white",
-                fontFamily: fontFamilies.bold,
-              }}
-            >
-              افزودن تمرین جدید
-            </Button>
-          </Link>
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 }

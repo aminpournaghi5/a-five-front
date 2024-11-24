@@ -150,7 +150,7 @@ function Exercise() {
               mb: 2,
               display: { xs: "none", sm: "none", md: "block" },
             }}
-            onClick={() => navigate("/exercises")}
+            onClick={() => navigate(-1)}
           >
             بازگشت
           </Button>
