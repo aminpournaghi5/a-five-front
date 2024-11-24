@@ -17,10 +17,10 @@ export interface IExercise {
   rows: row[];
 }
 
-type Set = number | "گرم کردن" | "تا واماندگی" | "دراپ ست";
-type Reps = number | { min: number; max: number };
+export type Set = number | "گرم کردن" | "تا واماندگی" | "دراپ ست";
+export type Reps = number | { min: number; max: number };
 
-interface row {
+export interface row {
   set: Set;
   reps: Reps;
 }

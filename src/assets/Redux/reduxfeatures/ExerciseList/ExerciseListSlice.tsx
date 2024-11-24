@@ -23,20 +23,18 @@ export const exerciseListSlice = createSlice({
         (_exercise, index) => index !== action.payload
       );
     },
-    reorder: (state, action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>) => {
+    reorder: (
+      state,
+      action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>
+    ) => {
       const { sourceIndex, destinationIndex } = action.payload;
       const [movedExercise] = state.exerciselist.splice(sourceIndex, 1);
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
     },
-    updateSetsReps: (state, action: PayloadAction<{ index: number; value: string | number }>) => {
-      const { index, value } = action.payload;
-      if (state.exerciselist[index]) {
-        state.exerciselist[index].setsReps = value; // Update sets and reps for the specific exercise
-      }
-    },
+    
   },
 });
 
-export const { add, remove, reorder, updateSetsReps } = exerciseListSlice.actions;
+export const { add, remove, reorder } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;
