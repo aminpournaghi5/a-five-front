@@ -1,38 +1,56 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IExercise } from "../../../../Type/Type"; // Importing IExercise interface
 
-interface ExerciseListState {
-  exerciselist: IExercise[]; // Array of exercises
+// Define the structure of rows within exercises
+interface ExerciseRow {
+  index: number;
+  set: number;
+  reps: number;
 }
 
+// Define the structure of exercises including rows
+interface Exercise extends IExercise {
+  rows: ExerciseRow[];
+}
+
+// State structure
+interface ExerciseListState {
+  exerciselist: Exercise[]; // Array of exercises with rows
+}
+
+// Initial state
 const initialState: ExerciseListState = {
   exerciselist: [],
 };
 
+// Slice definition
 export const exerciseListSlice = createSlice({
   name: "exerciseList",
   initialState,
   reducers: {
+    // Add a new exercise with an initial row
     add: (state, action: PayloadAction<IExercise>) => {
-      // When a new exercise is added, we initialize it with a default row
-      const newExercise = {
+      const newExercise: Exercise = {
         ...action.payload,
         rows: [
           {
             index: 1,
-            set: 1, // Initial set value
-            reps: 0, // Initial reps value
+            set: 1, // Default set value
+            reps: 0, // Default reps value
           },
         ],
       };
-      state.exerciselist.push(newExercise); // Add the new exercise to the list
+      state.exerciselist.push(newExercise);
     },
+
+    // Remove an exercise by its index
     remove: (state, action: PayloadAction<number>) => {
-      // Remove the specific exercise by its index
       state.exerciselist = state.exerciselist.filter(
         (_exercise, index) => index !== action.payload
       );
     },
+
+    // Reorder exercises
     reorder: (
       state,
       action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>
@@ -41,41 +59,42 @@ export const exerciseListSlice = createSlice({
       const [movedExercise] = state.exerciselist.splice(sourceIndex, 1);
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
     },
+
+    // Add a new row to an exercise by its index
     addRow: (state, action: PayloadAction<number>) => {
-      // action.payload will be the index of the exercise in the list to which we want to add a new row
       const exercise = state.exerciselist[action.payload];
-
       if (exercise) {
-        const newIndex = exercise.rows.length + 1; // Calculate the new index
-        const newRow = {
-          index: newIndex,
-          set: newIndex, // The set value is equal to the index
-          reps: 0, // Initial reps value
+        const newRow: ExerciseRow = {
+          index: exercise.rows.length + 1, // Next row index
+          set: exercise.rows.length + 1, // Default set value
+          reps: 0, // Default reps value
         };
-
-        // Add the new row to the 'rows' array
         exercise.rows.push(newRow);
       }
     },
+
+    // Update the reps of a specific row in a specific exercise
     updateReps: (
       state,
       action: PayloadAction<{
+        exerciseId: string;
         rowIndex: number;
         reps: number;
       }>
     ) => {
-      const { rowIndex, reps } = action.payload;
-
-      // اطمینان حاصل کنید که ردیف مورد نظر وجود دارد
-      const exercise = state.exerciselist[0]; // فرض می‌کنیم که فقط یک تمرین وجود دارد یا باید به تمرین مورد نظر دسترسی پیدا کنید
+      const { exerciseId, rowIndex, reps } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
 
       if (exercise && exercise.rows[rowIndex]) {
         exercise.rows[rowIndex].reps = reps;
+      } else {
+        console.warn("Exercise or row not found", { exerciseId, rowIndex });
       }
     },
   },
 });
 
+// Exporting actions and reducer
 export const { add, remove, reorder, addRow, updateReps } =
   exerciseListSlice.actions;
 

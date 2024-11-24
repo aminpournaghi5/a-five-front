@@ -13,6 +13,8 @@ import {
   TableCell,
   TableRow,
   TextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
 import { Link } from "react-router-dom";
@@ -25,7 +27,7 @@ import {
   updateReps,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
-import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
+// import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
 import { MoreVert } from "@mui/icons-material";
 
 function Programing() {
@@ -74,9 +76,12 @@ function Programing() {
     dispatch(addRow(exerciseIndex)); // Assuming addRow action is available
   };
 
-  function handleRepsChange(event: any, rowIndex: number) {
-    const reps = parseInt(event.target.value);
-    dispatch(updateReps({ rowIndex, reps }));
+  function handleRepsChange(
+    exerciseId: string,
+    rowIndex: number,
+    reps: number
+  ) {
+    dispatch(updateReps({ exerciseId, rowIndex, reps }));
   }
 
   return (
@@ -214,14 +219,24 @@ function Programing() {
                         direction: "rtl", // افزودن راست چین بودن برای جهت کلی
                       }}
                     >
-                      <Table sx={{ width: "50%" }}>
+                      <Table
+                        sx={{
+                          marginRight: "10px",
+                          marginBottom: "20px",
+                          width: "50%",
+                          fontSize: { xs: "10px", md: "12px" },
+                          borderCollapse: "collapse",
+                        }}
+                      >
                         <TableBody>
                           <TableRow>
                             <TableCell
                               sx={{
                                 fontFamily: fontFamilies.bold,
                                 textAlign: "center",
-                                fontSize: { xs: "10px", md: "16px" },
+                                fontSize: { xs: "9px", md: "14px" },
+                                padding: "4px",
+                                border: "none",
                               }}
                             >
                               ست
@@ -230,10 +245,20 @@ function Programing() {
                               sx={{
                                 fontFamily: fontFamilies.bold,
                                 textAlign: "center",
-                                fontSize: { xs: "10px", md: "16px" },
+                               
+                                fontSize: { xs: "9px", md: "14px" },
+                                padding: "4px",
+                                border: "none",
                               }}
                             >
-                              تکرار
+                              <Select
+                              size="small"
+                              
+                              >
+                                <MenuItem value="single">تکرار</MenuItem>
+                                <MenuItem value="range">محدوده</MenuItem>
+                              </Select>
+                           
                             </TableCell>
                           </TableRow>
 
@@ -243,15 +268,46 @@ function Programing() {
                               <TableCell
                                 sx={{
                                   textAlign: "center",
-                                  fontSize: { xs: "10px", md: "16px" },
+                                  fontSize: { xs: "9px", md: "12px" },
+                                  padding: "2px",
+                                  border: "none",
                                 }}
                               >
                                 {toPersianDigits(row.set)}
                               </TableCell>
-                              <TableCell sx={{ textAlign: "center" }}>
+                              <TableCell
+                                sx={{
+                                  textAlign: "center",
+                                  padding: "2px",
+                                  border: "none",
+                                }}
+                              >
                                 <TextField
-                                  onChange={(e) => handleRepsChange(e, index)}
+                                  size="small"
+                                  variant="outlined"
+                                  onChange={(e) => {
+                                    const value = Math.abs(
+                                      Math.floor(Number(e.target.value))
+                                    ); // فقط اعداد صحیح و مثبت
+                                    handleRepsChange(
+                                      exercise._id,
+                                      index,
+                                      value
+                                    );
+                                  }}
                                   type="number"
+                                  inputProps={{
+                                    min: 0, // حداقل مقدار ۰
+                                    step: 1, // فقط اعداد صحیح
+                                  }}
+                                  sx={{
+                                    width: "50px",
+                                    "& input": {
+                                      padding: "4px",
+                                      textAlign: "center",
+                                    },
+                                  }}
+                                  value={row.reps}
                                 />
                               </TableCell>
                             </TableRow>
