@@ -17,8 +17,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   console.log("exerciseList:", state.exerciseList);
-  console.log("personalInfo:", state.personalInfo);
-  console.log("auth:", state.auth);
+
 });
 
 // Define RootState type from the store itself

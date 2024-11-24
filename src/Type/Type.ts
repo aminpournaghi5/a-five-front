@@ -1,4 +1,5 @@
 export interface IExercise {
+  index(index: any): void;
   _id: string;
   ID: number;
   NameFarsi: string;
@@ -21,6 +22,7 @@ export type Set = number | "گرم کردن" | "تا واماندگی" | "درا
 export type Reps = number | { min: number; max: number };
 
 export interface row {
+  index: number;
   set: Set;
   reps: Reps;
 }

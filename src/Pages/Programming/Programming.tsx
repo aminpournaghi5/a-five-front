@@ -19,8 +19,10 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import {
+  addRow,
   remove,
   reorder,
+  updateReps,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { IExercise } from "../../Type/Type";
 import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
@@ -61,13 +63,15 @@ function Programing() {
     setHoveredIndex(null);
   };
 
-
   // Convert English digits to Persian digits
   const toPersianDigits = (num: number) => {
     const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
     return num
       .toString()
       .replace(/\d/g, (d: string) => persianDigits[parseInt(d)]);
+  };
+  const handleAddRow = (exerciseIndex: number) => {
+    dispatch(addRow(exerciseIndex)); // Assuming addRow action is available
   };
 
   return (
@@ -203,7 +207,7 @@ function Programing() {
                         <TableRow>
                           <TableCell
                             sx={{
-                              fontFamily: fontFamilies.bold,
+                              fontFamily: "bold",
                               textAlign: "center",
                             }}
                           >
@@ -211,29 +215,34 @@ function Programing() {
                           </TableCell>
                           <TableCell
                             sx={{
-                              fontFamily: fontFamilies.bold,
+                              fontFamily: "bold",
                               textAlign: "center",
                             }}
                           >
                             تکرار
                           </TableCell>
                         </TableRow>
-                        <TableRow>
-                          <TableCell sx={{ textAlign: "center" }}>1</TableCell>
-                          <TableCell sx={{ textAlign: "center" }}>
-                            <TextField size="small" type="number" />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell sx={{ textAlign: " center" }}>2</TableCell>
-                          <TableCell sx={{ textAlign: "center" }}>
-                            <TextField size="small" type="number" />
-                          </TableCell>
-                        </TableRow>
+
+                        {/* Map over rows dynamically */}
+                        {exercise.rows.map((row) => (
+                          <TableRow key={row.index}>
+                            <TableCell sx={{ textAlign: "center" }}>
+                              {row.set}
+                            </TableCell>
+                            <TableCell sx={{ textAlign: "center" }}>
+                              <TextField size="small" value={row.reps} />
+                            </TableCell>
+                          </TableRow>
+                        ))}
                       </TableBody>
                     </Table>
                   </Box>
-                  <Button variant="contained">اضافه کردن ست جدید </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleAddRow(index)}
+                  >
+                    اضافه کردن ست جدید
+                  </Button>
                 </Box>
               </>
             ))}

@@ -14,8 +14,18 @@ export const exerciseListSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<IExercise>) => {
-      // Add the exercise (can be added multiple times)
-      state.exerciselist.push(action.payload);
+      // When a new exercise is added, we initialize it with a default row
+      const newExercise = {
+        ...action.payload,
+        rows: [
+          {
+            index: 1,
+            set: 1,  // Initial set value
+            reps: 0, // Initial reps value
+          },
+        ],
+      };
+      state.exerciselist.push(newExercise); // Add the new exercise to the list
     },
     remove: (state, action: PayloadAction<number>) => {
       // Remove the specific exercise by its index
@@ -31,10 +41,37 @@ export const exerciseListSlice = createSlice({
       const [movedExercise] = state.exerciselist.splice(sourceIndex, 1);
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
     },
-    
+    addRow: (state, action: PayloadAction<number>) => {
+      // action.payload will be the index of the exercise in the list to which we want to add a new row
+      const exercise = state.exerciselist[action.payload];
+      
+      if (exercise) {
+        const newIndex = exercise.rows.length + 1; // Calculate the new index
+        const newRow = {
+          index: newIndex,
+          set: newIndex,  // The set value is equal to the index
+          reps: 0,        // Initial reps value
+        };
+        
+        // Add the new row to the 'rows' array
+        exercise.rows.push(newRow);
+      }
+    },
+    updateReps: (
+      state,
+      action: PayloadAction<{ exerciseIndex: number; rowIndex: number; reps: number }>
+    ) => {
+      const { exerciseIndex, rowIndex, reps } = action.payload;
+      const exercise = state.exerciselist[exerciseIndex];
+
+      if (exercise && exercise.rows[rowIndex]) {
+        // Update the reps for the specified row in the specified exercise
+        exercise.rows[rowIndex].reps = reps;
+      }
+    },
   },
 });
 
-export const { add, remove, reorder } = exerciseListSlice.actions;
+export const { add, remove, reorder, addRow, updateReps } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;
