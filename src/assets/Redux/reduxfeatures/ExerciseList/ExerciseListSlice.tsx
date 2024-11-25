@@ -8,6 +8,7 @@ interface ExerciseRow {
   reps?: number;
   minReps?: number;
   maxReps?: number;
+  type: "number" | "dropSet" | "warmUp" | "failure"; // Type for the set
 }
 
 // Define the structure of exercises including rows
@@ -40,7 +41,8 @@ export const exerciseListSlice = createSlice({
           {
             index: 1,
             set: 1, // Default set value
-            reps: 0, // Default reps value
+            reps: 0,
+            type: "number"
           },
         ],
       };
@@ -94,7 +96,8 @@ export const exerciseListSlice = createSlice({
       if (exercise) {
         const newRow: ExerciseRow = {
           index: exercise.rows.length + 1, // Next row index
-          set: exercise.rows.length + 1, // Default set value
+          set: exercise.rows.length + 1,
+          type: "number"
         };
 
         // Based on the exercise type, add specific fields for reps or range

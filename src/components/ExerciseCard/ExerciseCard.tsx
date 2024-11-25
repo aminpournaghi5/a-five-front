@@ -8,31 +8,31 @@ interface Props {
 }
 
 const ExerciseCard: React.FC<Props> = ({ exercise }) => {
-  const imagePath = `/public/Workouts/${exercise.ID}.gif`;
+  const imagePath = `/Workouts/${exercise.ID}.gif`;
 
   return (
     <Card
-  sx={{
-    boxShadow: "none",
-    backgroundColor: "white",
-    position: "relative",
-    "&::before": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: grey[900], // رنگ خاکستری تیره
-      opacity: 0, // شفافیت اولیه صفر
-      transition: "opacity 0.2s ease", // اضافه کردن ترنزیشن به شفافیت
-      zIndex: 1, // قرار دادن این لایه بالاتر از محتوای کارت
-    },
-    "&:hover::before": {
-      opacity: 0.1, // شفافیت هنگام هاور
-    },
-  }}
->
+      sx={{
+        boxShadow: "none",
+        backgroundColor: "white",
+        position: "relative",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: grey[900], // رنگ خاکستری تیره
+          opacity: 0, // شفافیت اولیه صفر
+          transition: "opacity 0.2s ease", // اضافه کردن ترنزیشن به شفافیت
+          zIndex: 1, // قرار دادن این لایه بالاتر از محتوای کارت
+        },
+        "&:hover::before": {
+          opacity: 0.1, // شفافیت هنگام هاور
+        },
+      }}
+    >
       <CardMedia
         sx={{
           width: "100%",

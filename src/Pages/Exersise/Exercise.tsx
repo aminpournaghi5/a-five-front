@@ -168,7 +168,7 @@ function Exercise() {
                       margin: "0 auto",
                     }}
                     component="img"
-                    image={`/public/Workouts/${exercise.ID}.gif`}
+                    image={`/Workouts/${exercise.ID}.gif`}
                     alt={isEnglish ? exercise.Name : exercise.NameFarsi}
                     onError={(e: any) => {
                       e.target.onerror = null;
