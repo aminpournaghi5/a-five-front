@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SkeletonExerciseCard from "../../components/ExerciseCard/SkeletonExerciseCard";
 
 import AddIcon from "@mui/icons-material/Add";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { add } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { debounce } from "lodash";
@@ -463,21 +464,15 @@ function Exercises() {
                     >
                       <Tooltip title={"افزودن به لیست برنامه تمرینی"}>
                         <IconButton
-                          sx={{
-                            display: {
-                              lg: "block",
-                              xs: "none",
-                              sm: "none",
-                              md: "block",
-                            },
-                          }}
                           aria-label="add to list"
                           onClick={() => handleAddExercise(exercise)}
-                          color={
-                            isInList(exercise.ID) ? "secondary" : "default"
-                          }
+                          color={isInList(exercise.ID) ? "success" : "default"}
                         >
-                          <AddIcon />
+                          {isInList(exercise.ID) ? (
+                            <AddTaskIcon />
+                          ) : (
+                            <AddIcon />
+                          )}
                         </IconButton>
                       </Tooltip>
                     </Box>

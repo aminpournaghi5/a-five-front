@@ -96,6 +96,7 @@ const App: React.FC = () => {
           path="/exercise/:id"
           element={
             <>
+            <Navbar />
               <PageContainer>
                 <Exercise />
               </PageContainer>

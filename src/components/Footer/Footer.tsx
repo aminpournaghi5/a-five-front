@@ -5,18 +5,22 @@ import { useTheme } from "@mui/material/styles";
 import { fontFamilies } from "../../../theme";
 // آیکون‌های مورد نیاز
 
-import {
-  Email,
-  Phone as PhoneIcon,
-  Telegram as TelegramIcon,
-} from "@mui/icons-material";
+import { Email, Phone as PhoneIcon } from "@mui/icons-material";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../../src/assets/Redux/store";
+
 
 const Footer: React.FC = () => {
   const theme = useTheme();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn); // دریافت وضعیت ورود
   const footerLinks = [
     { name: "خانه", link: "/" },
     { name: "تمرینات ورزشی", link: "/exercises" },
-    { name: "حساب کاربری", link: "/login" },
+    { name: "برنامه تمرینی", link: "/programming" },
+    isLoggedIn
+      ? { name: "حساب کاربری", link: "/dashboard" }
+      : { name: "ورود / ثبت نام ", link: "/login" },
   ];
 
   return (

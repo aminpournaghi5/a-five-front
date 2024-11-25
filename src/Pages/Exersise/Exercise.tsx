@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useEffect, useState } from "react";
 
@@ -124,9 +125,9 @@ function Exercise() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh",
+          minHeight: "80vh",
           textAlign: "center",
-          padding: 3,
+          padding: "20px",
         }}
       >
         <TableContainer
@@ -184,19 +185,11 @@ function Exercise() {
                   >
                     <Tooltip title={"افزودن به لیست برنامه تمرینی"}>
                       <IconButton
-                        sx={{
-                          display: {
-                            lg: "block",
-                            xs: "none",
-                            sm: "none",
-                            md: "block",
-                          },
-                        }}
                         aria-label="add to list"
                         onClick={() => handleAddExercise(exercise)}
-                        color={isInList(exercise._id) ? "secondary" : "default"}
+                        color={isInList(exercise._id) ? "success" : "default"}
                       >
-                        <AddIcon />
+                        {isInList(exercise._id) ? <AddTaskIcon /> : <AddIcon />}
                       </IconButton>
                     </Tooltip>
                   </Box>

@@ -28,8 +28,8 @@ const Navbar: React.FC = () => {
     { name: "خانه", link: "/" },
     { name: "تمرینات ورزشی", link: "/exercises" },
     isLoggedIn
-      ? { name: "داشبورد", link: "/dashboard" }
-      : { name: "حساب کاربری", link: "/login" },
+      ? { name: "حساب کاربری", link: "/dashboard" }
+      : { name: "ورود / ثبت نام ", link: "/login" },
   ];
 
   const handleToggleMenu = () => setMenuOpen((prevOpen) => !prevOpen);
@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
           {/* لوگو در حالت موبایل */}
           <Box
             sx={{
-              flexGrow: 11,
+              flexGrow: 1,
               display: { xs: "flex", md: "none" },
               justifyContent: "center",
               alignItems: "center",
@@ -127,17 +127,17 @@ const Navbar: React.FC = () => {
             <Button
               onClick={handleCloseMenu}
               sx={{
-                display: { xs: "none", md: "flex" },
                 my: 2,
                 color: "white",
                 backgroundColor: theme.palette.secondary.main,
                 mx: 2,
                 position: "relative",
+                fontSize: { xs: "10px", md: "16px" },
               }}
             >
               {exerciselist.length
-                ? "مشاهده روتین ورزشی"
-                : "ساخت روتین ورزشی جدید"}
+                ? "مشاهده  برنامه تمرینی"
+                : "برنامه تمرینی جدید"}
               {exerciselist.length > 0 && (
                 <Typography
                   variant="subtitle2"
@@ -164,15 +164,7 @@ const Navbar: React.FC = () => {
         </Toolbar>
 
         {/* منوی موبایل */}
-        <Collapse
-          in={menuOpen}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            borderBottomLeftRadius: "20px",
-            borderBottomRightRadius: "20px",
-          }}
-        >
+        <Collapse in={menuOpen} timeout="auto" unmountOnExit>
           <Box
             id="mobile-menu"
             sx={{

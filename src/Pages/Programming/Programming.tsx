@@ -91,12 +91,10 @@ function Programing() {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        padding: 1,
       }}
     >
-      <Box
-        sx={{ marginTop: "20px", width: "100%", maxWidth: 1200 }}
-        padding={2}
-      >
+      <Box sx={{ width: "100%", maxWidth: 1200 }}>
         {exerciselist.length ? (
           <>
             {/* <PersonInformationFeild /> */}
@@ -149,8 +147,8 @@ function Programing() {
                           >
                             <CardMedia
                               sx={{
-                                width: { xs: "60px", sm: "100px" },
-                                height: { xs: "60px", sm: "100px" },
+                                width: { xs: "60px", sm: "160px" },
+                                height: { xs: "60px", sm: "160px" },
                                 objectFit: "contain",
                                 borderRadius: "50%",
                                 padding: "5px",
@@ -224,7 +222,7 @@ function Programing() {
                           marginRight: "10px",
                           marginBottom: "20px",
                           width: "50%",
-                          fontSize: { xs: "10px", md: "12px" },
+
                           borderCollapse: "collapse",
                         }}
                       >
@@ -234,7 +232,7 @@ function Programing() {
                               sx={{
                                 fontFamily: fontFamilies.bold,
                                 textAlign: "center",
-                                fontSize: { xs: "9px", md: "14px" },
+                                fontSize: { xs: "10px", md: "16px" },
                                 padding: "4px",
                                 border: "none",
                               }}
@@ -245,20 +243,15 @@ function Programing() {
                               sx={{
                                 fontFamily: fontFamilies.bold,
                                 textAlign: "center",
-                               
-                                fontSize: { xs: "9px", md: "14px" },
+                                fontSize: { xs: "10px", md: "16px" },
                                 padding: "4px",
                                 border: "none",
                               }}
                             >
-                              <Select
-                              size="small"
-                              
-                              >
+                              <Select size="small">
                                 <MenuItem value="single">تکرار</MenuItem>
                                 <MenuItem value="range">محدوده</MenuItem>
                               </Select>
-                           
                             </TableCell>
                           </TableRow>
 
@@ -268,7 +261,7 @@ function Programing() {
                               <TableCell
                                 sx={{
                                   textAlign: "center",
-                                  fontSize: { xs: "9px", md: "12px" },
+                                  fontSize: { xs: "9px", md: "16px" },
                                   padding: "2px",
                                   border: "none",
                                 }}
@@ -296,10 +289,6 @@ function Programing() {
                                     );
                                   }}
                                   type="number"
-                                  inputProps={{
-                                    min: 0, // حداقل مقدار ۰
-                                    step: 1, // فقط اعداد صحیح
-                                  }}
                                   sx={{
                                     width: "50px",
                                     "& input": {
@@ -357,25 +346,28 @@ function Programing() {
           <Box
             display={"flex"}
             justifyContent={"center"}
-            my={"15px"}
             alignItems={"center"}
             flexDirection={"column"}
+            textAlign={"center"}
+            height={"70vh"} // ارتفاع کل صفحه
           >
             <Box
               component={"img"}
-              sx={{ height: "300px", width: "auto" }}
+              sx={{ height: "150px", width: "auto", my: "10px" }}
               src="../../../public/noprogram.png"
             ></Box>
-            <Typography sx={{ my: "10px" }}>
+            <Typography sx={{ fontSize: { xs: "12px", md: "16px" } }}>
               در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
             </Typography>
             <Link to={"/exercises"}>
               <Button
                 sx={{
-                  width: "500px",
+                  width: "250px",
                   backgroundColor: theme.palette.secondary.main,
                   color: "white",
                   fontFamily: fontFamilies.bold,
+                  my: "10px",
+                  fontSize: { xs: "10px", md: "16px" },
                 }}
               >
                 افزودن تمرین جدید
