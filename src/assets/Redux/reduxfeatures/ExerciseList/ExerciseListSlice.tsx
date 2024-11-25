@@ -5,12 +5,15 @@ import { IExercise } from "../../../../Type/Type"; // Importing IExercise interf
 interface ExerciseRow {
   index: number;
   set: number;
-  reps: number;
+  reps?: number;
+  minReps?: number;
+  maxReps?: number;
 }
 
 // Define the structure of exercises including rows
 interface Exercise extends IExercise {
   rows: ExerciseRow[];
+  type: "single" | "range";
 }
 
 // State structure
@@ -32,6 +35,7 @@ export const exerciseListSlice = createSlice({
     add: (state, action: PayloadAction<IExercise>) => {
       const newExercise: Exercise = {
         ...action.payload,
+        type: "single",
         rows: [
           {
             index: 1,
@@ -59,6 +63,30 @@ export const exerciseListSlice = createSlice({
       const [movedExercise] = state.exerciselist.splice(sourceIndex, 1);
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
     },
+    // Set the type of exercise (single or range)
+    setType: (
+      state,
+      action: PayloadAction<{ exerciseId: string; type: "single" | "range" }>
+    ) => {
+      const { exerciseId, type } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
+
+      if (exercise) {
+        exercise.type = type;
+        // Update all rows based on the new type
+        exercise.rows.forEach((row) => {
+          if (type === "range") {
+            row.minReps = 0;
+            row.maxReps = 0;
+            delete row.reps; // Remove reps for "range"
+          } else {
+            row.reps = 0;
+            delete row.minReps; // Remove range values for "single"
+            delete row.maxReps;
+          }
+        });
+      }
+    },
 
     // Add a new row to an exercise by its index
     addRow: (state, action: PayloadAction<number>) => {
@@ -67,8 +95,16 @@ export const exerciseListSlice = createSlice({
         const newRow: ExerciseRow = {
           index: exercise.rows.length + 1, // Next row index
           set: exercise.rows.length + 1, // Default set value
-          reps: 0, // Default reps value
         };
+
+        // Based on the exercise type, add specific fields for reps or range
+        if (exercise.type === "range") {
+          newRow.minReps = 0; // Default minReps value
+          newRow.maxReps = 0; // Default maxReps value
+        } else {
+          newRow.reps = 0; // Default reps value
+        }
+
         exercise.rows.push(newRow);
       }
     },
@@ -85,17 +121,40 @@ export const exerciseListSlice = createSlice({
       const { exerciseId, rowIndex, reps } = action.payload;
       const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
 
-      if (exercise && exercise.rows[rowIndex]) {
+      if (exercise && exercise.type === "single" && exercise.rows[rowIndex]) {
         exercise.rows[rowIndex].reps = reps;
-      } else {
-        console.warn("Exercise or row not found", { exerciseId, rowIndex });
+      }
+    },
+
+    // Update the range values (minReps, maxReps) for a specific row in a specific exercise (for "range" type)
+    updateRange: (
+      state,
+      action: PayloadAction<{
+        exerciseId: string;
+        rowIndex: number;
+        minReps: number;
+        maxReps: number;
+      }>
+    ) => {
+      const { exerciseId, rowIndex, minReps, maxReps } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
+
+      if (exercise && exercise.type === "range" && exercise.rows[rowIndex]) {
+        exercise.rows[rowIndex].minReps = minReps;
+        exercise.rows[rowIndex].maxReps = maxReps;
       }
     },
   },
 });
 
-// Exporting actions and reducer
-export const { add, remove, reorder, addRow, updateReps } =
-  exerciseListSlice.actions;
+export const {
+  add,
+  remove,
+  reorder,
+  addRow,
+  setType,
+  updateReps,
+  updateRange,
+} = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

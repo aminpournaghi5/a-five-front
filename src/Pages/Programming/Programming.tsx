@@ -24,6 +24,8 @@ import {
   addRow,
   remove,
   reorder,
+  setType,
+  updateRange,
   updateReps,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
@@ -76,13 +78,23 @@ function Programing() {
     dispatch(addRow(exerciseIndex)); // Assuming addRow action is available
   };
 
-  function handleRepsChange(
+  // Handle reps change for "single" type
+  const handleRepsChange = (
     exerciseId: string,
-    rowIndex: number,
-    reps: number
-  ) {
-    dispatch(updateReps({ exerciseId, rowIndex, reps }));
-  }
+    index: number,
+    value: number
+  ) => {
+    dispatch(updateReps({ exerciseId, rowIndex: index, reps: value }));
+  };
+  // Handle range values change for "range" type
+  const handleRangeChange = (
+    exerciseId: string,
+    index: number,
+    minReps: number,
+    maxReps: number
+  ) => {
+    dispatch(updateRange({ exerciseId, rowIndex: index, minReps, maxReps }));
+  };
 
   return (
     <Box
@@ -109,7 +121,7 @@ function Programing() {
               {exerciselist.map((exercise, index) => (
                 <>
                   <Box
-                    key={index}
+                    key={exercise._id}
                     sx={{
                       display: "flex",
                       flexDirection: "column",
@@ -152,6 +164,7 @@ function Programing() {
                                 objectFit: "contain",
                                 borderRadius: "50%",
                                 padding: "5px",
+                                margin: "5px",
                                 boxShadow:
                                   "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
                               }}
@@ -182,9 +195,8 @@ function Programing() {
 
                       <Box
                         sx={{
-                          alignItems: "center",
                           marginRight: "auto",
-                          display: { xs: "none", sm: "flex" },
+                          flexDirection: { xs: "column", sm: "row" },
                         }}
                       >
                         <IconButton
@@ -248,7 +260,20 @@ function Programing() {
                                 border: "none",
                               }}
                             >
-                              <Select size="small">
+                              <Select
+                                size="small"
+                                defaultValue={exercise.type}
+                                onChange={(e) =>
+                                  dispatch(
+                                    setType({
+                                      exerciseId: exercise._id,
+                                      type: e.target.value as
+                                        | "single"
+                                        | "range",
+                                    })
+                                  )
+                                }
+                              >
                                 <MenuItem value="single">تکرار</MenuItem>
                                 <MenuItem value="range">محدوده</MenuItem>
                               </Select>
@@ -273,31 +298,91 @@ function Programing() {
                                   textAlign: "center",
                                   padding: "2px",
                                   border: "none",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
                                 }}
                               >
-                                <TextField
-                                  size="small"
-                                  variant="outlined"
-                                  onChange={(e) => {
-                                    const value = Math.abs(
-                                      Math.floor(Number(e.target.value))
-                                    ); // فقط اعداد صحیح و مثبت
-                                    handleRepsChange(
-                                      exercise._id,
-                                      index,
-                                      value
-                                    );
-                                  }}
-                                  type="number"
-                                  sx={{
-                                    width: "50px",
-                                    "& input": {
-                                      padding: "4px",
-                                      textAlign: "center",
-                                    },
-                                  }}
-                                  value={row.reps}
-                                />
+                                {/* Render reps or range inputs based on the exercise type */}
+                                {exercise.type === "range" ? (
+                                  <>
+                                    <TextField
+                                      size="small"
+                                      variant="outlined"
+                                      type="number"
+                                      value={row.minReps || 0}
+                                      onChange={(e) =>
+                                        handleRangeChange(
+                                          exercise._id,
+                                          index,
+                                          Math.max(
+                                            0,
+                                            Math.floor(Number(e.target.value))
+                                          ),
+                                          row.maxReps || 0
+                                        )
+                                      }
+                                      sx={{
+                                        width: "50px",
+                                        "& input": {
+                                          padding: "4px",
+                                          textAlign: "center",
+                                        },
+                                      }}
+                                    />
+                                    <Typography display="inline" mx="5px">
+                                      تا
+                                    </Typography>
+                                    <TextField
+                                      size="small"
+                                      variant="outlined"
+                                      type="number"
+                                      value={row.maxReps || 0}
+                                      onChange={(e) =>
+                                        handleRangeChange(
+                                          exercise._id,
+                                          index,
+                                          row.minReps || 0,
+                                          Math.max(
+                                            0,
+                                            Math.floor(Number(e.target.value))
+                                          )
+                                        )
+                                      }
+                                      sx={{
+                                        width: "50px",
+                                        "& input": {
+                                          padding: "4px",
+                                          textAlign: "center",
+                                        },
+                                      }}
+                                    />
+                                  </>
+                                ) : (
+                                  <TextField
+                                    size="small"
+                                    variant="outlined"
+                                    type="number"
+                                    value={row.reps || 0}
+                                    onChange={(e) =>
+                                      handleRepsChange(
+                                        exercise._id,
+                                        index,
+                                        Math.max(
+                                          0,
+                                          Math.floor(Number(e.target.value))
+                                        )
+                                      )
+                                    }
+                                    sx={{
+                                      width: "50px",
+                                      "& input": {
+                                        padding: "4px",
+                                        textAlign: "center",
+                                      },
+                                    }}
+                                  />
+                                )}
                               </TableCell>
                             </TableRow>
                           ))}
@@ -306,7 +391,10 @@ function Programing() {
                     </Box>
                     <Button
                       onClick={() => handleAddRow(index)}
-                      sx={{ fontSize: { xs: "12px", md: "16px" } }}
+                      sx={{
+                        fontSize: { xs: "12px", md: "16px" },
+                        padding: "16px",
+                      }}
                     >
                       اضافه کردن ست جدید
                     </Button>
