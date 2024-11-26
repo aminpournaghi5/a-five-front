@@ -1,29 +1,27 @@
-# Stage 1: Build
-FROM node:18 AS build
+FROM repo.a-five.ir/node:18-alpine AS builder
 
-# Set the working directory inside the container
+RUN apk add make g++ gcc git
+
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json for dependency installation
-COPY package*.json ./
+ADD package*.json .
 
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
+ADD . .
 
-# Build the project (for Vite or React)
 RUN npm run build
 
-# Stage 2: Serve
-FROM nginx:stable-alpine
+FROM repo.a-five.ir/nginx:stable-alpine
 
-# Copy the built files from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN apk add --no-cache bash gawk sed grep bc coreutils
 
-# Expose port 80
+ADD nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
 EXPOSE 80
 
-# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
