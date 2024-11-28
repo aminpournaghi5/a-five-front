@@ -4,10 +4,10 @@ import { Box, Typography, Grid } from "@mui/material";
 import CarouselComponent, {
   VideoCardProps,
 } from "../../components/CarouselComponent/CarouselComponent";
-import squat from "../../../public/Squat.gif";
-import deadlift from "../../../public/Deadlift.gif";
-import chest from "../../../public/Chest.gif";
-import biceps from "../../../public/Biceps.gif";
+import squat from "/landingImage/Squat.gif";
+import deadlift from "/landingImage/Deadlift.gif";
+import chest from "/landingImage/Chest.gif";
+import biceps from "/landingImage/Biceps.gif";
 import CarouselComponentSkeleton from "../../components/CarouselComponent/CarouselComponentSkeleton";
 import { fontFamilies } from "../../../theme";
 

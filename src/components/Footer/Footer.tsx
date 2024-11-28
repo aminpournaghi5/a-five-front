@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { Box, Container, Grid, IconButton, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { fontFamilies } from "../../../theme";
+import logo from "../../assets/Logo/whitepng.png";
 // آیکون‌های مورد نیاز
 
 import { Email, Phone as PhoneIcon } from "@mui/icons-material";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../../src/assets/Redux/store";
-
 
 const Footer: React.FC = () => {
   const theme = useTheme();
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
             <Link to={"/"}>
               <Box
                 component="img"
-                src="/public/whitepng.png"
+                src={logo}
                 alt="A-FIVE LOGO"
                 sx={{
                   width: { md: "80px", xs: "50px" },

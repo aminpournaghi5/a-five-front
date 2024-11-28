@@ -47,7 +47,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise }) => {
         alt={exercise.NameFarsi}
         onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
           e.currentTarget.onerror = null; // جلوگیری از حلقه بی‌نهایت
-          e.currentTarget.src = "../../../public/noimage.jpg";
+          e.currentTarget.src = "/utilImage/noimage.jpg";
         }}
       />
 

@@ -133,13 +133,19 @@ export const exerciseListSlice = createSlice({
         exercise.rows.push(newRow);
       }
     },
-    removeRow: (state, action: PayloadAction<{ exerciseId: number; rowIndex: number }>) => {
+    removeRow: (
+      state,
+      action: PayloadAction<{ exerciseId: number; rowIndex: number }>
+    ) => {
       const { exerciseId, rowIndex } = action.payload;
       const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
-    
+
       if (exercise && exercise.rows[rowIndex]) {
-        // حذف ردیف از آرایه rows
-        exercise.rows = exercise.rows.filter((_, index) => index !== rowIndex);
+        // حذف ردیف از آرایه rows با استفاده از slice
+        exercise.rows = [
+          ...exercise.rows.slice(0, rowIndex), // تمام آیتم‌ها قبل از rowIndex
+          ...exercise.rows.slice(rowIndex + 1), // تمام آیتم‌ها بعد از rowIndex
+        ];
       }
     },
 

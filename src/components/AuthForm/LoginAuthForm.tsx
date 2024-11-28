@@ -16,7 +16,7 @@ import { loginSchema } from "../../utilities/validation/validation"; // فقط l
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import theme from "../../../theme";
-
+import logo from "../../assets/Logo/whitepng.png";
 interface AuthFormProps {
   onSubmit: (data: any) => Promise<void>;
 }
@@ -68,7 +68,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
         <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
           <a href="/">
             <img
-              src="../../../public/whitepng.png"
+              src={logo}
               style={{ width: "100px", objectFit: "contain" }}
               alt="logo"
             />

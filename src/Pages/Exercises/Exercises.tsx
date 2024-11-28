@@ -491,7 +491,7 @@ function Exercises() {
                 <Box
                   component={"img"}
                   sx={{ height: "auto", width: "300px", margin: 4 }}
-                  src="../../../public/notfound.png"
+                  src="/utilImage/notfound.png"
                 ></Box>
                 <Typography
                   variant="h6"

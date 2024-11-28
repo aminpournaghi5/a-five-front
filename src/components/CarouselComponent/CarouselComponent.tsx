@@ -63,8 +63,7 @@ function CarouselComponent({ myvideos }: CarouselComponentProps) {
                 }}
                 onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                   e.currentTarget.onerror = null;
-                  e.currentTarget.src =
-                    "/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // تصویر پیش‌فرض
+                  e.currentTarget.src = "/utilImage/noimage.png"; // تصویر پیش‌فرض
                 }}
               />
               <CardContent sx={{ py: 1, margin: 0 }}>

@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
+import logo from "../../assets/Logo/whitepng.png";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
@@ -50,7 +51,7 @@ const Navbar: React.FC = () => {
           <Link to="/" onClick={handleCloseMenu}>
             <Box
               component="img"
-              src="/public/whitepng.png"
+              src={logo}
               alt="A-FIVE LOGO"
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -79,11 +80,10 @@ const Navbar: React.FC = () => {
             <Link to="/" onClick={handleCloseMenu}>
               <Box
                 component="img"
-                src="/public/whitepng.png"
+                src={logo}
                 alt="A-FIVE LOGO"
                 sx={{ width: 50, height: 50, mt: 1 }}
               />
-              
             </Link>
           </Box>
 

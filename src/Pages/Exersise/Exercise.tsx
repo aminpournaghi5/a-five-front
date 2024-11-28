@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import AddTaskIcon from "@mui/icons-material/AddTask";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useEffect, useState } from "react";
 
 import { IExercise } from "../../Type/Type";
-import { fontFamilies } from "../../../theme";
+import theme, { fontFamilies } from "../../../theme";
 import { styled } from "@mui/system";
 import ExerciseSkeleton from "./ExerciseSkeleton";
 import { useParams, useNavigate } from "react-router-dom";
@@ -125,7 +125,6 @@ function Exercise() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "80vh",
           textAlign: "center",
           padding: "20px",
         }}
@@ -134,22 +133,28 @@ function Exercise() {
           component={Paper}
           sx={{
             borderRadius: "20px",
-            width: "85%",
-            maxWidth: 700,
+
+            width: "100%",
             direction: isEnglish ? "ltr" : "rtl",
             overflow: "hidden",
+            py: 4,
           }}
         >
           {/* Back Button */}
           <Button
-            variant="contained"
-            color="secondary"
-            startIcon={<ArrowBackIcon />}
+            startIcon={<ArrowBackIcon sx={{ marginLeft: 1 }} />}
             sx={{
-              width: "20%",
-              float: "left",
-              mb: 2,
-              display: { xs: "none", sm: "none", md: "block" },
+              color: theme.palette.text.primary,
+              width: "fit-content",
+              px: 3,
+              ":hover": {
+                backgroundColor: "transparent",
+              },
+              ":active": {
+                backgroundColor: theme.palette.primary.light,
+              },
+              fontSize: { xs: "10px", sm: "16px" },
+              textTransform: "none", // جلوگیری از تبدیل متن به حروف بزرگ
             }}
             onClick={() => navigate(-1)}
           >
@@ -172,7 +177,7 @@ function Exercise() {
                     alt={isEnglish ? exercise.Name : exercise.NameFarsi}
                     onError={(e: any) => {
                       e.target.onerror = null;
-                      e.target.src = "../../../public/noimage.jpg";
+                      e.target.src = "/utilImage/noimage.jpg";
                     }}
                   />
                   <Box

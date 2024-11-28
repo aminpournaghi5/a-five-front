@@ -15,6 +15,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  Divider,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
 import { Link } from "react-router-dom";
@@ -171,25 +172,39 @@ function Programing() {
                                   "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
                               }}
                               component="img"
-                              image={`/public/Workouts/${exercise.ID}.gif`}
+                              image={`/Workouts/${exercise.ID}.gif`}
                               alt={exercise.NameFarsi}
                               onError={(
                                 e: React.SyntheticEvent<HTMLImageElement>
                               ) => {
                                 e.currentTarget.onerror = null;
-                                e.currentTarget.src =
-                                  "/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg";
+                                e.currentTarget.src = "/utilImage/noImage.png";
                               }}
                             />
                             <Typography
                               sx={{
                                 fontFamily: fontFamilies.bold,
                                 fontSize: { xs: "10px", md: "18px" },
-                                textAlign: "center",
+                                textAlign: "right",
                                 marginRight: "15px",
                               }}
                             >
                               {exercise.NameFarsi}
+                              {/* <br />
+                              <Typography
+                                sx={{
+                                  fontFamily: fontFamilies.light,
+                                  fontSize: { xs: "8px", md: "16px" },
+                                  backgroundColor: theme.palette.secondary.main,
+                                  width: "fit-content",
+                                  padding: "4px",
+                                  borderRadius: "20px",
+                                  color: theme.palette.primary.contrastText,
+                                  marginTop: "5px",
+                                }}
+                              >
+                                سوپرست
+                              </Typography> */}
                             </Typography>
                           </Card>
                         </Link>
@@ -500,6 +515,7 @@ function Programing() {
                         </TableBody>
                       </Table>
                     </Box>
+                    <Divider />
                     <Button
                       onClick={() => handleAddRow(index)}
                       sx={{
@@ -519,26 +535,29 @@ function Programing() {
               justifyContent={"center"}
               my={"15px"}
               alignItems={"center"}
+              width="100%"
             >
-              <Link to={"/exercises"}>
-                <Button
-                  sx={{
-                    backgroundColor: theme.palette.primary.light,
-                    color: "white",
-                    fontFamily: fontFamilies.bold,
-                    mx: "5px",
-                    fontSize: { xs: "10px", md: "16px" },
-                  }}
-                >
-                  افزودن تمرین جدید
-                </Button>
-              </Link>
               <Button
+                component={Link} // استفاده از Link به عنوان پایه دکمه
+                to={"/exercises"}
+                sx={{
+                  backgroundColor: theme.palette.primary.dark,
+                  color: "white",
+                  fontFamily: fontFamilies.bold,
+                  mx: "5px",
+                  fontSize: { xs: "10px", md: "16px" },
+                  width: "100%",
+                }}
+              >
+                اضافه کردن تمرین جدید
+              </Button>
+
+              {/* <Button
                 variant="outlined"
                 sx={{ mx: "5px", fontSize: { xs: "10px", md: "16px" } }}
               >
                 چاپ
-              </Button>
+              </Button> */}
             </Box>
           </>
         ) : (
@@ -553,7 +572,7 @@ function Programing() {
             <Box
               component={"img"}
               sx={{ height: "150px", width: "auto", my: "10px" }}
-              src="../../../public/noprogram.png"
+              src="/utilImage/noprogram.png"
             ></Box>
             <Typography sx={{ fontSize: { xs: "12px", md: "16px" } }}>
               در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
@@ -569,7 +588,7 @@ function Programing() {
                   fontSize: { xs: "10px", md: "16px" },
                 }}
               >
-                افزودن تمرین جدید
+                اضافه کردن تمرین جدید
               </Button>
             </Link>
           </Box>
