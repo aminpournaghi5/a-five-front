@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
         width: "100%",
         position: "relative",
         bottom: "0px",
-        padding: "20px 0px 20px 0px",
+        padding: "12px 0px 12px 0px",
       }}
     >
       <Container maxWidth="lg">
