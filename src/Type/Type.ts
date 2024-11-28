@@ -1,5 +1,4 @@
 export interface IExercise {
-  index(index: any): void;
   _id: string;
   ID: number;
   NameFarsi: string;
@@ -15,6 +14,4 @@ export interface IExercise {
   TypeFarsi?: string;
   Body?: string;
   setsReps?: any;
-
 }
-

@@ -21,10 +21,11 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import {
+  setSetType,
   addRow,
   remove,
   reorder,
-  setType,
+  setRepType,
   updateRange,
   updateReps,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
@@ -80,7 +81,7 @@ function Programing() {
 
   // Handle reps change for "single" type
   const handleRepsChange = (
-    exerciseId: string,
+    exerciseId: number,
     index: number,
     value: number
   ) => {
@@ -88,7 +89,7 @@ function Programing() {
   };
   // Handle range values change for "range" type
   const handleRangeChange = (
-    exerciseId: string,
+    exerciseId: number,
     index: number,
     minReps: number,
     maxReps: number
@@ -121,7 +122,7 @@ function Programing() {
               {exerciselist.map((exercise, index) => (
                 <>
                   <Box
-                    key={exercise._id}
+                    key={index}
                     sx={{
                       display: "flex",
                       flexDirection: "column",
@@ -231,10 +232,9 @@ function Programing() {
                     >
                       <Table
                         sx={{
-                          marginRight: "10px",
+                          marginRight: "10%",
                           marginBottom: "20px",
-                          width: "50%",
-
+                          width: "25%",
                           borderCollapse: "collapse",
                         }}
                       >
@@ -243,10 +243,11 @@ function Programing() {
                             <TableCell
                               sx={{
                                 fontFamily: fontFamilies.bold,
-                                textAlign: "center",
-                                fontSize: { xs: "10px", md: "16px" },
-                                padding: "4px",
+                                textAlign: "right",
+                                fontSize: { xs: "12px", md: "16px" },
+                                py: "2px",
                                 border: "none",
+                                width: "50%",
                               }}
                             >
                               ست
@@ -254,19 +255,40 @@ function Programing() {
                             <TableCell
                               sx={{
                                 fontFamily: fontFamilies.bold,
-                                textAlign: "center",
-                                fontSize: { xs: "10px", md: "16px" },
-                                padding: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: { xs: "12px", md: "16px" },
+                                py: "2px",
                                 border: "none",
+                                width: "100%",
                               }}
                             >
                               <Select
                                 size="small"
-                                defaultValue={exercise.type}
+                                variant="standard"
+                                defaultValue={exercise.repType}
+                                sx={{
+                                  "& .MuiSelect-icon": {
+                                    display: "none",
+                                  },
+                                  "& .MuiSelect-select": {
+                                    fontFamily: fontFamilies.bold,
+                                    padding: "0 !important",
+                                    margin: 0,
+                                    fontSize: { xs: "12px", md: "16px" },
+                                  },
+                                  "& .MuiSelect-selectMenu": {
+                                    fontFamily: fontFamilies.bold,
+                                    padding: 0,
+                                    margin: 0,
+                                    fontSize: { xs: "12px", md: "16px" },
+                                  },
+                                }}
                                 onChange={(e) =>
                                   dispatch(
-                                    setType({
-                                      exerciseId: exercise._id,
+                                    setRepType({
+                                      exerciseId: exercise.index,
                                       type: e.target.value as
                                         | "single"
                                         | "range",
@@ -281,39 +303,94 @@ function Programing() {
                           </TableRow>
 
                           {/* Map over rows dynamically */}
-                          {exercise.rows.map((row: any, index) => (
+                          {exercise.rows.map((row: any, index: number) => (
                             <TableRow key={row.index}>
                               <TableCell
                                 sx={{
-                                  textAlign: "center",
+                                  textAlign: "right",
                                   fontSize: { xs: "9px", md: "16px" },
-                                  padding: "2px",
+                                  py: "4px",
                                   border: "none",
                                 }}
                               >
-                                {toPersianDigits(row.set)}
+                                <Select
+                                  size="small"
+                                  variant="standard"
+                                  sx={{
+                                    "& .MuiSelect-icon": {
+                                      display: "none", // مخفی کردن آیکون فلش
+                                    },
+                                    "& .MuiSelect-select": {
+                                      fontFamily: fontFamilies.bold,
+                                      padding: "0 !important",
+                                      margin: 0,
+                                      fontSize: { xs: "12px", md: "16px" },
+
+                                      color: (theme) =>
+                                        // رنگ فونت بر اساس مقدار انتخابی
+                                        row.set === "گرم کردن"
+                                          ? "orange"
+                                          : row.set === "تا واماندگی"
+                                          ? "red"
+                                          : row.set === "دراپ ست"
+                                          ? "blue"
+                                          : theme.palette.text.primary, // رنگ پیش‌فرض
+                                    },
+                                    "& .MuiSelect-selectMenu": {
+                                      fontFamily: fontFamilies.bold,
+                                      fontSize: { xs: "12px", md: "16px" },
+                                    },
+                                    "& .Muiselectinpur": {
+                                      padding: 0,
+                                    },
+                                  }}
+                                  defaultValue={
+                                    row.set === index + 1 ? "number" : row.set
+                                  }
+                                  onChange={(e) =>
+                                    dispatch(
+                                      setSetType({
+                                        exerciseId: exercise.index,
+                                        rowIndex: index,
+                                        setType: e.target.value as
+                                          | "number"
+                                          | "دراپ ست"
+                                          | "گرم کردن"
+                                          | "تا واماندگی",
+                                      })
+                                    )
+                                  }
+                                >
+                                  <MenuItem value="number">
+                                    {toPersianDigits(index + 1)}
+                                  </MenuItem>
+                                  <MenuItem value="گرم کردن">گرم کردن</MenuItem>
+                                  <MenuItem value="دراپ ست">دراپ ست</MenuItem>
+                                  <MenuItem value="تا واماندگی">
+                                    تا واماندگی
+                                  </MenuItem>
+                                </Select>
                               </TableCell>
                               <TableCell
                                 sx={{
-                                  textAlign: "center",
-                                  padding: "2px",
+                                  py: "4px",
                                   border: "none",
                                   display: "flex",
                                   alignItems: "center",
-                                  justifyContent: "center",
+                                  justifyContent: "flex-start",
                                 }}
                               >
                                 {/* Render reps or range inputs based on the exercise type */}
-                                {exercise.type === "range" ? (
+                                {exercise.repType === "range" ? (
                                   <>
                                     <TextField
                                       size="small"
-                                      variant="outlined"
+                                      variant="standard"
                                       type="number"
                                       value={row.minReps || 0}
                                       onChange={(e) =>
                                         handleRangeChange(
-                                          exercise._id,
+                                          exercise.index,
                                           index,
                                           Math.max(
                                             0,
@@ -324,6 +401,9 @@ function Programing() {
                                       }
                                       sx={{
                                         width: "50px",
+                                        "& .MuiInput-underline:after": {
+                                          border: "none", // حذف خط زیر هنگام فوکوس
+                                        },
                                         "& input": {
                                           padding: "4px",
                                           textAlign: "center",
@@ -335,12 +415,12 @@ function Programing() {
                                     </Typography>
                                     <TextField
                                       size="small"
-                                      variant="outlined"
+                                      variant="standard"
                                       type="number"
                                       value={row.maxReps || 0}
                                       onChange={(e) =>
                                         handleRangeChange(
-                                          exercise._id,
+                                          exercise.index,
                                           index,
                                           row.minReps || 0,
                                           Math.max(
@@ -351,6 +431,9 @@ function Programing() {
                                       }
                                       sx={{
                                         width: "50px",
+                                        "& .MuiInput-underline:after": {
+                                          border: "none", // حذف خط زیر هنگام فوکوس
+                                        },
                                         "& input": {
                                           padding: "4px",
                                           textAlign: "center",
@@ -361,12 +444,12 @@ function Programing() {
                                 ) : (
                                   <TextField
                                     size="small"
-                                    variant="outlined"
+                                    variant="standard"
                                     type="number"
                                     value={row.reps || 0}
                                     onChange={(e) =>
                                       handleRepsChange(
-                                        exercise._id,
+                                        exercise.index,
                                         index,
                                         Math.max(
                                           0,
@@ -376,6 +459,9 @@ function Programing() {
                                     }
                                     sx={{
                                       width: "50px",
+                                      "& .MuiInput-underline:after": {
+                                        border: "none", // حذف خط زیر هنگام فوکوس
+                                      },
                                       "& input": {
                                         padding: "4px",
                                         textAlign: "center",

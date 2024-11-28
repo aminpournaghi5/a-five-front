@@ -4,17 +4,17 @@ import { IExercise } from "../../../../Type/Type"; // Importing IExercise interf
 // Define the structure of rows within exercises
 interface ExerciseRow {
   index: number;
-  set: number;
+  set: number | string;
   reps?: number;
   minReps?: number;
   maxReps?: number;
-  type: "number" | "dropSet" | "warmUp" | "failure"; // Type for the set
 }
 
 // Define the structure of exercises including rows
 interface Exercise extends IExercise {
+  index: number;
   rows: ExerciseRow[];
-  type: "single" | "range";
+  repType: "single" | "range";
 }
 
 // State structure
@@ -36,13 +36,13 @@ export const exerciseListSlice = createSlice({
     add: (state, action: PayloadAction<IExercise>) => {
       const newExercise: Exercise = {
         ...action.payload,
-        type: "single",
+        index: state.exerciselist.length + 1,
+        repType: "single",
         rows: [
           {
             index: 1,
             set: 1, // Default set value
             reps: 0,
-            type: "number"
           },
         ],
       };
@@ -66,15 +66,15 @@ export const exerciseListSlice = createSlice({
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
     },
     // Set the type of exercise (single or range)
-    setType: (
+    setRepType: (
       state,
-      action: PayloadAction<{ exerciseId: string; type: "single" | "range" }>
+      action: PayloadAction<{ exerciseId: number; type: "single" | "range" }>
     ) => {
       const { exerciseId, type } = action.payload;
-      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
 
       if (exercise) {
-        exercise.type = type;
+        exercise.repType = type;
         // Update all rows based on the new type
         exercise.rows.forEach((row) => {
           if (type === "range") {
@@ -90,6 +90,29 @@ export const exerciseListSlice = createSlice({
       }
     },
 
+    setSetType: (
+      state,
+      action: PayloadAction<{
+        exerciseId: number;
+        rowIndex: number;
+        setType: "number" | "دراپ ست" | "گرم کردن" | "تا واماندگی";
+      }>
+    ) => {
+      const { exerciseId, rowIndex, setType } = action.payload; // استخراج مقادیر اکشن
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
+
+      if (exercise && exercise.rows[rowIndex]) {
+        // بررسی وجود تمرین و ردیف مورد نظر
+        if (setType === "number") {
+          // اگر setType برابر "number" بود
+          exercise.rows[rowIndex].set = rowIndex + 1;
+        } else {
+          // در غیر این صورت مقدار خود setType تنظیم شود
+          exercise.rows[rowIndex].set = setType;
+        }
+      }
+    },
+
     // Add a new row to an exercise by its index
     addRow: (state, action: PayloadAction<number>) => {
       const exercise = state.exerciselist[action.payload];
@@ -97,11 +120,10 @@ export const exerciseListSlice = createSlice({
         const newRow: ExerciseRow = {
           index: exercise.rows.length + 1, // Next row index
           set: exercise.rows.length + 1,
-          type: "number"
         };
 
         // Based on the exercise type, add specific fields for reps or range
-        if (exercise.type === "range") {
+        if (exercise.repType === "range") {
           newRow.minReps = 0; // Default minReps value
           newRow.maxReps = 0; // Default maxReps value
         } else {
@@ -116,15 +138,19 @@ export const exerciseListSlice = createSlice({
     updateReps: (
       state,
       action: PayloadAction<{
-        exerciseId: string;
+        exerciseId: number;
         rowIndex: number;
         reps: number;
       }>
     ) => {
       const { exerciseId, rowIndex, reps } = action.payload;
-      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
 
-      if (exercise && exercise.type === "single" && exercise.rows[rowIndex]) {
+      if (
+        exercise &&
+        exercise.repType === "single" &&
+        exercise.rows[rowIndex]
+      ) {
         exercise.rows[rowIndex].reps = reps;
       }
     },
@@ -133,16 +159,16 @@ export const exerciseListSlice = createSlice({
     updateRange: (
       state,
       action: PayloadAction<{
-        exerciseId: string;
+        exerciseId: number
         rowIndex: number;
         minReps: number;
         maxReps: number;
       }>
     ) => {
       const { exerciseId, rowIndex, minReps, maxReps } = action.payload;
-      const exercise = state.exerciselist.find((ex) => ex._id === exerciseId);
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
 
-      if (exercise && exercise.type === "range" && exercise.rows[rowIndex]) {
+      if (exercise && exercise.repType === "range" && exercise.rows[rowIndex]) {
         exercise.rows[rowIndex].minReps = minReps;
         exercise.rows[rowIndex].maxReps = maxReps;
       }
@@ -155,7 +181,8 @@ export const {
   remove,
   reorder,
   addRow,
-  setType,
+  setSetType,
+  setRepType,
   updateReps,
   updateRange,
 } = exerciseListSlice.actions;
