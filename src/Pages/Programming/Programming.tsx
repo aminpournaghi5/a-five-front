@@ -28,10 +28,11 @@ import {
   setRepType,
   updateRange,
   updateReps,
+  removeRow,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
 // import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
-import { MoreVert } from "@mui/icons-material";
+import { Clear, MoreVert } from "@mui/icons-material";
 
 function Programing() {
   const exerciselist = useSelector(
@@ -257,7 +258,10 @@ function Programing() {
                                 fontFamily: fontFamilies.bold,
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
+                                justifyContent:
+                                  exercise.repType === "range"
+                                    ? "center"
+                                    : "right",
                                 fontSize: { xs: "12px", md: "16px" },
                                 py: "2px",
                                 border: "none",
@@ -376,7 +380,7 @@ function Programing() {
                                   py: "4px",
                                   border: "none",
                                   display: "flex",
-                                  alignItems: "center",
+                                  alignItems: "flex-end",
                                   justifyContent: "flex-start",
                                 }}
                               >
@@ -469,6 +473,27 @@ function Programing() {
                                     }}
                                   />
                                 )}
+                              </TableCell>
+                              <TableCell
+                                sx={{ border: "none", padding: 0, margin: 0 }}
+                              >
+                                <Clear
+                                  color="error"
+                                  sx={{
+                                    display:
+                                      index === exercise.rows.length - 1
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                  onClick={() =>
+                                    dispatch(
+                                      removeRow({
+                                        exerciseId: exercise.index,
+                                        rowIndex: index,
+                                      })
+                                    )
+                                  }
+                                />
                               </TableCell>
                             </TableRow>
                           ))}

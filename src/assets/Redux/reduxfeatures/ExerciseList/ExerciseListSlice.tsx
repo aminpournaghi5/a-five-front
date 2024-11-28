@@ -133,6 +133,15 @@ export const exerciseListSlice = createSlice({
         exercise.rows.push(newRow);
       }
     },
+    removeRow: (state, action: PayloadAction<{ exerciseId: number; rowIndex: number }>) => {
+      const { exerciseId, rowIndex } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
+    
+      if (exercise && exercise.rows[rowIndex]) {
+        // حذف ردیف از آرایه rows
+        exercise.rows = exercise.rows.filter((_, index) => index !== rowIndex);
+      }
+    },
 
     // Update the reps of a specific row in a specific exercise
     updateReps: (
@@ -159,7 +168,7 @@ export const exerciseListSlice = createSlice({
     updateRange: (
       state,
       action: PayloadAction<{
-        exerciseId: number
+        exerciseId: number;
         rowIndex: number;
         minReps: number;
         maxReps: number;
@@ -181,6 +190,7 @@ export const {
   remove,
   reorder,
   addRow,
+  removeRow,
   setSetType,
   setRepType,
   updateReps,
