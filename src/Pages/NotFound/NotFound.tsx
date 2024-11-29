@@ -10,8 +10,9 @@ function NotFound() {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
+          width: "100%",
+          height: "75vh",
           padding: 4,
-          height: "70vh",
         }}
       >
         <Typography variant="h1" color="error" fontWeight="bold">
