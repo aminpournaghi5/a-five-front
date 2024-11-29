@@ -16,6 +16,7 @@ import {
   Select,
   MenuItem,
   Divider,
+  Menu,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
 import { Link } from "react-router-dom";
@@ -30,6 +31,7 @@ import {
   updateRange,
   updateReps,
   removeRow,
+  addSuperSet,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
 // import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
@@ -42,6 +44,37 @@ function Programing() {
   const dispatch = useDispatch();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const [firstExerciseId, setFirstExerciseId] = useState<number | null>(null);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  /// handle menu monvert
+  const handleClick = (
+    event: React.MouseEvent<HTMLElement>,
+    exerciseId: number
+  ) => {
+    setAnchorEl(event.currentTarget); // باز کردن منو
+    setFirstExerciseId(exerciseId); // ذخیره آیدی تمرین اول
+  };
+  const handleSelectSecondExercise = (secondExerciseId: number) => {
+    if (firstExerciseId !== null) {
+      dispatch(
+        addSuperSet({
+          firstExerciseId,
+          secondExerciseId,
+        })
+      );
+    }
+    handleClose(); // بستن منو
+  };
+  /// handle menu movert
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setFirstExerciseId(null);
+  };
 
   // Handle delete exercise
   const handleDeleteExercise = (index: number) => {
@@ -189,21 +222,32 @@ function Programing() {
                             }}
                           >
                             {exercise.NameFarsi}
-                            {/* <br />
-                              <Typography
-                                sx={{
-                                  fontFamily: fontFamilies.light,
-                                  fontSize: { xs: "8px", md: "16px" },
-                                  backgroundColor: theme.palette.secondary.main,
-                                  width: "fit-content",
-                                  padding: "4px",
-                                  borderRadius: "20px",
-                                  color: theme.palette.primary.contrastText,
-                                  marginTop: "5px",
-                                }}
-                              >
-                                سوپرست
-                              </Typography> */}
+                            <br />
+                            {/* Inline logic to check if the exercise is part of a superset */}
+                            {exercise.superSetId !== null &&
+                              exerciselist.some(
+                                (otherExercise, otherIndex) =>
+                                  otherIndex !== index &&
+                                  otherExercise.superSetId !== null &&
+                                  otherExercise.superSetId ===
+                                    exercise.superSetId
+                              ) && (
+                                <Typography
+                                  sx={{
+                                    fontFamily: fontFamilies.light,
+                                    fontSize: { xs: "8px", md: "16px" },
+                                    backgroundColor:
+                                      theme.palette.secondary.main,
+                                    width: "fit-content",
+                                    padding: "4px",
+                                    borderRadius: "20px",
+                                    color: theme.palette.primary.contrastText,
+                                    marginTop: "5px",
+                                  }}
+                                >
+                                  سوپرست
+                                </Typography>
+                              )}
                           </Typography>
                         </Card>
                       </Link>
@@ -234,9 +278,39 @@ function Programing() {
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
-                      <IconButton aria-label="more">
+                      <IconButton
+                        aria-label="more"
+                        onClick={(e) => handleClick(e, exercise.index)}
+                      >
                         <MoreVert fontSize="small" />
                       </IconButton>
+
+                      {/* منو */}
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "center",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "center",
+                        }}
+                      >
+                        {exerciselist
+                          .map((ex) => (
+                            <MenuItem
+                              key={ex.index}
+                              onClick={() =>
+                                handleSelectSecondExercise(ex.index)
+                              }
+                            >
+                              {ex.NameFarsi}
+                            </MenuItem>
+                          ))}
+                      </Menu>
                     </Box>
                   </Box>
                   <Box
