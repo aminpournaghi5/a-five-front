@@ -130,7 +130,11 @@ const SignupAuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
           </Typography>
           <TextField
             variant="outlined"
-            {...register("email")}
+            {...register("email", {
+              onChange: (e) => {
+                e.target.value = e.target.value.toLowerCase();
+              },
+            })}
             error={!!errors.email}
             helperText={errors.email?.message}
             fullWidth

@@ -11,7 +11,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axiosInstance from "../../api/axiosInstance";
 import { forgotPasswordSchema } from "../../utilities/validation/validation";
 
-
 interface ForgotPasswordFormProps {
   onSubmit: (status: "success" | "error", message: string) => void;
 }
@@ -71,7 +70,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <TextField
         variant="outlined"
         fullWidth
-        {...register("email")}
+        {...register("email", {
+          onChange: (e) => {
+            e.target.value = e.target.value.toLowerCase();
+          },
+        })}
         error={!!errors.email}
         helperText={errors.email?.message}
         sx={{ mb: 2, direction: "ltr" }}

@@ -2,7 +2,8 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
 // ساخت نمونه axios
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "http://api.a-five.ir/", // آدرس پایه سرور
+  // baseURL: "https://api.a-five.ir/", // آدرس پایه سرور
+  baseURL: "http://localhost:8000/", // آدرس پایه سرور
 });
 
 // افزودن توکن به هدر درخواست‌ها
