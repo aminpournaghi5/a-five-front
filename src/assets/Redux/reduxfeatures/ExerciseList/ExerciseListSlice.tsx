@@ -5,7 +5,7 @@ import { IExercise } from "../../../../Type/Type"; // Importing IExercise interf
 interface ExerciseRow {
   index: number;
   set: number | string;
-  reps?: number;
+  reps?: number ;
   minReps?: number;
   maxReps?: number;
 }

@@ -299,17 +299,14 @@ function Programing() {
                           horizontal: "center",
                         }}
                       >
-                        {exerciselist
-                          .map((ex) => (
-                            <MenuItem
-                              key={ex.index}
-                              onClick={() =>
-                                handleSelectSecondExercise(ex.index)
-                              }
-                            >
-                              {ex.NameFarsi}
-                            </MenuItem>
-                          ))}
+                        {exerciselist.map((ex) => (
+                          <MenuItem
+                            key={ex.index}
+                            onClick={() => handleSelectSecondExercise(ex.index)}
+                          >
+                            {ex.NameFarsi}
+                          </MenuItem>
+                        ))}
                       </Menu>
                     </Box>
                   </Box>
@@ -477,7 +474,7 @@ function Programing() {
                                     size="small"
                                     variant="standard"
                                     type="number"
-                                    value={row.minReps || 0}
+                                    value={row.minReps === 0 ? "" : row.minReps}
                                     onChange={(e) =>
                                       handleRangeChange(
                                         exercise.index,
@@ -507,7 +504,7 @@ function Programing() {
                                     size="small"
                                     variant="standard"
                                     type="number"
-                                    value={row.maxReps || 0}
+                                    value={row.maxReps === 0 ? "" : row.maxReps}
                                     onChange={(e) =>
                                       handleRangeChange(
                                         exercise.index,
@@ -536,7 +533,7 @@ function Programing() {
                                   size="small"
                                   variant="standard"
                                   type="number"
-                                  value={row.reps || 0}
+                                  value={row.reps === 0 ? "" : row.reps}
                                   onChange={(e) =>
                                     handleRepsChange(
                                       exercise.index,
