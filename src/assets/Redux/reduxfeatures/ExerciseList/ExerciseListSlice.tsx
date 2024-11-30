@@ -1,11 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IExercise } from "../../../../Type/Type"; // Importing IExercise interface
+function getRandomHexColor() {
+  // تولید مقادیر تصادفی برای هر کانال رنگ که کمتر از 200 باشند
+  const r = Math.floor(Math.random() * 200)
+    .toString(16)
+    .padStart(2, "0"); // قرمز
+  const g = Math.floor(Math.random() * 200)
+    .toString(16)
+    .padStart(2, "0"); // سبز
+  const b = Math.floor(Math.random() * 200)
+    .toString(16)
+    .padStart(2, "0"); // آبی
+
+  // بازگرداندن رشته به فرمت هگزادسیمال
+  return `#${r}${g}${b}`;
+}
 
 // Define the structure of rows within exercises
 interface ExerciseRow {
   index: number;
   set: number | string;
-  reps?: number ;
+  reps?: number;
   minReps?: number;
   maxReps?: number;
 }
@@ -15,7 +30,7 @@ interface Exercise extends IExercise {
   index: number;
   rows: ExerciseRow[];
   repType: "single" | "range";
-  superSetId: number | null;
+  superSetId: string | null;
 }
 
 // State structure
@@ -198,8 +213,7 @@ export const exerciseListSlice = createSlice({
       }>
     ) => {
       const { firstExerciseId, secondExerciseId } = action.payload;
-      const superSetId =
-        Math.floor(Math.random() * 10000) + state.exerciselist.length;
+      const superSetId = getRandomHexColor();
 
       state.exerciselist = state.exerciselist.map((exercise) => {
         if (
@@ -211,7 +225,7 @@ export const exerciseListSlice = createSlice({
         return exercise;
       });
     },
-    removeSuperSet: (state, action: PayloadAction<number>) => {
+    removeSuperSet: (state, action: PayloadAction<string | null>) => {
       const superSetId = action.payload;
 
       state.exerciselist = state.exerciselist.map((exercise) => {

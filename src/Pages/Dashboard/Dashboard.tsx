@@ -2,23 +2,23 @@ import {
   Box,
   Typography,
   Button,
-  Grid,
+  // Grid,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+// import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useState } from "react";
 import { logoutUser } from "../../services/loginAuth";
 import { setLoggedIn } from "../../assets/Redux/reduxfeatures/ExerciseList/AuthSlice";
 import { useDispatch } from "react-redux";
 
-const NAVIGATION = [
-  { kind: "header", title: "آیتم‌های اصلی" },
-  { segment: "dashboard", title: "داشبورد", icon: <DashboardIcon /> },
-  { kind: "divider" },
-];
+// const NAVIGATION = [
+//   { kind: "header", title: "آیتم‌های اصلی" },
+//   { segment: "dashboard", title: "داشبورد", icon: <DashboardIcon /> },
+//   { kind: "divider" },
+// ];
 
 export default function Dashboard() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -52,18 +52,18 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: "flex", height: "70vh" }}>
       {/* Sidebar */}
       <Box
         sx={{
-          width: "250px",
-          padding: "20px",
-          height: "100vh",
+          width: "150px",
+          height: "100%",
           display: "flex",
           flexDirection: "column",
+          justifyContent:"flex-end",
         }}
       >
-        {NAVIGATION.map((item, index) => (
+        {/* {NAVIGATION.map((item, index) => (
           <Box key={index} sx={{ marginBottom: "10px" }}>
             {item.kind === "header" ? (
               <Typography
@@ -91,8 +91,8 @@ export default function Dashboard() {
               </Box>
             )}
           </Box>
-        ))}
-        <Box sx={{ marginTop: "auto", marginBottom: "20px" }}>
+        ))} */}
+        <Box>
           <Button
             variant="contained"
             color="secondary"
@@ -106,13 +106,13 @@ export default function Dashboard() {
 
       {/* Dashboard Content */}
       <Box sx={{ flexGrow: 1, padding: "20px" }}>
-        <Typography
+        {/* <Typography
           variant="h5"
           sx={{ textAlign: "right", marginBottom: "20px" }}
         >
           داشبورد
         </Typography>
-        <Grid container spacing={2}></Grid>
+        <Grid container spacing={2}></Grid> */}
       </Box>
 
       {/* Logout Confirmation Dialog */}

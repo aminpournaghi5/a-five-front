@@ -32,6 +32,7 @@ import {
   updateReps,
   removeRow,
   addSuperSet,
+  removeSuperSet,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
 // import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
@@ -49,6 +50,8 @@ function Programing() {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  // لیستی از رنگ‌ها که می‌خواهید به طور تصادفی انتخاب شوند
 
   /// handle menu monvert
   const handleClick = (
@@ -210,7 +213,8 @@ function Programing() {
                               e: React.SyntheticEvent<HTMLImageElement>
                             ) => {
                               e.currentTarget.onerror = null;
-                              e.currentTarget.src = "/utilImage/noImage.png";
+                              e.currentTarget.src =
+                                "../../../utilImage/noimage.jpg";
                             }}
                           />
                           <Typography
@@ -223,31 +227,21 @@ function Programing() {
                           >
                             {exercise.NameFarsi}
                             <br />
-                            {/* Inline logic to check if the exercise is part of a superset */}
-                            {exercise.superSetId !== null &&
-                              exerciselist.some(
-                                (otherExercise, otherIndex) =>
-                                  otherIndex !== index &&
-                                  otherExercise.superSetId !== null &&
-                                  otherExercise.superSetId ===
-                                    exercise.superSetId
-                              ) && (
-                                <Typography
-                                  sx={{
-                                    fontFamily: fontFamilies.light,
-                                    fontSize: { xs: "8px", md: "16px" },
-                                    backgroundColor:
-                                      theme.palette.secondary.main,
-                                    width: "fit-content",
-                                    padding: "4px",
-                                    borderRadius: "20px",
-                                    color: theme.palette.primary.contrastText,
-                                    marginTop: "5px",
-                                  }}
-                                >
-                                  سوپرست
-                                </Typography>
-                              )}
+
+                            <Typography
+                              sx={{
+                                fontFamily: fontFamilies.light,
+                                fontSize: { xs: "7px", md: "16px" },
+                                backgroundColor: exercise.superSetId,
+                                width: "fit-content",
+                                padding: "4px",
+                                borderRadius: "20px",
+                                color: theme.palette.primary.contrastText,
+                                marginTop: "5px",
+                              }}
+                            >
+                              سوپرست
+                            </Typography>
                           </Typography>
                         </Card>
                       </Link>
@@ -268,6 +262,7 @@ function Programing() {
                         onDrop={(e) => handleDrop(e, index)}
                         onDragEnter={() => setHoveredIndex(index)}
                         onDragLeave={() => setHoveredIndex(null)}
+                        sx={{ display: { xs: "none", md: "inline" } }}
                       >
                         <ReorderIcon fontSize="small" />
                       </IconButton>
@@ -278,14 +273,32 @@ function Programing() {
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
-                      <IconButton
-                        aria-label="more"
-                        onClick={(e) => handleClick(e, exercise.index)}
-                      >
-                        <MoreVert fontSize="small" />
-                      </IconButton>
-
-                      {/* منو */}
+                      {exercise.superSetId === null ? (
+                        <IconButton
+                          aria-label="more"
+                          onClick={(e) => handleClick(e, exercise.index)} // باز کردن منو یا اجرای رویداد مربوطه
+                        >
+                          <MoreVert fontSize="small" />
+                        </IconButton>
+                      ) : (
+                        <Button
+                          variant="text"
+                          onClick={() =>
+                            dispatch(removeSuperSet(exercise.superSetId))
+                          } // حذف سوپرست
+                          sx={{
+                            fontSize: {
+                              xs: "10px",
+                              md: "16px",
+                              fontFamily: fontFamilies.bold,
+                              backgroundColor: exercise.superSetId,
+                              color: theme.palette.primary.contrastText,
+                            },
+                          }}
+                        >
+                          حذف سوپرست
+                        </Button>
+                      )}
                       <Menu
                         anchorEl={anchorEl}
                         open={open}
@@ -303,6 +316,20 @@ function Programing() {
                           <MenuItem
                             key={ex.index}
                             onClick={() => handleSelectSecondExercise(ex.index)}
+                            disabled={
+                              ex.index === firstExerciseId ||
+                              ex.superSetId !== null
+                            }
+                            sx={{
+                              py: 0,
+                              fontFamily: fontFamilies.bold,
+                              fontSize: { xs: "10px", md: "16px" },
+                              color:
+                                ex.index === firstExerciseId ||
+                                ex.superSetId !== null
+                                  ? "gray"
+                                  : "inherit", // تغییر رنگ برای حالت غیرفعال
+                            }}
                           >
                             {ex.NameFarsi}
                           </MenuItem>
@@ -330,7 +357,7 @@ function Programing() {
                             sx={{
                               fontFamily: fontFamilies.bold,
                               textAlign: "right",
-                              fontSize: { xs: "12px", md: "16px" },
+                              fontSize: { xs: "10px", md: "16px" },
                               py: "2px",
                               border: "none",
                               width: "50%",
@@ -347,7 +374,7 @@ function Programing() {
                                 exercise.repType === "range"
                                   ? "center"
                                   : "right",
-                              fontSize: { xs: "12px", md: "16px" },
+                              fontSize: { xs: "10px", md: "16px" },
                               py: "2px",
                               border: "none",
                               width: "100%",
@@ -365,7 +392,7 @@ function Programing() {
                                   fontFamily: fontFamilies.bold,
                                   padding: "0 !important",
                                   margin: 0,
-                                  fontSize: { xs: "12px", md: "16px" },
+                                  fontSize: { xs: "10px", md: "16px" },
                                 },
                                 "& .MuiSelect-selectMenu": {
                                   fontFamily: fontFamilies.bold,
@@ -383,8 +410,26 @@ function Programing() {
                                 )
                               }
                             >
-                              <MenuItem value="single">تکرار</MenuItem>
-                              <MenuItem value="range">محدوده</MenuItem>
+                              <MenuItem
+                                sx={{
+                                  py: 0,
+                                  fontFamily: fontFamilies.bold,
+                                  fontSize: { xs: "10px", md: "16px" },
+                                }}
+                                value="single"
+                              >
+                                تکرار
+                              </MenuItem>
+                              <MenuItem
+                                sx={{
+                                  py: 0,
+                                  fontFamily: fontFamilies.bold,
+                                  fontSize: { xs: "10px", md: "16px" },
+                                }}
+                                value="range"
+                              >
+                                محدوده
+                              </MenuItem>
                             </Select>
                           </TableCell>
                         </TableRow>
@@ -395,7 +440,7 @@ function Programing() {
                             <TableCell
                               sx={{
                                 textAlign: "right",
-                                fontSize: { xs: "9px", md: "16px" },
+                                fontSize: { xs: "10px", md: "16px" },
                                 py: "4px",
                                 border: "none",
                               }}
@@ -411,7 +456,7 @@ function Programing() {
                                     fontFamily: fontFamilies.bold,
                                     padding: "0 !important",
                                     margin: 0,
-                                    fontSize: { xs: "12px", md: "16px" },
+                                    fontSize: { xs: "10px", md: "16px" },
 
                                     color: (theme) =>
                                       // رنگ فونت بر اساس مقدار انتخابی
@@ -425,7 +470,7 @@ function Programing() {
                                   },
                                   "& .MuiSelect-selectMenu": {
                                     fontFamily: fontFamilies.bold,
-                                    fontSize: { xs: "12px", md: "16px" },
+                                    fontSize: { xs: "10px", md: "16px" },
                                   },
                                   "& .Muiselectinpur": {
                                     padding: 0,
@@ -448,12 +493,44 @@ function Programing() {
                                   )
                                 }
                               >
-                                <MenuItem value="number">
+                                <MenuItem
+                                  sx={{
+                                    py: 0,
+                                    fontFamily: fontFamilies.bold,
+                                    fontSize: { xs: "10px", md: "16px" },
+                                  }}
+                                  value="number"
+                                >
                                   {toPersianDigits(index + 1)}
                                 </MenuItem>
-                                <MenuItem value="گرم کردن">گرم کردن</MenuItem>
-                                <MenuItem value="دراپ ست">دراپ ست</MenuItem>
-                                <MenuItem value="تا واماندگی">
+                                <MenuItem
+                                  sx={{
+                                    py: 0,
+                                    fontFamily: fontFamilies.bold,
+                                    fontSize: { xs: "10px", md: "16px" },
+                                  }}
+                                  value="گرم کردن"
+                                >
+                                  گرم کردن
+                                </MenuItem>
+                                <MenuItem
+                                  sx={{
+                                    py: 0,
+                                    fontFamily: fontFamilies.bold,
+                                    fontSize: { xs: "10px", md: "16px" },
+                                  }}
+                                  value="دراپ ست"
+                                >
+                                  دراپ ست
+                                </MenuItem>
+                                <MenuItem
+                                  sx={{
+                                    py: 0,
+                                    fontFamily: fontFamilies.bold,
+                                    fontSize: { xs: "10px", md: "16px" },
+                                  }}
+                                  value="تا واماندگی"
+                                >
                                   تا واماندگی
                                 </MenuItem>
                               </Select>
@@ -494,10 +571,15 @@ function Programing() {
                                       "& input": {
                                         padding: "4px",
                                         textAlign: "center",
+                                        fontSize: { xs: "10px", md: "16px" },
                                       },
                                     }}
                                   />
-                                  <Typography display="inline" mx="5px">
+                                  <Typography
+                                    display="inline"
+                                    mx="5px"
+                                    fontSize={{ xs: "10px", md: "16px" }}
+                                  >
                                     تا
                                   </Typography>
                                   <TextField
@@ -524,6 +606,7 @@ function Programing() {
                                       "& input": {
                                         padding: "4px",
                                         textAlign: "center",
+                                        fontSize: { xs: "10px", md: "16px" },
                                       },
                                     }}
                                   />
@@ -552,6 +635,7 @@ function Programing() {
                                     "& input": {
                                       padding: "4px",
                                       textAlign: "center",
+                                      fontSize: { xs: "10px", md: "16px" },
                                     },
                                   }}
                                 />
