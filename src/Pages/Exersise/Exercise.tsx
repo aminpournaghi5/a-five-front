@@ -133,7 +133,6 @@ function Exercise() {
           component={Paper}
           sx={{
             borderRadius: "20px",
-
             width: "100%",
             direction: isEnglish ? "ltr" : "rtl",
             overflow: "hidden",

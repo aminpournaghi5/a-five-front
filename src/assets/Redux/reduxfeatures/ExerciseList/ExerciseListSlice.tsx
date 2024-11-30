@@ -15,6 +15,7 @@ interface Exercise extends IExercise {
   index: number;
   rows: ExerciseRow[];
   repType: "single" | "range";
+  superSetId: number | null;
 }
 
 // State structure
@@ -38,6 +39,7 @@ export const exerciseListSlice = createSlice({
         ...action.payload,
         index: state.exerciselist.length + 1,
         repType: "single",
+        superSetId: null,
         rows: [
           {
             index: 1,
@@ -188,6 +190,37 @@ export const exerciseListSlice = createSlice({
         exercise.rows[rowIndex].maxReps = maxReps;
       }
     },
+    addSuperSet: (
+      state,
+      action: PayloadAction<{
+        firstExerciseId: number;
+        secondExerciseId: number;
+      }>
+    ) => {
+      const { firstExerciseId, secondExerciseId } = action.payload;
+      const superSetId =
+        Math.floor(Math.random() * 10000) + state.exerciselist.length;
+
+      state.exerciselist = state.exerciselist.map((exercise) => {
+        if (
+          exercise.index === firstExerciseId ||
+          exercise.index === secondExerciseId
+        ) {
+          return { ...exercise, superSetId }; // اختصاص سوپرست به تمرین‌ها
+        }
+        return exercise;
+      });
+    },
+    removeSuperSet: (state, action: PayloadAction<number>) => {
+      const superSetId = action.payload;
+
+      state.exerciselist = state.exerciselist.map((exercise) => {
+        if (exercise.superSetId === superSetId) {
+          return { ...exercise, superSetId: null }; // حذف ارتباط سوپرست
+        }
+        return exercise;
+      });
+    },
   },
 });
 
@@ -201,6 +234,8 @@ export const {
   setRepType,
   updateReps,
   updateRange,
+  addSuperSet,
+  removeSuperSet,
 } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

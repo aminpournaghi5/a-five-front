@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ForgotPasswordForm from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
+import NotFound from "./Pages/NotFound/NotFound";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -96,7 +97,7 @@ const App: React.FC = () => {
           path="/exercise/:id"
           element={
             <>
-            <Navbar />
+              <Navbar />
               <PageContainer>
                 <Exercise />
               </PageContainer>
@@ -155,6 +156,18 @@ const App: React.FC = () => {
               <Navbar />
               <PageContainer>
                 <Dashboard />
+              </PageContainer>
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <>
+              <Navbar />
+              <PageContainer>
+                <NotFound />
               </PageContainer>
               <Footer />
             </>
