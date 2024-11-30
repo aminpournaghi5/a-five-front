@@ -203,7 +203,7 @@ export const exerciseListSlice = createSlice({
       if (exercise && exercise.repType === "range" && exercise.rows[rowIndex]) {
         exercise.rows[rowIndex].minReps = minReps;
         exercise.rows[rowIndex].maxReps = maxReps;
-      }
+      }``
     },
     addSuperSet: (
       state,

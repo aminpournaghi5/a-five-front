@@ -250,7 +250,8 @@ function Programing() {
                     <Box
                       sx={{
                         marginRight: "auto",
-                        flexDirection: { xs: "column", sm: "row" },
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
                       <IconButton
@@ -276,6 +277,8 @@ function Programing() {
                       {exercise.superSetId === null ? (
                         <IconButton
                           aria-label="more"
+                          size="small"
+                          color="inherit"
                           onClick={(e) => handleClick(e, exercise.index)} // باز کردن منو یا اجرای رویداد مربوطه
                         >
                           <MoreVert fontSize="small" />
@@ -287,13 +290,14 @@ function Programing() {
                             dispatch(removeSuperSet(exercise.superSetId))
                           } // حذف سوپرست
                           sx={{
-                            fontSize: {
-                              xs: "10px",
-                              md: "16px",
-                              fontFamily: fontFamilies.bold,
-                              backgroundColor: exercise.superSetId,
-                              color: theme.palette.primary.contrastText,
-                            },
+                            fontFamily: fontFamilies.bold,
+                            fontSize: { xs: "6px", md: "10px" },
+                            backgroundColor: exercise.superSetId,
+                            color: theme.palette.primary.contrastText,
+                            padding: "4px",
+                            width: "fit-content",
+                            borderRadius: "15px",
+                            mx: 2,
                           }}
                         >
                           حذف سوپرست
