@@ -20,7 +20,7 @@ function Landing() {
           alignItems: "center",
           backgroundColor: theme.palette.primary.main,
           width: "100%",
-          height: "95vh",
+          height: "93vh",
         }}
       >
         <Container>

@@ -42,6 +42,7 @@ function Programing() {
   const exerciselist = useSelector(
     (state: RootState) => state.exerciseList.exerciselist
   );
+
   const dispatch = useDispatch();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -226,9 +227,9 @@ function Programing() {
                             }}
                           >
                             {exercise.NameFarsi}
-                            <br />
-
-                            <Typography
+                          </Typography>
+                          {exercise.superSetId && (
+                            <Box
                               sx={{
                                 fontFamily: fontFamilies.light,
                                 fontSize: { xs: "7px", md: "16px" },
@@ -238,11 +239,13 @@ function Programing() {
                                 borderRadius: "20px",
                                 color: theme.palette.primary.contrastText,
                                 marginTop: "5px",
+                                textAlign: "right", // برای راست‌چین شدن
+                                marginRight: "15px",
                               }}
                             >
                               سوپرست
-                            </Typography>
-                          </Typography>
+                            </Box>
+                          )}
                         </Card>
                       </Link>
                     </Box>
@@ -387,7 +390,7 @@ function Programing() {
                             <Select
                               size="small"
                               variant="standard"
-                              defaultValue={exercise.repType}
+                             value={exercise.repType}
                               sx={{
                                 "& .MuiSelect-icon": {
                                   display: "none",
@@ -480,7 +483,7 @@ function Programing() {
                                     padding: 0,
                                   },
                                 }}
-                                defaultValue={
+                                value={
                                   row.set === index + 1 ? "number" : row.set
                                 }
                                 onChange={(e) =>
