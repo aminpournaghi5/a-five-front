@@ -92,7 +92,7 @@ export default function Dashboard() {
             )}
           </Box>
         ))} */}
-        <Box>
+        <Box my={3}>
           <Button
             variant="contained"
             color="secondary"
