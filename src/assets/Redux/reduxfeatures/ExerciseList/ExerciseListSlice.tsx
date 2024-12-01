@@ -35,12 +35,16 @@ interface Exercise extends IExercise {
 
 // State structure
 interface ExerciseListState {
+  title: string;
+  date: string;
   exerciselist: Exercise[]; // Array of exercises with rows
 }
 
 // Initial state
 const initialState: ExerciseListState = {
   exerciselist: [],
+  title: "تمرین جدید",
+  date: new Date().toISOString(), // تبدیل تاریخ به رشته ISO
 };
 
 // Slice definition
@@ -203,7 +207,8 @@ export const exerciseListSlice = createSlice({
       if (exercise && exercise.repType === "range" && exercise.rows[rowIndex]) {
         exercise.rows[rowIndex].minReps = minReps;
         exercise.rows[rowIndex].maxReps = maxReps;
-      }``
+      }
+      ``;
     },
     addSuperSet: (
       state,
@@ -235,6 +240,10 @@ export const exerciseListSlice = createSlice({
         return exercise;
       });
     },
+    // Set the title of the exercise list
+    setTitle: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
+    },
   },
 });
 
@@ -250,6 +259,7 @@ export const {
   updateRange,
   addSuperSet,
   removeSuperSet,
+  setTitle,
 } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;
