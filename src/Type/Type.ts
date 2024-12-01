@@ -13,5 +13,4 @@ export interface IExercise {
   Abzar?: string;
   TypeFarsi?: string;
   Body?: string;
-  setsReps?: any;
 }
