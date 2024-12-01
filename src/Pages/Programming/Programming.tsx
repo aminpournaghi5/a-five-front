@@ -34,9 +34,8 @@ import {
   addSuperSet,
   removeSuperSet,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
-
-// import PersonInformationFeild from "../../components/PersonInformationFeild/PersonInformationFeild";
 import { Clear, MoreVert } from "@mui/icons-material";
+import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
 
 function Programing() {
   const exerciselist = useSelector(
@@ -149,10 +148,10 @@ function Programing() {
       <Box sx={{ width: "100%", maxWidth: 1200 }}>
         {exerciselist.length ? (
           <>
-            {/* <PersonInformationFeild /> */}
+            <ExerciseInformation />
             <Box
               sx={{
-                marginTop: "20px",
+                marginTop: "10px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -166,7 +165,6 @@ function Programing() {
                     flexDirection: "column",
                     width: "100%",
                     backgroundColor: hoveredIndex === index ? "gey" : "white",
-                    marginBottom: "10px",
                     borderRadius: "8px",
                     boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
                     margin: "5px",
@@ -390,7 +388,7 @@ function Programing() {
                             <Select
                               size="small"
                               variant="standard"
-                             value={exercise.repType}
+                              value={exercise.repType}
                               sx={{
                                 "& .MuiSelect-icon": {
                                   display: "none",
