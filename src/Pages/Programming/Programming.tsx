@@ -17,9 +17,10 @@ import {
   MenuItem,
   Divider,
   Menu,
+  Snackbar,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import {
@@ -36,6 +37,7 @@ import {
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
+import axiosInstance from "../../api/axiosInstance";
 
 function Programing() {
   const exerciselist = useSelector(
@@ -133,6 +135,34 @@ function Programing() {
     maxReps: number
   ) => {
     dispatch(updateRange({ exerciseId, rowIndex: index, minReps, maxReps }));
+  };
+
+  const title = useSelector((state: any) => state.exerciseList.title);
+  const date = useSelector((state: any) => state.exerciseList.date);
+  const exerciseList = useSelector(
+    (state: any) => state.exerciseList.exerciselist
+  );
+  const addExerciseList = async () => {
+    try {
+      const payload = {
+        title: title,
+        date: date,
+        exerciselist: exerciseList,
+      };
+
+      const response = await axiosInstance.post(
+        "/api/exerciselist/add",
+        payload
+      );
+      if (response.status === 201) {
+        window.location.href = "/dashboard";
+      }
+    } catch (error: any) {
+      console.error(
+        "Error occurred:",
+        error.response?.data?.message || error.message
+      );
+    }
   };
 
   return (
@@ -702,18 +732,21 @@ function Programing() {
                   fontFamily: fontFamilies.bold,
                   mx: "5px",
                   fontSize: { xs: "10px", md: "16px" },
-                  width: "100%",
+                  width: "50%",
                 }}
               >
                 اضافه کردن تمرین جدید
               </Button>
-
-              {/* <Button
+              <Button
+                onClick={addExerciseList}
                 variant="outlined"
-                sx={{ mx: "5px", fontSize: { xs: "10px", md: "16px" } }}
+                sx={{
+                  mx: "5px",
+                  fontSize: { xs: "10px", md: "16px", width: "50%" },
+                }}
               >
-                چاپ
-              </Button> */}
+                ذخیره
+              </Button>
             </Box>
           </>
         ) : (
@@ -733,20 +766,20 @@ function Programing() {
             <Typography sx={{ fontSize: { xs: "12px", md: "16px" } }}>
               در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
             </Typography>
-            <Link to={"/exercises"}>
-              <Button
-                sx={{
-                  width: "250px",
-                  backgroundColor: theme.palette.secondary.main,
-                  color: "white",
-                  fontFamily: fontFamilies.bold,
-                  my: "10px",
-                  fontSize: { xs: "10px", md: "16px" },
-                }}
-              >
-                اضافه کردن تمرین جدید
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              to={"/exercises"}
+              sx={{
+                width: "250px",
+                backgroundColor: theme.palette.secondary.main,
+                color: "white",
+                fontFamily: fontFamilies.bold,
+                my: "10px",
+                fontSize: { xs: "10px", md: "16px" },
+              }}
+            >
+              اضافه کردن تمرین جدید
+            </Button>
           </Box>
         )}
       </Box>
