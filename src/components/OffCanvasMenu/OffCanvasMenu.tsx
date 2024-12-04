@@ -15,7 +15,11 @@ interface OffCanvasMenuProps {
   setSelectedFilter: (filter: string) => void; // تابعی برای به روزرسانی فیلتر انتخاب شده
 }
 
-function OffCanvasMenu({ Options, ButtonText, setSelectedFilter }: OffCanvasMenuProps) {
+function OffCanvasMenu({
+  Options,
+  ButtonText,
+  setSelectedFilter,
+}: OffCanvasMenuProps) {
   const [open, setOpen] = useState(false);
   const [buttonText, setButtonText] = useState(ButtonText);
 
@@ -38,7 +42,18 @@ function OffCanvasMenu({ Options, ButtonText, setSelectedFilter }: OffCanvasMenu
   return (
     <>
       <Button
-        sx={{ width: "40%", borderRadius: "20px" }}
+        sx={{
+          width: "32%",
+          borderRadius: "20px",
+          marginX: "1.5px",
+          textAlign: "center",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "inline-block",
+          maxWidth: "100%",
+          padding: "10px",
+        }}
         variant="contained"
         onClick={toggleDrawer(true)}
       >
@@ -55,7 +70,7 @@ function OffCanvasMenu({ Options, ButtonText, setSelectedFilter }: OffCanvasMenu
             borderRadius: "60px 60px 0px 0px",
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
-            overflow:"scroll",
+            overflow: "scroll",
           },
         }}
       >
@@ -79,8 +94,10 @@ function OffCanvasMenu({ Options, ButtonText, setSelectedFilter }: OffCanvasMenu
           >
             <ListItemText primary={ButtonText} />
           </ListItem>
-          <Divider sx={{ backgroundColor: "white", width: "90%", mx: "auto" }} /> {/* جداکننده */}
-
+          <Divider
+            sx={{ backgroundColor: "white", width: "90%", mx: "auto" }}
+          />{" "}
+          {/* جداکننده */}
           {Options.map((item, index) => (
             <React.Fragment key={index}>
               <ListItem

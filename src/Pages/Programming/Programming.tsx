@@ -245,34 +245,37 @@ function Programing() {
                                 "../../../utilImage/noimage.jpg";
                             }}
                           />
-                          <Typography
-                            sx={{
-                              fontFamily: fontFamilies.bold,
-                              fontSize: { xs: "10px", md: "18px" },
-                              textAlign: "right",
-                              marginRight: "15px",
-                            }}
-                          >
-                            {exercise.NameFarsi}
-                          </Typography>
-                          {exercise.superSetId && (
-                            <Box
+                          <Box>
+                            <Typography
                               sx={{
-                                fontFamily: fontFamilies.light,
-                                fontSize: { xs: "7px", md: "16px" },
-                                backgroundColor: exercise.superSetId,
-                                width: "fit-content",
-                                padding: "4px",
-                                borderRadius: "20px",
-                                color: theme.palette.primary.contrastText,
-                                marginTop: "5px",
-                                textAlign: "right", // برای راست‌چین شدن
+                                fontFamily: fontFamilies.bold,
+                                fontSize: { xs: "10px", md: "18px" },
+                                textAlign: "right",
                                 marginRight: "15px",
                               }}
                             >
-                              سوپرست
-                            </Box>
-                          )}
+                              {exercise.NameFarsi}
+                            </Typography>
+
+                            {exercise.superSetId && (
+                              <Box
+                                sx={{
+                                  fontFamily: fontFamilies.light,
+                                  fontSize: { xs: "7px", md: "16px" },
+                                  backgroundColor: exercise.superSetId,
+                                  width: "fit-content",
+                                  padding: "4px",
+                                  borderRadius: "20px",
+                                  color: theme.palette.primary.contrastText,
+                                  marginTop: "5px",
+                                  textAlign: "right", // برای راست‌چین شدن
+                                  marginRight: "15px",
+                                }}
+                              >
+                                سوپرست
+                              </Box>
+                            )}
+                          </Box>
                         </Card>
                       </Link>
                     </Box>
@@ -327,7 +330,7 @@ function Programing() {
                             padding: "4px",
                             width: "fit-content",
                             borderRadius: "15px",
-                            mx: 2,
+                            mx: 1,
                           }}
                         >
                           حذف سوپرست
