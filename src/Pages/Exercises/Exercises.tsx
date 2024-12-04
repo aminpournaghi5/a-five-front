@@ -15,6 +15,7 @@ import {
   Card,
   TextField,
   Button,
+  Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
@@ -37,14 +38,16 @@ import axiosInstance from "../../api/axiosInstance";
 function Exercises() {
   const [exercises, setExercises] = useState<IExercise[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(9);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(18);
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [bodyFilter, setBodyFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
+  const [musclesFilter, setMusclesFilter] = useState<string>("");
   const [expandedPanels, setExpandedPanels] = useState({
     equipment: false,
     body: false,
     type: false,
+    muscles: false,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -77,7 +80,7 @@ function Exercises() {
   }, []);
   useEffect(() => {
     const updateItemsPerPage = () => {
-      setItemsPerPage(window.innerWidth >= 1200 ? 9 : 6); // Adjust for screen size
+      setItemsPerPage(window.innerWidth >= 1200 ? 18 : 12); // Adjust for screen size
     };
 
     window.addEventListener("resize", updateItemsPerPage);
@@ -125,12 +128,21 @@ function Exercises() {
       : true;
     const matchesBody = bodyFilter ? exercise.Body === bodyFilter : true;
     const matchesType = typeFilter ? exercise.TypeFarsi === typeFilter : true;
+    const matchesMuscles = musclesFilter
+      ? exercise.TargetFarsi?.includes(musclesFilter)
+      : true;
     const matchesSearchTerm = searchTerm
       ? exercise.NameFarsi.includes(searchTerm) ||
         exercise.Name?.toLocaleLowerCase().includes(searchTerm)
       : true;
 
-    return matchesEquipment && matchesBody && matchesType && matchesSearchTerm;
+    return (
+      matchesEquipment &&
+      matchesBody &&
+      matchesType &&
+      matchesSearchTerm &&
+      matchesMuscles
+    );
   });
   const totalPages = Math.ceil(filteredExercises.length / itemsPerPage);
   const currentItems = filteredExercises.slice(
@@ -194,11 +206,13 @@ function Exercises() {
       setSelectedFilter("");
       setBodyFilter("");
       setTypeFilter("");
+      setMusclesFilter("");
 
       setExpandedPanels({
         equipment: false,
         body: false,
         type: false,
+        muscles: false,
       });
 
       setCurrentPage(1); // بازنشانی به صفحه اول هنگام پاک‌سازی فیلترها
@@ -241,6 +255,36 @@ function Exercises() {
     "گردن",
     "پلایومتریک",
     "وزنه برداری",
+  ];
+  const musclesOptions: string[] = [
+    "سینه ای بزرگ ناحیه متصل به جناغ",
+    "سینه ای بزرگ ناحیه متصل به ترقوه",
+    "دو سر بازویی",
+    "سه سر بازویی",
+    "بازویی قدامی",
+    "بازویی زند زبرینی",
+    "پشتی بزرگ",
+    "گرد بزرگ",
+    "گرد کوچک",
+    "تحت خاری",
+    "ذوزنقه فوقانی",
+    "ذوزنقه تحتانی",
+    "ذوزنقه میانی",
+    "چهار سر ران",
+    "همسترینگ",
+    "سرینی بزرگ",
+    "سرینی میانی",
+    "سرینی کوچک",
+    "دوقلو پا",
+    "نعلی",
+    "دلتوئید قدامی",
+    "دلتویید میانی",
+    "دلتوئید خلفی",
+    "راست شکمی",
+    "مورب شکمی",
+    "راست کننده ستون مهره ها",
+    "باز کننده های مچ دست",
+    "خم کننده های مچ دست",
   ];
 
   const typeOptions: string[] = ["قدرتی", "کششی", "هوازی"];
@@ -288,7 +332,7 @@ function Exercises() {
 
       <Grid container spacing={1} margin={1}>
         {/* Filters */}
-        <Grid item lg={2} sx={{ display: { xs: "none", lg: "block" } }}>
+        <Grid item lg={2.5} sx={{ display: { xs: "none", lg: "block" } }}>
           <Box
             sx={{
               display: "flex",
@@ -303,7 +347,9 @@ function Exercises() {
               onClick={clearFilters}
               style={{
                 display:
-                  selectedFilter || bodyFilter || typeFilter ? "block" : "none",
+                  selectedFilter || bodyFilter || typeFilter || musclesFilter
+                    ? "block"
+                    : "none",
               }}
             >
               پاک کردن فیلترها
@@ -323,35 +369,38 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {equipmentOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={selectedFilter === option}
-                        onChange={(e) =>
-                          handleCheckboxChange(e, setSelectedFilter)
-                        }
-                      />
-                    }
-                    label={
-                      <Typography
-                        sx={{
-                          fontSize: "15px",
-                          fontFamily: fontFamilies.medium,
-                        }}
-                      >
-                        {option}
-                      </Typography>
-                    }
-                  />
+                  <>
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={selectedFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setSelectedFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "15px",
+                            fontFamily: fontFamilies.medium,
+                          }}
+                        >
+                          {option}
+                        </Typography>
+                      }
+                    />
+                    <Divider />
+                  </>
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -370,32 +419,87 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {bodyOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={bodyFilter === option}
-                        onChange={(e) => handleCheckboxChange(e, setBodyFilter)}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: "15px" }}>
-                        {option}
-                      </Typography>
-                    }
-                  />
+                  <>
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={bodyFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setBodyFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography sx={{ fontSize: "15px" }}>
+                          {option}
+                        </Typography>
+                      }
+                    />
+                    <Divider />
+                  </>
                 ))}
               </AccordionDetails>
             </Accordion>
 
+            <Accordion
+              expanded={expandedPanels.muscles}
+              onChange={handleAccordionChange("muscles")}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
+                >
+                  عضلات
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {musclesOptions.map((option, index) => (
+                  <>
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={musclesFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setMusclesFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            textAlign: "right",
+                            fontSize: "15px",
+                            fontFamily: fontFamilies.medium,
+                          }}
+                        >
+                          {option}
+                        </Typography>
+                      }
+                    />
+                    <Divider />
+                  </>
+                ))}
+              </AccordionDetails>
+            </Accordion>
             <Accordion
               expanded={expandedPanels.type}
               onChange={handleAccordionChange("type")}
@@ -410,28 +514,33 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {typeOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={typeFilter === option}
-                        onChange={(e) => handleCheckboxChange(e, setTypeFilter)}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: "15px" }}>
-                        {option}
-                      </Typography>
-                    }
-                  />
+                  <>
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={typeFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setTypeFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography sx={{ fontSize: "15px" }}>
+                          {option}
+                        </Typography>
+                      }
+                    />
+                    <Divider />
+                  </>
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -439,7 +548,7 @@ function Exercises() {
         </Grid>
 
         {/* Exercise Cards */}
-        <Grid item xs={12} md={12} lg={10}>
+        <Grid item xs={12} md={12} lg={9.5}>
           <Grid container spacing={3}>
             {isLoading ? (
               Array.from({ length: itemsPerPage }).map((_, index) => (
