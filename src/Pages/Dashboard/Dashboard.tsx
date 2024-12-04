@@ -10,6 +10,7 @@ import {
   Divider,
   Grid,
   Card,
+  IconButton,
 } from "@mui/material";
 // import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ import "moment-jalaali"; // برای پشتیبانی از تاریخ شمسی
 import "moment-timezone"; // برای تنظیم ساعت منطقه زمانی
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { Delete } from "@mui/icons-material";
 
 const NAVIGATION = [
   { kind: "header", title: "آیتم‌های اصلی" },
@@ -92,14 +94,31 @@ export default function Dashboard() {
     fetchExerciseLists();
   }, []); // وابسته به هیچ پارامتر دیگری نیست
 
-  const convertToShamsi = (dateString: string) => {
-    // تبدیل تاریخ میلادی به تاریخ شمسی
-    const dateInShamsi = moment(dateString).format("YYYY/MM/DD");
-    return toPersianDigits(dateInShamsi); // تبدیل اعداد به فارسی
-  };
   const convertToIranTime = (dateString: string) => {
-    const timeInIran = moment(dateString).tz("Asia/Tehran").format("HH:mm"); // زمان در ساعت ایران
+    const timeInIran = moment(dateString).format("HH:mm"); // زمان در ساعت ایران
     return toPersianDigits(timeInIran); // تبدیل اعداد به فارسی
+  };
+
+  const handleDelete = async (exerciseId: string): Promise<void> => {
+    try {
+      // ارسال درخواست DELETE به سرور
+      const response = await axiosInstance.delete(
+        `/api/exerciselist/delete/${exerciseId}`
+      );
+
+      // بررسی پاسخ سرور برای اطمینان از موفقیت‌آمیز بودن عملیات
+      if (response.status === 200) {
+        setExerciselists(
+          exerciselists.filter((session: any) => session._id !== exerciseId)
+        );
+        console.log("تمرین با موفقیت حذف شد.");
+      } else {
+        console.error("خطا: سرور پاسخ موفقیت‌آمیزی ارسال نکرد.");
+      }
+    } catch (error: any) {
+      // مدیریت خطا در صورت بروز مشکل
+      console.error("خطا در حذف تمرین:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -176,19 +195,22 @@ export default function Dashboard() {
 
       <Box sx={{ width: "75%", padding: "20px" }}>
         <Grid container spacing={2}>
-          {exerciselists.reverse().map((exercise: any) => {
-            const shamsiDate = convertToShamsi(exercise.date);
-
+          {exerciselists.map((exercise: any, index: number) => {
             const iranTime = convertToIranTime(exercise.date);
 
             return (
-              <Grid item xs={12} key={exercise._id}>
+              <Grid item xs={12} key={index}>
                 <Card
                   sx={{
                     padding: "20px",
                     borderRadius: "20px",
                     margin: "10px",
                     height: "150px",
+                    boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
+                    ":hover": {
+                      backgroundColor: "#e0e0e0",
+                      cursor: "pointer",
+                    },
                   }}
                 >
                   <Box
@@ -201,9 +223,14 @@ export default function Dashboard() {
                     </Typography>
                     <Box display={"flex"} gap={4}>
                       <Typography variant="body1">{iranTime}</Typography>
-                      <Typography variant="body1">{shamsiDate}</Typography>
                     </Box>
                   </Box>
+                  <IconButton
+                    sx={{ float: "left" }}
+                    onClick={() => handleDelete(exercise._id)}
+                  >
+                    <Delete color="error" />
+                  </IconButton>
                 </Card>
               </Grid>
             );
