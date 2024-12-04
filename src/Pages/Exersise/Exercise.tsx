@@ -153,6 +153,7 @@ function Exercise() {
                 backgroundColor: theme.palette.primary.light,
               },
               fontSize: { xs: "10px", sm: "16px" },
+              direction:"rtl !important",
               textTransform: "none", // جلوگیری از تبدیل متن به حروف بزرگ
             }}
             onClick={() => navigate(-1)}

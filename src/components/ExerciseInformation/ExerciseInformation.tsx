@@ -41,9 +41,12 @@ const ExerciseHeader = () => {
           عنوان:
         </Typography>
         <TextField
+          placeholder="عنوان"
           variant="standard"
-          sx={{ fontSize: { xs: "10px", md: "16px" }, width: "320px", mx: 1 }}
-          size="small"
+          sx={{
+            fontSize: { xs: "10px", md: "16px" },
+            mx: 1.5,
+          }}
           value={title} // مقدار از Redux گرفته شده
           onChange={handleNameChange}
         />

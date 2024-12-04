@@ -15,7 +15,6 @@ import {
   Card,
   TextField,
   Button,
-  Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
@@ -318,12 +317,23 @@ function Exercises() {
           />
           <OffCanvasMenu
             Options={bodyOptions}
-            ButtonText={"تمام عضلات"}
+            ButtonText={"کل بدن"}
             setSelectedFilter={async (filter) => {
               setIsLoading(true); // فعال کردن حالت بارگذاری
               await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
               setCurrentPage(1);
               setBodyFilter(filter); // اعمال فیلتر
+              setIsLoading(false); // غیرفعال کردن حالت بارگذاری
+            }}
+          />
+          <OffCanvasMenu
+            Options={musclesOptions}
+            ButtonText={"تمام عضلات"}
+            setSelectedFilter={async (filter) => {
+              setIsLoading(true); // فعال کردن حالت بارگذاری
+              await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
+              setCurrentPage(1);
+              setMusclesFilter(filter); // اعمال فیلتر
               setIsLoading(false); // غیرفعال کردن حالت بارگذاری
             }}
           />
@@ -368,39 +378,36 @@ function Exercises() {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {equipmentOptions.map((option, index) => (
-                  <>
-                    <FormControlLabel
-                      sx={{
-                        margin: "0px",
-                        padding: "0px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        direction: "ltr",
-                      }}
-                      key={index}
-                      control={
-                        <Checkbox
-                          value={option}
-                          checked={selectedFilter === option}
-                          onChange={(e) =>
-                            handleCheckboxChange(e, setSelectedFilter)
-                          }
-                        />
-                      }
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "15px",
-                            fontFamily: fontFamilies.medium,
-                          }}
-                        >
-                          {option}
-                        </Typography>
-                      }
-                    />
-                    <Divider />
-                  </>
+                {equipmentOptions.map((option: any, index: number) => (
+                  <FormControlLabel
+                    sx={{
+                      margin: "0px",
+                      padding: "0px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      direction: "ltr",
+                    }}
+                    key={index}
+                    control={
+                      <Checkbox
+                        value={option}
+                        checked={selectedFilter === option}
+                        onChange={(e) =>
+                          handleCheckboxChange(e, setSelectedFilter)
+                        }
+                      />
+                    }
+                    label={
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          fontFamily: fontFamilies.medium,
+                        }}
+                      >
+                        {option}
+                      </Typography>
+                    }
+                  />
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -419,33 +426,28 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {bodyOptions.map((option, index) => (
-                  <>
-                    <FormControlLabel
-                      sx={{
-                        margin: "0px",
-                        padding: "0px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        direction: "ltr",
-                      }}
-                      key={index}
-                      control={
-                        <Checkbox
-                          value={option}
-                          checked={bodyFilter === option}
-                          onChange={(e) =>
-                            handleCheckboxChange(e, setBodyFilter)
-                          }
-                        />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: "15px" }}>
-                          {option}
-                        </Typography>
-                      }
-                    />
-                    <Divider />
-                  </>
+                  <FormControlLabel
+                    sx={{
+                      margin: "0px",
+                      padding: "0px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      direction: "ltr",
+                    }}
+                    key={index}
+                    control={
+                      <Checkbox
+                        value={option}
+                        checked={bodyFilter === option}
+                        onChange={(e) => handleCheckboxChange(e, setBodyFilter)}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: "15px" }}>
+                        {option}
+                      </Typography>
+                    }
+                  />
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -464,39 +466,36 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {musclesOptions.map((option, index) => (
-                  <>
-                    <FormControlLabel
-                      sx={{
-                        margin: "0px",
-                        padding: "0px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        direction: "ltr",
-                      }}
-                      key={index}
-                      control={
-                        <Checkbox
-                          value={option}
-                          checked={musclesFilter === option}
-                          onChange={(e) =>
-                            handleCheckboxChange(e, setMusclesFilter)
-                          }
-                        />
-                      }
-                      label={
-                        <Typography
-                          sx={{
-                            textAlign: "right",
-                            fontSize: "15px",
-                            fontFamily: fontFamilies.medium,
-                          }}
-                        >
-                          {option}
-                        </Typography>
-                      }
-                    />
-                    <Divider />
-                  </>
+                  <FormControlLabel
+                    sx={{
+                      margin: "0px",
+                      padding: "0px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      direction: "ltr",
+                    }}
+                    key={index}
+                    control={
+                      <Checkbox
+                        value={option}
+                        checked={musclesFilter === option}
+                        onChange={(e) =>
+                          handleCheckboxChange(e, setMusclesFilter)
+                        }
+                      />
+                    }
+                    label={
+                      <Typography
+                        sx={{
+                          textAlign: "right",
+                          fontSize: "15px",
+                          fontFamily: fontFamilies.medium,
+                        }}
+                      >
+                        {option}
+                      </Typography>
+                    }
+                  />
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -514,33 +513,28 @@ function Exercises() {
               </AccordionSummary>
               <AccordionDetails>
                 {typeOptions.map((option, index) => (
-                  <>
-                    <FormControlLabel
-                      sx={{
-                        margin: "0px",
-                        padding: "0px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        direction: "ltr",
-                      }}
-                      key={index}
-                      control={
-                        <Checkbox
-                          value={option}
-                          checked={typeFilter === option}
-                          onChange={(e) =>
-                            handleCheckboxChange(e, setTypeFilter)
-                          }
-                        />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: "15px" }}>
-                          {option}
-                        </Typography>
-                      }
-                    />
-                    <Divider />
-                  </>
+                  <FormControlLabel
+                    sx={{
+                      margin: "0px",
+                      padding: "0px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      direction: "ltr",
+                    }}
+                    key={index}
+                    control={
+                      <Checkbox
+                        value={option}
+                        checked={typeFilter === option}
+                        onChange={(e) => handleCheckboxChange(e, setTypeFilter)}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: "15px" }}>
+                        {option}
+                      </Typography>
+                    }
+                  />
                 ))}
               </AccordionDetails>
             </Accordion>
@@ -557,8 +551,8 @@ function Exercises() {
                 </Grid>
               ))
             ) : currentItems.length ? (
-              currentItems.map((exercise) => (
-                <Grid item xs={12} sm={6} md={4} lg={4} key={exercise._id}>
+              currentItems.map((exercise, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
                   <Card
                     sx={{
                       width: "auto",

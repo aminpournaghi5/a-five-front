@@ -28,7 +28,17 @@ import moment from "moment";
 import { Delete } from "@mui/icons-material";
 
 const NAVIGATION = [
-  { kind: "header", title: "آیتم‌های اصلی" },
+  {
+    kind: "header",
+    title: (
+      <>
+        کاربر گرامی
+        <br />
+        خوش آمدید
+      </>
+    ),
+    icon: "",
+  },
   { segment: "dashboard", title: "لیست تمرین های من", icon: "" },
   { kind: "divider" },
 ];
@@ -130,7 +140,7 @@ export default function Dashboard() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 1,
-          width: "25%",
+          width: "35%",
         }}
       >
         <Box
@@ -180,20 +190,21 @@ export default function Dashboard() {
               )}
             </Box>
           ))}
-        </Box>
-        <Box sx={{ display: "flex", padding: "20px" }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            fullWidth
-            onClick={handleDialogOpen}
-          >
-            خروج
-          </Button>
+          <Box sx={{ display: "flex", padding: "20px", width: "50%" }}>
+            <Button
+              sx={{ fontSize: { xs: "12px", sm: "16px" } }}
+              variant="contained"
+              color="secondary"
+              fullWidth
+              onClick={handleDialogOpen}
+            >
+              خروج
+            </Button>
+          </Box>
         </Box>
       </Box>
 
-      <Box sx={{ width: "75%", padding: "20px" }}>
+      <Box sx={{ width: "65%", padding: "20px" }}>
         <Grid container spacing={2}>
           {exerciselists.map((exercise: any, index: number) => {
             const iranTime = convertToIranTime(exercise.date);
@@ -218,7 +229,14 @@ export default function Dashboard() {
                     justifyContent={"space-between"}
                     gap={2}
                   >
-                    <Typography variant="h4" textAlign={"right"}>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontFamily: fontFamilies.bold,
+                        fontSize: { xs: "14px", md: "24px" },
+                      }}
+                      textAlign={"right"}
+                    >
                       {exercise.title}
                     </Typography>
                     <Box display={"flex"} gap={4}>
@@ -229,7 +247,7 @@ export default function Dashboard() {
                     sx={{ float: "left" }}
                     onClick={() => handleDelete(exercise._id)}
                   >
-                    <Delete color="error" />
+                    <Delete color="error" fontSize="small" />
                   </IconButton>
                 </Card>
               </Grid>
