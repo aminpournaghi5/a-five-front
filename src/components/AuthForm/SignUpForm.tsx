@@ -91,7 +91,7 @@ const SignupAuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
           textAlign="center"
           mb={2}
         >
-          لطفا ایمیل و رمز عبور خود را برای ثبت‌نام وارد کنید.
+          لطفا نام، ایمیل و رمز عبور خود را برای ثبت‌نام وارد کنید.
         </Typography>
 
         <Box
