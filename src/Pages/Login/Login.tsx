@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AuthForm from "../../components/AuthForm/LoginAuthForm";
 import { loginUser } from "../../services/loginAuth";
-import { Box, Modal, Typography, Button, Snackbar, Alert } from "@mui/material";
+import { Box, Modal, Typography, Button, Snackbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { setLoggedIn } from "../../assets/Redux/reduxfeatures/ExerciseList/AuthSlice";
 import { useDispatch } from "react-redux";
