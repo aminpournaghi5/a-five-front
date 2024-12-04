@@ -17,6 +17,9 @@ import {
   MenuItem,
   Divider,
   Menu,
+  CircularProgress,
+  Modal,
+  Tooltip,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
 import { Link } from "react-router-dom";
@@ -52,6 +55,13 @@ function Programing() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<"success" | "error" | "confirm">(
+    "error"
+  );
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => setModalOpen(false);
   // لیستی از رنگ‌ها که می‌خواهید به طور تصادفی انتخاب شوند
 
   /// handle menu monvert
@@ -142,6 +152,7 @@ function Programing() {
     (state: any) => state.exerciseList.exerciselist
   );
   const addExerciseList = async () => {
+    setIsLoading(true);
     try {
       const payload = {
         title: title,
@@ -157,10 +168,14 @@ function Programing() {
         window.location.href = "/dashboard";
       }
     } catch (error: any) {
-      console.error(
-        "Error occurred:",
-        error.response?.data?.message || error.message
+      setModalType("error");
+      setModalMessage(
+        error.response?.data?.message ||
+          "خطایی در ثبت برنامه تمرینی رخ داده است."
       );
+      setModalOpen(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -298,14 +313,18 @@ function Programing() {
                         onDragLeave={() => setHoveredIndex(null)}
                         sx={{ display: { xs: "none", md: "inline" } }}
                       >
-                        <ReorderIcon fontSize="small" />
+                        <Tooltip title={"جابه‌جایی تمرین در لیست"}>
+                          <ReorderIcon fontSize="small" />
+                        </Tooltip>
                       </IconButton>
                       <IconButton
                         aria-label="delete"
                         onClick={() => handleDeleteExercise(index)}
                         color="error"
                       >
-                        <DeleteIcon fontSize="small" />
+                        <Tooltip title={"حذف تمرین"}>
+                          <DeleteIcon fontSize="small" />
+                        </Tooltip>
                       </IconButton>
                       {exercise.superSetId === null ? (
                         <IconButton
@@ -314,7 +333,9 @@ function Programing() {
                           color="inherit"
                           onClick={(e) => handleClick(e, exercise.index)} // باز کردن منو یا اجرای رویداد مربوطه
                         >
-                          <MoreVert fontSize="small" />
+                          <Tooltip title={"افزودن سوپرست"}>
+                            <MoreVert fontSize="small" />
+                          </Tooltip>
                         </IconButton>
                       ) : (
                         <Button
@@ -681,23 +702,26 @@ function Programing() {
                             <TableCell
                               sx={{ border: "none", padding: 0, margin: 0 }}
                             >
-                              <Clear
-                                color="error"
-                                sx={{
-                                  display:
-                                    index === exercise.rows.length - 1
-                                      ? "block"
-                                      : "none",
-                                }}
-                                onClick={() =>
-                                  dispatch(
-                                    removeRow({
-                                      exerciseId: exercise.index,
-                                      rowIndex: index,
-                                    })
-                                  )
-                                }
-                              />
+                              <Tooltip title={"حذف ست"}>
+                                <Clear
+                                  color="error"
+                                  sx={{
+                                    display:
+                                      index === exercise.rows.length - 1
+                                        ? "block"
+                                        : "none",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() =>
+                                    dispatch(
+                                      removeRow({
+                                        exerciseId: exercise.index,
+                                        rowIndex: index,
+                                      })
+                                    )
+                                  }
+                                />
+                              </Tooltip>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -740,7 +764,10 @@ function Programing() {
                 اضافه کردن تمرین جدید
               </Button>
               <Button
-                onClick={addExerciseList}
+                onClick={() => {
+                  setModalType("confirm");
+                  setModalOpen(true);
+                }}
                 variant="outlined"
                 sx={{
                   mx: "5px",
@@ -785,6 +812,79 @@ function Programing() {
           </Box>
         )}
       </Box>
+      <Modal open={modalOpen} onClose={closeModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 300,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 2,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          {modalType === "confirm" ? (
+            <>
+              <Typography variant="h6" mb={2}>
+                آیا برای ذخیره برنامه تمرینی مطمئن هستید؟
+              </Typography>
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={addExerciseList}
+                  sx={{ width: "45%" }}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "بله"
+                  )}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={closeModal}
+                  sx={{ width: "45%" }}
+                >
+                  خیر
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography
+                variant="h6"
+                mb={2}
+                sx={{
+                  color: modalType === "success" ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                خطا
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                {modalMessage}
+              </Typography>
+              <Button
+                variant="contained"
+                color={"error"}
+                onClick={closeModal}
+                fullWidth
+              >
+                بستن
+              </Button>
+            </>
+          )}
+        </Box>
+      </Modal>
     </Box>
   );
 }

@@ -36,15 +36,13 @@ interface Exercise extends IExercise {
 // State structure
 interface ExerciseListState {
   title: string;
-  date: string;
   exerciselist: Exercise[]; // Array of exercises with rows
 }
 
 // Initial state
 const initialState: ExerciseListState = {
   exerciselist: [],
-  title: "تمرین جدید",
-  date: new Date().toISOString(), // تبدیل تاریخ به رشته ISO
+  title: "",
 };
 
 // Slice definition
@@ -72,9 +70,22 @@ export const exerciseListSlice = createSlice({
 
     // Remove an exercise by its index
     remove: (state, action: PayloadAction<number>) => {
+      const superSetId = state.exerciselist[action.payload]?.superSetId;
+
+      // حذف تمرین از لیست
       state.exerciselist = state.exerciselist.filter(
         (_exercise, index) => index !== action.payload
       );
+
+      // اگر تمرین حذف شده سوپرست داشت، ارتباط سوپرست را حذف کن
+      if (superSetId !== null) {
+        state.exerciselist = state.exerciselist.map((exercise) => {
+          if (exercise.superSetId === superSetId) {
+            return { ...exercise, superSetId: null }; // حذف ارتباط سوپرست
+          }
+          return exercise;
+        });
+      }
     },
 
     // Reorder exercises
