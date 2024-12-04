@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthForm from "../../components/AuthForm/LoginAuthForm";
 import { loginUser } from "../../services/loginAuth";
-import { Box, Modal, Typography, Button } from "@mui/material";
+import { Box, Modal, Typography, Button, Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { setLoggedIn } from "../../assets/Redux/reduxfeatures/ExerciseList/AuthSlice";
 import { useDispatch } from "react-redux";
+import axiosInstance from "../../api/axiosInstance";
 
 interface AuthData {
   email: string;
@@ -15,35 +16,41 @@ const Login: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>(""); // پیام خطا یا موفقیت
   const [modalType, setModalType] = useState<"success" | "error">("error"); // نوع پیام
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // وضعیت باز بودن اسنکبار
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogin = async (data: AuthData) => {
     try {
       await loginUser(data.email, data.password); // درخواست ورود
-      dispatch(setLoggedIn(true));
+      await dispatch(setLoggedIn(true));
 
-      // تغییر نوع پیام به موفقیت
-      setModalType("success");
-      setModalMessage("ورود با موفقیت انجام شد.");
+      // گرفتن اطلاعات کاربر
+      const info = await axiosInstance.get(`/api/profile/info`);
 
-      // نقل مکان به صفحه اصلی
+      // پس از دریافت اطلاعات کاربر، پیام موفقیت را تنظیم می‌کنیم
+      setSnackbarOpen(true);
+      setModalMessage(`${info.data.name} عزیز با موفقیت وارد شدید!`);
+
+      // نقل مکان به صفحه اصلی پس از ۱.۵ ثانیه
       setTimeout(() => {
         navigate("/exercises");
-      }, 1000);
+      }, 1250);
     } catch (error) {
       // تغییر نوع پیام به خطا
       setModalType("error");
-      if (error instanceof Error) {
-        setModalMessage(error.message); // پیام خطای سرور
-      } else {
-        setModalMessage("خطایی رخ داد. لطفاً دوباره تلاش کنید."); // پیام پیش‌فرض خطا
-      }
-      setModalOpen(true);
+      setModalMessage(
+        error instanceof Error
+          ? error.message
+          : "خطایی رخ داد. لطفاً دوباره تلاش کنید."
+      );
+      setModalOpen(true); // نمایش مودال خطا
     }
   };
 
   const closeModal = () => setModalOpen(false);
+  const closeSnackbar = () => setSnackbarOpen(false);
 
   return (
     <Box
@@ -59,6 +66,26 @@ const Login: React.FC = () => {
       <Box sx={{ width: "100%", maxWidth: 400, padding: 2 }}>
         <AuthForm onSubmit={handleLogin} />
 
+        {/* اسنکبار برای پیام موفقیت */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={closeSnackbar}
+        >
+          <Box
+            sx={{
+              bgcolor: "success.main", // رنگ پس‌زمینه موفقیت
+              color: "white", // رنگ متن سفید
+              padding: "8px 16px", // فاصله داخلی
+              borderRadius: "4px", // حاشیه گرد
+              textAlign: "center", // تنظیم متن در وسط
+            }}
+          >
+            {modalMessage}
+          </Box>
+        </Snackbar>
+
+        {/* مودال برای خطا */}
         <Modal open={modalOpen} onClose={closeModal}>
           <Box
             sx={{
@@ -74,12 +101,17 @@ const Login: React.FC = () => {
               textAlign: "center",
             }}
           >
-            <Typography variant="h6" mb={2} color={modalType === "error" ? "error" : "success"}>
+            <Typography
+              variant="h6"
+              mb={2}
+              color={modalType === "error" ? "error" : "success"}
+            >
               {modalType === "success" ? "موفقیت" : "خطا"}
             </Typography>
             <Typography variant="body1" mb={2}>
               {modalMessage}
             </Typography>
+
             <Button
               variant="contained"
               color={modalType === "success" ? "success" : "error"}

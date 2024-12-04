@@ -15,7 +15,8 @@ function FeatureHome() {
       >
         <Container>
           <Typography py={5} variant="h4" fontFamily={fontFamilies.bold}>
-          پلتفرم تخصصی طراحی برنامه‌های تمرینی اختصاصی توسط مربیان حرفه‌ای برای ورزشکاران
+            پلتفرم طراحی برنامه‌های تمرینی اختصاصی توسط مربیان حرفه‌ای برای
+            ورزشکاران
           </Typography>
 
           <Grid container spacing={2} justifyContent="center">

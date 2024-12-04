@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import ForgotPasswordForm from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
 import NotFound from "./Pages/NotFound/NotFound";
+import DashboardSkeleton from "./Pages/Dashboard/DashboardSkeleton";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -168,6 +169,18 @@ const App: React.FC = () => {
               <Navbar />
               <PageContainer>
                 <NotFound />
+              </PageContainer>
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/ddd"
+          element={
+            <>
+              <Navbar />
+              <PageContainer>
+                <DashboardSkeleton />
               </PageContainer>
               <Footer />
             </>
