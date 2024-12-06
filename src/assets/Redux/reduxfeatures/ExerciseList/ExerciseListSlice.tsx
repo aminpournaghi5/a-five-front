@@ -76,6 +76,10 @@ export const exerciseListSlice = createSlice({
       state.exerciselist = state.exerciselist.filter(
         (_exercise, index) => index !== action.payload
       );
+      state.exerciselist = state.exerciselist.map((exercise, index) => ({
+        ...exercise,
+        index: index + 1,
+      }));
 
       // اگر تمرین حذف شده سوپرست داشت، ارتباط سوپرست را حذف کن
       if (superSetId !== null) {
@@ -96,6 +100,10 @@ export const exerciseListSlice = createSlice({
       const { sourceIndex, destinationIndex } = action.payload;
       const [movedExercise] = state.exerciselist.splice(sourceIndex, 1);
       state.exerciselist.splice(destinationIndex, 0, movedExercise);
+      state.exerciselist = state.exerciselist.map((exercise, index) => ({
+        ...exercise,
+        index: index + 1,
+      }));
     },
     // Set the type of exercise (single or range)
     setRepType: (
