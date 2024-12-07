@@ -153,7 +153,7 @@ function Exercise() {
                 backgroundColor: theme.palette.primary.light,
               },
               fontSize: { xs: "10px", sm: "16px" },
-              direction:"rtl !important",
+              direction: "rtl !important",
               textTransform: "none", // جلوگیری از تبدیل متن به حروف بزرگ
             }}
             onClick={() => navigate(-1)}
@@ -266,24 +266,37 @@ function Exercise() {
             </TableBody>
           </Table>
         </TableContainer>
-
-        <Tooltip
-          title={isEnglish ? "Switch to Persian" : "Switch to English"}
-          placement="bottom"
+        <Box
+          sx={{
+            mt: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <Switch
-            sx={{ marginTop: "20px" }}
-            checked={isEnglish}
-            onChange={handleToggleLanguage}
-            color="primary"
-          />
-        </Tooltip>
-        <Typography
-          sx={{ fontSize: { sm: "20px", xs: "12px" } }}
-          variant="subtitle2"
-        >
-          تغییر زبان
-        </Typography>
+          <Typography
+            display={"inline-block"}
+            sx={{ fontSize: { md: "16px", xs: "12px" } }}
+          >
+            انگلیسی
+          </Typography>
+          <Tooltip
+            title={isEnglish ? "Switch to Persian" : "Switch to English"}
+            placement="bottom"
+          >
+            <Switch
+              checked={isEnglish}
+              onChange={handleToggleLanguage}
+              color="primary"
+            />
+          </Tooltip>
+          <Typography
+            display={"inline-block"}
+            sx={{ fontSize: { md: "16px", xs: "12px" } }}
+          >
+            فارسی
+          </Typography>
+        </Box>
 
         <Snackbar
           open={openSnackbar}

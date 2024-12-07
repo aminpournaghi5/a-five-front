@@ -1,5 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import notFoundImage from "/utilImage/404image.png";
+import { fontFamilies } from "../../../theme";
 function NotFound() {
   return (
     <>
@@ -15,13 +17,32 @@ function NotFound() {
           padding: 4,
         }}
       >
-        <Typography variant="h1" color="error" fontWeight="bold">
+        <Box
+          component="img"
+          src={notFoundImage}
+          sx={{ width: "180px", height: "auto" }}
+        />
+        <Typography variant="h1" color="error" fontWeight="bold" mt={2}>
           404
         </Typography>
-        <Typography variant="h5" mt={2}>
+
+        <Typography
+          variant="h5"
+
+          sx={{
+            fontFamily: fontFamilies.extraBold,
+            fontSize: { xs: "16px", sm: "20px" },
+          }}
+        >
           صفحه‌ای که به دنبال آن هستید پیدا نشد.
         </Typography>
-        <Typography mt={1}>
+        <Typography
+          mt={1}
+          sx={{
+            fontFamily: fontFamilies.bold,
+            fontSize: { xs: "12px", sm: "20px" },
+          }}
+        >
           ممکن است آدرس را اشتباه وارد کرده باشید یا این صفحه دیگر در دسترس
           نباشد.
         </Typography>
@@ -30,7 +51,7 @@ function NotFound() {
             display: "flex",
             justifyContent: "center",
             gap: 2,
-            marginTop: 5,
+            marginTop: 2,
           }}
         >
           <Button

@@ -24,6 +24,7 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Delete } from "@mui/icons-material";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
+import noExerciseList from "/utilImage/noexerciselist.gif";
 
 // const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
@@ -230,6 +231,16 @@ export default function Dashboard() {
               width={"100%"}
               my={"20px"}
             >
+              <Box
+                component="img"
+                src={noExerciseList}
+                sx={{
+                  width: "180px", // مقدار عددی برای px نیازی به علامت " نیست
+                  height: "auto",
+                  mb: 1, // از مقادیر عددی مقیاس Theme استفاده کنید
+                }}
+              />
+
               <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
                 هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
                 <br />
