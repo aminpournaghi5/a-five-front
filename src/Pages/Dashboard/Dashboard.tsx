@@ -301,7 +301,13 @@ export default function Dashboard() {
       {/* Logout Confirmation Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogContent>
-          <Typography variant="body1">
+          <Typography
+            variant="body1"
+            sx={{
+              fontFamily: fontFamilies.bold,
+              fontSize: { xs: "10px", md: "16px" },
+            }}
+          >
             آیا می‌خواهید از حساب خود خارج شوید؟
           </Typography>
           {logoutError && <Typography color="error">{logoutError}</Typography>}
@@ -310,7 +316,11 @@ export default function Dashboard() {
           <Button
             variant="contained"
             onClick={() => handleDialogClose(true)}
-            sx={{ mx: 2 }}
+            sx={{
+              mx: 2,
+              fontFamily: fontFamilies.bold,
+              fontSize: { xs: "10px", md: "16px" },
+            }}
           >
             بله
           </Button>
@@ -318,6 +328,11 @@ export default function Dashboard() {
             variant="contained"
             onClick={() => handleDialogClose(false)}
             color="secondary"
+            sx={{
+              mx: 2,
+              fontFamily: fontFamilies.bold,
+              fontSize: { xs: "10px", md: "16px" },
+            }}
           >
             خیر
           </Button>
@@ -338,7 +353,14 @@ export default function Dashboard() {
             textAlign: "center",
           }}
         >
-          <Typography variant="body1" mb={2}>
+          <Typography
+            variant="body1"
+            mb={2}
+            sx={{
+              fontFamily: fontFamilies.bold,
+              fontSize: { xs: "12px", md: "16px" },
+            }}
+          >
             آیا از حذف این برنامه تمرینی مطمئن هستید؟
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
@@ -351,7 +373,11 @@ export default function Dashboard() {
                 }
                 closeModal(); // بستن مودال پس از انجام عملیات
               }}
-              sx={{ width: "45%" }}
+              sx={{
+                width: "45%",
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "12px", md: "16px" },
+              }}
             >
               بله
             </Button>
@@ -359,7 +385,11 @@ export default function Dashboard() {
               variant="outlined"
               color="primary"
               onClick={closeModal}
-              sx={{ width: "45%" }}
+              sx={{
+                width: "45%",
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "12px", md: "16px" },
+              }}
             >
               خیر
             </Button>

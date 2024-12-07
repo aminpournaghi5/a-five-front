@@ -246,8 +246,8 @@ function Programing() {
                         >
                           <CardMedia
                             sx={{
-                              width: { xs: "60px", sm: "160px" },
-                              height: { xs: "60px", sm: "160px" },
+                              width: { xs: "80px", sm: "160px" },
+                              height: { xs: "80px", sm: "160px" },
                               objectFit: "contain",
                               borderRadius: "50%",
                               padding: "5px",
@@ -885,7 +885,14 @@ function Programing() {
         >
           {modalType === "confirm" ? (
             <>
-              <Typography variant="h6" mb={2}>
+              <Typography
+                variant="h6"
+                mb={2}
+                sx={{
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "12px", md: "16px" },
+                }}
+              >
                 آیا برای ذخیره برنامه تمرینی مطمئن هستید؟
               </Typography>
               <Box
@@ -895,7 +902,11 @@ function Programing() {
                   variant="contained"
                   color="primary"
                   onClick={addExerciseList}
-                  sx={{ width: "45%" }}
+                  sx={{
+                    width: "45%",
+                    fontFamily: fontFamilies.bold,
+                    fontSize: { xs: "12px", md: "16px" },
+                  }}
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -908,14 +919,17 @@ function Programing() {
                   variant="outlined"
                   color="primary"
                   onClick={closeModal}
-                  sx={{ width: "45%" }}
+                  sx={{
+                    width: "45%",
+                    fontFamily: fontFamilies.bold,
+                    fontSize: { xs: "12px", md: "16px" },
+                  }}
                 >
                   خیر
                 </Button>
               </Box>
             </>
-          ) 
-          : (
+          ) : (
             <>
               <Typography
                 variant="h6"
@@ -927,7 +941,14 @@ function Programing() {
               >
                 خطا
               </Typography>
-              <Typography variant="body1" mb={2}>
+              <Typography
+                variant="body1"
+                mb={2}
+                sx={{
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "12px", md: "16px" },
+                }}
+              >
                 {modalMessage}
               </Typography>
               <Button
@@ -935,6 +956,10 @@ function Programing() {
                 color={"error"}
                 onClick={closeModal}
                 fullWidth
+                sx={{
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "12px", md: "16px" },
+                }}
               >
                 بستن
               </Button>
