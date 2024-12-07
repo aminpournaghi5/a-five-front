@@ -1,6 +1,8 @@
 FROM repo.a-five.ir/node:18-alpine AS builder
 
-RUN apk add make g++ gcc git
+RUN apk update
+
+RUN apk add --no-cache make g++ gcc git
 
 RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
 
