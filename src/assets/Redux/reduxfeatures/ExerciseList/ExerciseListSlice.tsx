@@ -28,6 +28,7 @@ interface ExerciseRow {
 // Define the structure of exercises including rows
 interface Exercise extends IExercise {
   index: number;
+  note: string;
   rows: ExerciseRow[];
   repType: "single" | "range";
   superSetId: string | null;
@@ -36,6 +37,7 @@ interface Exercise extends IExercise {
 // State structure
 interface ExerciseListState {
   title: string;
+  description: string;
   exerciselist: Exercise[]; // Array of exercises with rows
 }
 
@@ -43,6 +45,7 @@ interface ExerciseListState {
 const initialState: ExerciseListState = {
   exerciselist: [],
   title: "",
+  description: "",
 };
 
 // Slice definition
@@ -55,6 +58,7 @@ export const exerciseListSlice = createSlice({
       const newExercise: Exercise = {
         ...action.payload,
         index: state.exerciselist.length + 1,
+        note: "",
         repType: "single",
         superSetId: null,
         rows: [
@@ -263,6 +267,19 @@ export const exerciseListSlice = createSlice({
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
+    setNote: (
+      state,
+      action: PayloadAction<{ index: number; note: string }>
+    ) => {
+      const { index, note } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex.index === index);
+      if (exercise) {
+        exercise.note = note;
+      }
+    },
+    setDescription: (state, action: PayloadAction<string>) => {
+      state.description = action.payload;
+    },
   },
 });
 
@@ -279,6 +296,8 @@ export const {
   addSuperSet,
   removeSuperSet,
   setTitle,
+  setNote,
+  setDescription,
 } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

@@ -35,7 +35,7 @@ const ExerciseHeader = () => {
         mx={2}
       >
         <Typography
-          sx={{ fontSize: { xs: "12px", md: "16px" } }}
+          sx={{ fontSize: { xs: "10px", md: "14px" } }}
           fontFamily={fontFamilies.bold}
         >
           عنوان:
@@ -46,6 +46,12 @@ const ExerciseHeader = () => {
           sx={{
             fontSize: { xs: "10px", md: "16px" },
             mx: 1.5,
+            "& .MuiInputBase-root": {
+              fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+            },
           }}
           value={title} // مقدار از Redux گرفته شده
           onChange={handleNameChange}

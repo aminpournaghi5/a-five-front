@@ -8,6 +8,7 @@ import {
   Grid,
   Card,
   IconButton,
+  Modal,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logoutUser } from "../../services/loginAuth";
@@ -24,7 +25,7 @@ import moment from "moment";
 import { Delete } from "@mui/icons-material";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 
-const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
+// const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
 export default function Dashboard() {
   const [exerciselists, setExerciselists] = useState([]);
@@ -34,6 +35,16 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [exerciseToDelete, setExerciseToDelete] = useState<string | null>(null);
+  const closeModal = () => {
+    setModalOpen(false); // بستن مودال
+    setExerciseToDelete(null); // پاک کردن وضعیت تمرین انتخابی
+  };
+  const openModal = (exerciseId: string) => {
+    setExerciseToDelete(exerciseId); // ذخیره تمرین برای حذف
+    setModalOpen(true); // باز کردن مودال
+  };
 
   const toPersianDigits = (number: string) => {
     const toPersianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
@@ -105,12 +116,11 @@ export default function Dashboard() {
         setExerciselists(
           exerciselists.filter((session: any) => session._id !== exerciseId)
         );
-        console.log("تمرین با موفقیت حذف شد.");
       } else {
-        console.error("خطا: سرور پاسخ موفقیت‌آمیزی ارسال نکرد.");
+        console.error("خطایی در حذف برنامه تمرینی رخ داده است.");
       }
     } catch (error: any) {
-      console.error("خطا در حذف تمرین:", error.response?.data || error.message);
+      console.error(error.response?.data || error.message);
     }
   };
 
@@ -124,7 +134,6 @@ export default function Dashboard() {
         display: "flex",
         width: "100%",
         justifyContent: "space-evenly",
-        height: "100%",
       }}
     >
       <Box
@@ -133,6 +142,7 @@ export default function Dashboard() {
           width: "25%",
           display: "flex",
           flexDirection: "column",
+          minHeight: "70vh",
         }}
       >
         <Typography
@@ -143,7 +153,6 @@ export default function Dashboard() {
             fontSize: { xs: "12px", sm: "16px" },
             py: "10px",
             px: "5px",
-            borderBottom: "1px solid #ccc",
           }}
         >
           {userInfo} عزیز،
@@ -152,7 +161,7 @@ export default function Dashboard() {
         </Typography>
 
         <Box sx={{ flexGrow: 1 }}>
-          {NAVIGATION.map((item, index) => (
+          {/* {NAVIGATION.map((item, index) => (
             <Box key={index} sx={{ my: "5px", borderBottom: "1px solid #ccc" }}>
               <Box
                 sx={{
@@ -176,7 +185,7 @@ export default function Dashboard() {
                 </Typography>
               </Box>
             </Box>
-          ))}
+          ))} */}
         </Box>
         <Box
           sx={{
@@ -184,7 +193,6 @@ export default function Dashboard() {
             width: "100%",
             py: "10px",
             px: "5px",
-            borderTop: "1px solid #ccc",
           }}
         >
           <Button
@@ -204,7 +212,7 @@ export default function Dashboard() {
           width: "75%",
           my: 2,
           borderRight: "1px solid #ccc",
-          height: "100%",
+          minHeight: "70vh",
         }}
       >
         <Grid container spacing={2} padding={2}>
@@ -213,10 +221,10 @@ export default function Dashboard() {
               display={"flex"}
               alignItems={"center"}
               flexDirection={"column"}
-              height={"55vh"}
+              justifyContent={"center"}
+              minHeight={"55vh"}
               width={"100%"}
               my={"20px"}
-              justifyContent={"center"}
             >
               <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
                 هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
@@ -278,7 +286,7 @@ export default function Dashboard() {
                     </Box>
                     <IconButton
                       sx={{ float: "left" }}
-                      onClick={() => handleDelete(exercise._id)}
+                      onClick={() => openModal(exercise._id)}
                     >
                       <Delete color="error" fontSize="small" />
                     </IconButton>
@@ -315,6 +323,49 @@ export default function Dashboard() {
           </Button>
         </DialogActions>
       </Dialog>
+      <Modal open={modalOpen} onClose={closeModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 300,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 2,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="body1" mb={2}>
+            آیا از حذف این برنامه تمرینی مطمئن هستید؟
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                if (exerciseToDelete) {
+                  handleDelete(exerciseToDelete); // حذف تمرین
+                }
+                closeModal(); // بستن مودال پس از انجام عملیات
+              }}
+              sx={{ width: "45%" }}
+            >
+              بله
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={closeModal}
+              sx={{ width: "45%" }}
+            >
+              خیر
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

@@ -36,6 +36,8 @@ import {
   removeRow,
   addSuperSet,
   removeSuperSet,
+  setNote,
+  setDescription,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
@@ -148,6 +150,9 @@ function Programing() {
 
   const title = useSelector((state: any) => state.exerciseList.title);
   const date = useSelector((state: any) => state.exerciseList.date);
+  const description = useSelector(
+    (state: any) => state.exerciseList.description
+  );
   const exerciseList = useSelector(
     (state: any) => state.exerciseList.exerciselist
   );
@@ -157,6 +162,7 @@ function Programing() {
       const payload = {
         title: title,
         date: date,
+        description: description,
         exerciselist: exerciseList,
       };
 
@@ -395,6 +401,32 @@ function Programing() {
                       </Menu>
                     </Box>
                   </Box>
+                  <TextField
+                    variant="standard"
+                    sx={{
+                      width: "70%",
+                      marginRight: "50px",
+                      marginBottom: 2,
+                      "& .MuiInputBase-root": {
+                        fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+                      },
+                      "& .MuiInputLabel-root": {
+                        fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+                      },
+                    }}
+                    placeholder="یادداشت ..."
+                    value={exercise.note}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      dispatch(
+                        setNote({
+                          index: exercise.index,
+                          note: value,
+                        })
+                      );
+                    }}
+                  />
+
                   <Box
                     sx={{
                       alignItems: "center",
@@ -741,6 +773,30 @@ function Programing() {
                 </Box>
               ))}
             </Box>
+            <TextField
+              variant="filled"
+              sx={{
+                width: "100%",
+                marginTop: "10px",
+
+                "& .MuiInputBase-root": {
+                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+                },
+                "& textarea": {
+                  resize: "none", // جلوگیری از اسکرول
+                },
+              }}
+              placeholder="توضیحات ..."
+              value={description}
+              multiline
+              minRows={3} // تعداد سطرهای حداقل
+              onChange={(e) => {
+                dispatch(setDescription(e.target.value));
+              }}
+            />
 
             <Box
               display={"flex"}
@@ -858,7 +914,8 @@ function Programing() {
                 </Button>
               </Box>
             </>
-          ) : (
+          ) 
+          : (
             <>
               <Typography
                 variant="h6"

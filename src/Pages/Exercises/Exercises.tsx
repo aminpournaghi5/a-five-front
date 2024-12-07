@@ -132,7 +132,7 @@ function Exercises() {
       : true;
     const matchesSearchTerm = searchTerm
       ? exercise.NameFarsi.includes(searchTerm) ||
-        exercise.Name?.toLocaleLowerCase().includes(searchTerm)
+        exercise.Name?.toLocaleLowerCase().includes(searchTerm.toLowerCase())
       : true;
 
     return (
