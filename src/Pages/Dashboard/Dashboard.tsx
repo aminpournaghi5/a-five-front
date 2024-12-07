@@ -196,7 +196,11 @@ export default function Dashboard() {
           }}
         >
           <Button
-            sx={{ width: "80%" }}
+            sx={{
+              width: "80%",
+              fontSize: { xs: "10px", md: "16px" },
+              fontFamily: fontFamilies.bold,
+            }}
             variant="contained"
             color="secondary"
             fullWidth
