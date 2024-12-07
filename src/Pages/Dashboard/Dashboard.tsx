@@ -285,16 +285,18 @@ export default function Dashboard() {
                       justifyContent={"space-between"}
                       gap={2}
                     >
-                      <Typography
-                        variant="h4"
-                        sx={{
-                          fontFamily: fontFamilies.bold,
-                          fontSize: { xs: "14px", md: "24px" },
-                        }}
-                        textAlign={"right"}
-                      >
-                        {exercise.title}
-                      </Typography>
+                      <Link to={`/programming/${exercise._id}`}>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontFamily: fontFamilies.bold,
+                            fontSize: { xs: "14px", md: "24px" },
+                          }}
+                          textAlign={"right"}
+                        >
+                          {exercise.title}
+                        </Typography>
+                      </Link>
                       <Box display={"flex"} gap={4}>
                         <Typography variant="body1">{iranTime}</Typography>
                       </Box>
