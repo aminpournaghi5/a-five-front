@@ -17,7 +17,7 @@ function getRandomHexColor() {
 }
 
 // Define the structure of rows within exercises
-interface ExerciseRow {
+export interface ExerciseRow {
   index: number;
   set: number | string;
   reps?: number;
@@ -26,7 +26,7 @@ interface ExerciseRow {
 }
 
 // Define the structure of exercises including rows
-interface Exercise extends IExercise {
+export interface Exercise extends IExercise {
   index: number;
   note: string;
   rows: ExerciseRow[];
@@ -35,7 +35,7 @@ interface Exercise extends IExercise {
 }
 
 // State structure
-interface ExerciseListState {
+export interface ExerciseListState {
   title: string;
   description: string;
   exerciselist: Exercise[]; // Array of exercises with rows
