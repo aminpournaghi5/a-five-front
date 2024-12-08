@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import {
   Box,
+  Button,
   Card,
   CardMedia,
   Divider,
@@ -12,11 +13,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import theme, { fontFamilies } from "../../../theme";
 import {
   ExerciseListState,
   ExerciseRow,
-  Exercise,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
 const ExerciseDetails = () => {
@@ -43,12 +44,13 @@ const ExerciseDetails = () => {
     fetchExercise();
   }, [params.id]); // اضافه کردن id به آرایه وابستگی‌ها
 
-  const toPersianDigits = (num: number) => {
+  const toPersianDigits = (num: any) => {
     const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
     return num
       .toString()
       .replace(/\d/g, (d: string) => persianDigits[parseInt(d)]);
   };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -60,6 +62,55 @@ const ExerciseDetails = () => {
           alignItems: "center",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            my: 2,
+            backgroundColor: theme.palette.background.paper,
+            padding: "10px",
+            borderRadius: "8px",
+            boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+          }}
+        >
+          <Box>
+            <Typography
+              sx={{
+                width: "content-fit",
+                display: "inline-block",
+                fontSize: { xs: "10px", md: "20px" },
+                mx: 1,
+              }}
+              fontFamily={fontFamilies.extraBold}
+            >
+              عنوان:
+            </Typography>
+            <Typography
+              sx={{
+                display: "inline-block",
+                width: "content-fit",
+                fontSize: { xs: "10px", md: "18px" },
+              }}
+              fontFamily={fontFamilies.bold}
+            >
+              {program.title}
+            </Typography>
+          </Box>
+
+          <Button
+            sx={{
+              fontSize: { xs: "10px", md: "16px" },
+              color: "black",
+            }}
+            startIcon={<ArrowBackIcon sx={{ mx: 1 }} />}
+            onClick={() => navigate(-1)}
+          >
+            بازگشت
+          </Button>
+        </Box>
+
         {program.exerciselist.map((exercise, index) => (
           <Box
             key={index}
@@ -74,7 +125,7 @@ const ExerciseDetails = () => {
             }}
           >
             <Box display={"flex"} alignItems={"center"} flexGrow={1}>
-              <Box sx={{ textAlign: "center", width: "50px" }}>
+              <Box sx={{ textAlign: "center", width: "10%" }}>
                 <Typography
                   sx={{
                     fontFamily: fontFamilies.bold,
@@ -151,32 +202,6 @@ const ExerciseDetails = () => {
               </Box>
             </Box>
 
-            <Box my={1} sx={{ display: exercise.note ? "block" : "none" }}>
-              <Divider />
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontFamily: fontFamilies.extraBold,
-                  fontSize: { xs: "10px", md: "16px" },
-                  marginRight: "50px",
-                  marginLeft: "5px",
-                  padding: 1,
-                }}
-              >
-                یادداشت:
-              </Typography>
-              <Typography
-                sx={{
-                  display: "inline",
-                  fontSize: { xs: "10px", md: "16px" },
-                  padding: 1,
-                }}
-              >
-                {exercise.note}
-              </Typography>
-              <Divider />
-            </Box>
-
             <Box
               sx={{
                 alignItems: "center",
@@ -187,12 +212,12 @@ const ExerciseDetails = () => {
                 sx={{
                   marginRight: "10%",
                   my: 2,
-                  width: "25%",
+                  width: "45%",
                   borderCollapse: "collapse",
                 }}
               >
                 <TableBody>
-                  <TableRow>
+                  <TableRow sx={{ borderBottom: "1px solid #ccc" }}>
                     <TableCell
                       sx={{
                         fontFamily: fontFamilies.extraBold,
@@ -212,7 +237,7 @@ const ExerciseDetails = () => {
                         fontSize: { xs: "10px", md: "16px" },
                         py: "2px",
                         border: "none",
-                        width: "100%",
+                        width: "50%",
                       }}
                     >
                       {exercise.repType === "single" ? "تکرار" : "محدوده"}
@@ -220,7 +245,12 @@ const ExerciseDetails = () => {
                   </TableRow>
 
                   {exercise.rows.map((row: ExerciseRow, index: number) => (
-                    <TableRow key={index}>
+                    <TableRow
+                      key={index}
+                      sx={{
+                        borderBottom: "1px solid #ccc",
+                      }}
+                    >
                       <TableCell
                         sx={{
                           textAlign: "right",
@@ -231,6 +261,7 @@ const ExerciseDetails = () => {
                       >
                         <Typography
                           sx={{
+                            fontSize: { xs: "10px", md: "16px" },
                             color: (() => {
                               switch (row.set) {
                                 case "گرم کردن":
@@ -258,19 +289,49 @@ const ExerciseDetails = () => {
                         }}
                       >
                         {exercise.repType === "range" ? (
-                          <Typography>
+                          <Typography
+                            sx={{ fontSize: { xs: "10px", md: "16px" } }}
+                          >
                             {`${toPersianDigits(
                               row.minReps
                             )} تا ${toPersianDigits(row.maxReps)}`}
                           </Typography>
                         ) : (
-                          <Typography>{toPersianDigits(row.reps)} </Typography>
+                          <Typography
+                            sx={{ fontSize: { xs: "10px", md: "16px" } }}
+                          >
+                            {toPersianDigits(row.reps)}{" "}
+                          </Typography>
                         )}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
+              <Divider sx={{ display: exercise.note ? "block" : "none" }} />
+              <Box my={1} sx={{ display: exercise.note ? "block" : "none" }}>
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontFamily: fontFamilies.extraBold,
+                    fontSize: { xs: "10px", md: "16px" },
+                    marginRight: "10%",
+                    marginLeft: "5px",
+                    padding: 1,
+                  }}
+                >
+                  یادداشت:
+                </Typography>
+                <Typography
+                  sx={{
+                    display: "inline",
+                    fontSize: { xs: "10px", md: "16px" },
+                    padding: 1,
+                  }}
+                >
+                  {exercise.note}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         ))}
@@ -282,13 +343,15 @@ const ExerciseDetails = () => {
             display: program.description ? "block" : "none",
             padding: "20px",
             width: "100%",
+            boxShadow: theme.shadows[5],
           }}
         >
           <Typography
             sx={{
               display: "inline-block",
               fontFamily: fontFamilies.extraBold,
-              fontSize: { xs: "10px", md: "16px" },
+              fontSize: { xs: "10px", md: "20px" },
+              marginBottom: 2,
             }}
           >
             توضیحات:

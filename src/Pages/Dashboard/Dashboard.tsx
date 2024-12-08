@@ -25,6 +25,7 @@ import moment from "moment";
 import { Delete } from "@mui/icons-material";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 import noExerciseList from "/utilImage/noexerciselist.gif";
+import { format } from "date-fns-jalali";
 
 // const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
@@ -47,12 +48,9 @@ export default function Dashboard() {
     setModalOpen(true); // باز کردن مودال
   };
 
-  const toPersianDigits = (number: string) => {
-    const toPersianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    return number.replace(
-      /[0-9]/g,
-      (digit) => toPersianDigits[parseInt(digit)]
-    );
+  const toPersianDigits = (num: string | number) => {
+    const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    return num.toString().replace(/\d/g, (d) => persianDigits[parseInt(d, 10)]);
   };
 
   const handleLogout = async () => {
@@ -105,6 +103,10 @@ export default function Dashboard() {
   const convertToIranTime = (dateString: string) => {
     const timeInIran = moment(dateString).format("HH:mm");
     return toPersianDigits(timeInIran);
+  };
+  const convertToShamsiDate = (dateString: string) => {
+    const shamsiDate = format(new Date(dateString), "d MMMM yyyy");
+    return toPersianDigits(shamsiDate); // تبدیل اعداد به فارسی
   };
 
   const handleDelete = async (exerciseId: string): Promise<void> => {
@@ -280,12 +282,13 @@ export default function Dashboard() {
                       },
                     }}
                   >
-                    <Box
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                      gap={2}
-                    >
-                      <Link to={`/programming/${exercise._id}`}>
+                    <Link to={`/programming/${exercise._id}`}>
+                      <Box
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        gap={2}
+                        height={"85%"}
+                      >
                         <Typography
                           variant="h4"
                           sx={{
@@ -296,17 +299,45 @@ export default function Dashboard() {
                         >
                           {exercise.title}
                         </Typography>
-                      </Link>
-                      <Box display={"flex"} gap={4}>
-                        <Typography variant="body1">{iranTime}</Typography>
+                      </Box>
+                    </Link>
+                    <Box
+                      display={"flex"}
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      height={"15%"}
+                    >
+                      <Box display={"flex"} flexDirection={"row"} gap={2}>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontSize: { xs: "10px", md: "16px" },
+                            textAlign: "left",
+                            fontFamily: fontFamilies.bold,
+                          }}
+                        >
+                          {iranTime}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontSize: { xs: "10px", md: "16px" },
+                            textAlign: "left",
+                            fontFamily: fontFamilies.bold,
+                          }}
+                        >
+                          {convertToShamsiDate(exercise.date)}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => openModal(exercise._id)}
+                        >
+                          <Delete color="error" fontSize="small" />
+                        </IconButton>
                       </Box>
                     </Box>
-                    <IconButton
-                      sx={{ float: "left" }}
-                      onClick={() => openModal(exercise._id)}
-                    >
-                      <Delete color="error" fontSize="small" />
-                    </IconButton>
                   </Card>
                 </Grid>
               );
@@ -383,7 +414,7 @@ export default function Dashboard() {
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Button
               variant="contained"
-              color="warning"
+              color="error"
               onClick={() => {
                 if (exerciseToDelete) {
                   handleDelete(exerciseToDelete); // حذف تمرین
