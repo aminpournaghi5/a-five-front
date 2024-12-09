@@ -315,7 +315,7 @@ const ExerciseDetails = () => {
                     display: "inline-block",
                     fontFamily: fontFamilies.extraBold,
                     fontSize: { xs: "10px", md: "16px" },
-                    marginRight: "10%",
+                    mx: "10%",
                     marginLeft: "5px",
                     padding: 1,
                   }}
@@ -324,9 +324,11 @@ const ExerciseDetails = () => {
                 </Typography>
                 <Typography
                   sx={{
-                    display: "inline",
+                    display: "block",
                     fontSize: { xs: "10px", md: "16px" },
+                    mx: "10%",
                     padding: 1,
+                    textAlign: "justify",
                   }}
                 >
                   {exercise.note}
@@ -361,10 +363,11 @@ const ExerciseDetails = () => {
               display: "block",
               width: "100%",
               fontSize: { xs: "10px", md: "16px" },
+              textAlign: "justify",
+              p: 1,
             }}
-          >
-            {program.description}
-          </Typography>
+            dangerouslySetInnerHTML={{ __html: program.description }}
+          />
         </Box>
       </Box>
     </>
