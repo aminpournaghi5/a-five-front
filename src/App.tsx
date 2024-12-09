@@ -19,6 +19,7 @@ import ForgotPasswordForm from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
 import NotFound from "./Pages/NotFound/NotFound";
 import ProgramDetails from "./Pages/ProgramDetails/ProgramDetails";
+import ProgramDetailsSkeleton from "./Pages/ProgramDetails/ProgramDetailsSkeleton";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -181,6 +182,18 @@ const App: React.FC = () => {
               <Navbar />
               <PageContainer>
                 <ProgramDetails />
+              </PageContainer>
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/ddd"
+          element={
+            <>
+              <Navbar />
+              <PageContainer>
+                <ProgramDetailsSkeleton />
               </PageContainer>
               <Footer />
             </>

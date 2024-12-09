@@ -19,6 +19,8 @@ import {
   ExerciseListState,
   ExerciseRow,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
+import axios from "axios";
+import ProgramDetailsSkeleton from "./ProgramDetailsSkeleton";
 
 const ExerciseDetails = () => {
   const params = useParams<{ id: string }>();
@@ -27,17 +29,27 @@ const ExerciseDetails = () => {
     description: "",
     exerciselist: [],
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchExercise = async () => {
       try {
+        setIsLoading(true);
         const response = await axiosInstance.get(
           `/api/exerciselist/get/${params.id}`
         );
         setProgram(response.data.exercise);
       } catch (error) {
-        console.error("خطا در دریافت اطلاعات تمرین:", error);
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          navigate("/login");
+        }
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          navigate("/404");
+        } else {
+          console.error(error);
+        }
       } finally {
+        setIsLoading(false);
       }
     };
 
@@ -51,6 +63,9 @@ const ExerciseDetails = () => {
       .replace(/\d/g, (d: string) => persianDigits[parseInt(d)]);
   };
   const navigate = useNavigate();
+  if (isLoading) {
+    return <ProgramDetailsSkeleton />;
+  }
 
   return (
     <>

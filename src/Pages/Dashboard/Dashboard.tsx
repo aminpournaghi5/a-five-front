@@ -84,11 +84,14 @@ export default function Dashboard() {
         setIsLoading(true);
         const result = await axiosInstance.get(`/api/exerciselist/getall`);
         const userInfo = await axiosInstance.get(`/api/profile/info`);
-        setUserInfo(userInfo.data.name);
-        setExerciselists(result.data.exerciselists);
+        await setUserInfo(userInfo.data.name);
+        await setExerciselists(result.data.exerciselists);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
           navigate("/login");
+        }
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          navigate("/404");
         } else {
           console.error(error);
         }
@@ -219,7 +222,7 @@ export default function Dashboard() {
           width: "75%",
           my: 2,
           borderRight: "1px solid #ccc",
-          minHeight: "70vh",
+          minHeight: "65vh",
         }}
       >
         <Grid container spacing={2} padding={2}>
@@ -229,7 +232,7 @@ export default function Dashboard() {
               alignItems={"center"}
               flexDirection={"column"}
               justifyContent={"center"}
-              minHeight={"55vh"}
+              minHeight={"65vh"}
               width={"100%"}
               my={"20px"}
             >
