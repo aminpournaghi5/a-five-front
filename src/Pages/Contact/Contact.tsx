@@ -218,7 +218,12 @@ const Contact = () => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
-            <Link href="tel:09034939660" underline="none" color="inherit">
+            <Link
+              href="tel:+989034939660"
+              underline="none"
+              color="inherit"
+              sx={{ fontSize: { xs: "12px", sm: "16px" } }}
+            >
               {toPersianDigits("09034939660")}
             </Link>
             <PhoneIcon sx={{ mr: 1 }} color="primary" />
@@ -228,21 +233,23 @@ const Contact = () => {
               href="mailto:afive.website@gmail.com"
               underline="none"
               color="inherit"
+              sx={{ fontSize: { xs: "12px", sm: "16px" } }}
             >
               afive.website@gmail.com
             </Link>
-            <EmailIcon sx={{ mr: 1 }} color="primary" />
+            <EmailIcon sx={{ mx: 1 }} color="primary" />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mx: 1 }}>
             <Link
               href="https://t.me/afive_website"
               target="_blank"
               underline="none"
               color="inherit"
+              sx={{ fontSize: { xs: "12px", sm: "16px" } }}
             >
               afive_website@
             </Link>
-            <TelegramIcon sx={{ mr: 1 }} color="primary" />
+            <TelegramIcon sx={{ mx: 1 }} color="primary" />
           </Box>
         </Box>
       </Box>
