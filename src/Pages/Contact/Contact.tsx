@@ -196,7 +196,7 @@ const Contact = () => {
             }}
             disabled={isLoading}
           >
-            {isLoading ? <CircularProgress /> : "ارسال"}
+            {isLoading ? <CircularProgress size={24} /> : "ارسال"}
           </Button>
         </Box>
       </Paper>
@@ -262,10 +262,12 @@ const Contact = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: 300,
             bgcolor: "background.paper",
             boxShadow: 24,
-            p: 4,
+            p: 3,
+            borderRadius: "8px",
+            textAlign: "center",
           }}
         >
           <Typography
@@ -273,25 +275,29 @@ const Contact = () => {
             gutterBottom
             sx={{
               fontFamily: fontFamilies.bold,
-              fontSize: { xs: "14px", sm: "22px" },
+              fontSize: { xs: "20px", sm: "26px" },
+              mb: 2,
             }}
+            color={modalContent.type === "success" ? "success" : "error"}
           >
             {modalContent.type === "success" ? "موفقیت‌آمیز" : "خطا"}
           </Typography>
           <Typography
             sx={{
               fontFamily: fontFamilies.medium,
-              fontSize: { xs: "10px", sm: "16px" },
+              fontSize: { xs: "12px", sm: "16px" },
+              mb: 1,
             }}
           >
             {modalContent.message}
           </Typography>
           <Button
+            variant={"contained"}
             onClick={handleClose}
             sx={{
               mt: 2,
               fontFamily: fontFamilies.medium,
-              fontSize: { xs: "10px", sm: "16px" },
+              fontSize: { xs: "12px", sm: "16px" },
             }}
             color={modalContent.type === "success" ? "success" : "error"}
           >
