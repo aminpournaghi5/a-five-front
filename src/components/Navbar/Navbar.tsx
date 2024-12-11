@@ -31,6 +31,7 @@ const Navbar: React.FC = () => {
     isLoggedIn
       ? { name: "حساب کاربری", link: "/dashboard" }
       : { name: "ورود / ثبت نام ", link: "/login" },
+    { name: "تماس با ما", link: "/contact" },
   ];
 
   const handleToggleMenu = () => setMenuOpen((prevOpen) => !prevOpen);

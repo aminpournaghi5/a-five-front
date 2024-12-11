@@ -20,6 +20,7 @@ import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
 import NotFound from "./Pages/NotFound/NotFound";
 import ProgramDetails from "./Pages/ProgramDetails/ProgramDetails";
 import ProgramDetailsSkeleton from "./Pages/ProgramDetails/ProgramDetailsSkeleton";
+import Contact from "./Pages/Contact/Contact";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -188,12 +189,12 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/ddd"
+          path="/contact"
           element={
             <>
               <Navbar />
               <PageContainer>
-                <ProgramDetailsSkeleton />
+                <Contact />
               </PageContainer>
               <Footer />
             </>

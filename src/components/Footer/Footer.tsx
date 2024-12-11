@@ -7,7 +7,7 @@ import logo from "../../assets/Logo/whitepng.png";
 // آیکون‌های مورد نیاز
 
 import { Email, Phone as PhoneIcon } from "@mui/icons-material";
-
+import TelegramIcon from "@mui/icons-material/Telegram";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../src/assets/Redux/store";
 
@@ -21,6 +21,7 @@ const Footer: React.FC = () => {
     isLoggedIn
       ? { name: "حساب کاربری", link: "/dashboard" }
       : { name: "ورود / ثبت نام ", link: "/login" },
+    { name: "تماس با ما", link: "/contact" },
   ];
 
   return (
@@ -119,6 +120,14 @@ const Footer: React.FC = () => {
               sx={{ color: "white" }}
             >
               <PhoneIcon />
+            </IconButton>
+            <IconButton
+              href="https://t.me/afive_website"
+              rel="noopener noreferrer"
+              size="small"
+              sx={{ color: "white" }}
+            >
+              <TelegramIcon />
             </IconButton>
           </Grid>
         </Grid>

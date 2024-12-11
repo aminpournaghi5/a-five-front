@@ -39,7 +39,7 @@ import {
   setNote,
   setDescription,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
-import { Clear, MoreVert } from "@mui/icons-material";
+import { Add, Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -761,12 +761,16 @@ function Programing() {
                     </Table>
                   </Box>
                   <Divider />
+
                   <Button
                     onClick={() => handleAddRow(index)}
                     sx={{
+                      fontFamily: fontFamilies.bold,
                       fontSize: { xs: "12px", md: "16px" },
                       padding: "16px",
+                      color: theme.palette.primary.dark,
                     }}
+                    startIcon={<Add sx={{ mx: "5px" }} />}
                   >
                     اضافه کردن ست جدید
                   </Button>
@@ -777,13 +781,13 @@ function Programing() {
               variant="filled"
               sx={{
                 width: "100%",
-                marginTop: "10px",
+                my: 4,
 
                 "& .MuiInputBase-root": {
-                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+                  fontSize: { xs: "10px", md: "16px" }, // تغییر سایز متن value
                 },
                 "& .MuiInputLabel-root": {
-                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+                  fontSize: { xs: "10px", md: "16px" }, // تغییر سایز placeholder
                 },
                 "& textarea": {
                   resize: "none", // جلوگیری از اسکرول
@@ -801,7 +805,7 @@ function Programing() {
             <Box
               display={"flex"}
               justifyContent={"center"}
-              my={"15px"}
+              mb={5}
               alignItems={"center"}
               width="100%"
             >
@@ -809,7 +813,7 @@ function Programing() {
                 component={Link} // استفاده از Link به عنوان پایه دکمه
                 to={"/exercises"}
                 sx={{
-                  backgroundColor: theme.palette.primary.dark,
+                  backgroundColor: theme.palette.secondary.main,
                   color: "white",
                   fontFamily: fontFamilies.bold,
                   mx: "5px",
@@ -824,7 +828,7 @@ function Programing() {
                   setModalType("confirm");
                   setModalOpen(true);
                 }}
-                variant="outlined"
+                variant="contained"
                 sx={{
                   mx: "5px",
                   fontSize: { xs: "10px", md: "16px", width: "50%" },
