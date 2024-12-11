@@ -19,7 +19,6 @@ import ForgotPasswordForm from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
 import NotFound from "./Pages/NotFound/NotFound";
 import ProgramDetails from "./Pages/ProgramDetails/ProgramDetails";
-import ProgramDetailsSkeleton from "./Pages/ProgramDetails/ProgramDetailsSkeleton";
 import Contact from "./Pages/Contact/Contact";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({

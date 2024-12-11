@@ -64,7 +64,10 @@ const ExerciseDetails = () => {
   };
   const navigate = useNavigate();
   if (isLoading) {
-    return <ProgramDetailsSkeleton />;
+    return;
+    <>
+      <ProgramDetailsSkeleton />;
+    </>;
   }
 
   return (

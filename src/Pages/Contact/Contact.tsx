@@ -237,9 +237,9 @@ const Contact = () => {
             >
               afive.website@gmail.com
             </Link>
-            <EmailIcon sx={{ mx: 1 }} color="primary" />
+            <EmailIcon sx={{ mr: 1 }} color="primary" />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", mx: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link
               href="https://t.me/afive_website"
               target="_blank"
@@ -249,7 +249,7 @@ const Contact = () => {
             >
               afive_website@
             </Link>
-            <TelegramIcon sx={{ mx: 1 }} color="primary" />
+            <TelegramIcon sx={{ mr: 1 }} color="primary" />
           </Box>
         </Box>
       </Box>
