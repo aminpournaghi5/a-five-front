@@ -215,6 +215,7 @@ const Contact = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-end",
+            my: 1,
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
@@ -239,7 +240,7 @@ const Contact = () => {
             </Link>
             <EmailIcon sx={{ mr: 1 }} color="primary" />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
             <Link
               href="https://t.me/afive_website"
               target="_blank"
