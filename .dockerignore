@@ -1,1 +1,5 @@
 public/Workouts/*
+node_modules/
+dist/
+*.log
+*.env
