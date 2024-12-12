@@ -199,6 +199,18 @@ const App: React.FC = () => {
             </>
           }
         />
+        <Route
+          path="/edit-program/:id"
+          element={
+            <>
+              <Navbar />
+              <PageContainer>
+                <EditProgram />
+              </PageContainer>
+              <Footer />
+            </>
+          }
+        />
       </Routes>
     </Box>
   );

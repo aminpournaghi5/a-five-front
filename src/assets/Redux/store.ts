@@ -2,12 +2,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import exerciseListReducer from "./reduxfeatures/ExerciseList/ExerciseListSlice";
 import authReducer from "./reduxfeatures/ExerciseList/AuthSlice";
+import editExerciseListReducer from "./reduxfeatures/ExerciseList/EditExerciseListSlice";
 
 // Create the store
 const store = configureStore({
   reducer: {
     exerciseList: exerciseListReducer,
     auth: authReducer, // تعریف auth در store
+    editExerciseList: editExerciseListReducer,
   },
 });
 

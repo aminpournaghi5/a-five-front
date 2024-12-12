@@ -22,7 +22,7 @@ import "moment-jalaali";
 import "moment-timezone";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
-import { Delete } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 import noExerciseList from "/utilImage/noexerciselist.gif";
 import { format } from "date-fns-jalali";
@@ -333,6 +333,16 @@ export default function Dashboard() {
                         </Typography>
                       </Box>
                       <Box>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => navigate(`/exercises/${exercise._id}`)}
+                        >
+                          <Edit
+                            color="primary"
+                            sx={{ mx: 1 }}
+                            fontSize="small"
+                          />
+                        </IconButton>
                         <IconButton
                           aria-label="delete"
                           onClick={() => openModal(exercise._id)}
