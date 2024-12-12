@@ -335,7 +335,7 @@ export default function Dashboard() {
                       <Box>
                         <IconButton
                           aria-label="edit"
-                          onClick={() => navigate(`/exercises/${exercise._id}`)}
+                          onClick={() => navigate(`/programming/${exercise._id}`)}
                         >
                           <Edit
                             color="primary"

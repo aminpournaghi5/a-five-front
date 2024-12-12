@@ -280,6 +280,9 @@ export const editExerciseListSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
+    setEditExerciseList: (state: any, action: any) => {
+      return (state = action.payload);
+    },
   },
 });
 
@@ -298,6 +301,7 @@ export const {
   setTitle,
   setNote,
   setDescription,
+  setEditExerciseList,
 } = editExerciseListSlice.actions;
 
 export default editExerciseListSlice.reducer;

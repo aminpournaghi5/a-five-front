@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -20,6 +20,7 @@ import {
   CircularProgress,
   Modal,
   Tooltip,
+  Paper,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
 import { Link, useParams } from "react-router-dom";
@@ -38,6 +39,8 @@ import {
   removeSuperSet,
   setNote,
   setDescription,
+  setEditExerciseList,
+  setTitle,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/EditExerciseListSlice";
 import { Add, Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
@@ -145,6 +148,24 @@ function EditProgram() {
   ) => {
     dispatch(updateRange({ exerciseId, rowIndex: index, minReps, maxReps }));
   };
+  useEffect(() => {
+    const fetchExercise = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/exerciselist/get/${params.id}`
+        );
+
+        if (response && response.data) {
+          dispatch(setEditExerciseList(response.data.exercise));
+        }
+      } catch (error) {
+        console.error("Error fetching exercise:", error);
+      }
+    };
+
+    fetchExercise();
+  }, []);
+
   const title = useSelector((state: any) => state.editExerciseList.title);
   const description = useSelector(
     (state: any) => state.editExerciseList.description
@@ -186,6 +207,10 @@ function EditProgram() {
       setIsLoading(false); // خاموش کردن لودینگ پس از پایان عملیات
     }
   };
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setTitle(event.target.value));
+  };
+
   return (
     <Box
       sx={{
@@ -199,7 +224,49 @@ function EditProgram() {
       <Box sx={{ width: "100%", maxWidth: 1200 }}>
         {exerciselist.length ? (
           <>
-            <ExerciseInformation />
+            <Paper
+              sx={{
+                display: "flex",
+                marginTop: "10px",
+                py: "10px",
+                alignItems: "center",
+                boxShadow: theme.shadows[2],
+                backgroundColor: theme.palette.background.paper,
+                borderRadius: "8px",
+                width: "100%",
+              }}
+            >
+              {/* عنوان */}
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                mx={2}
+              >
+                <Typography
+                  sx={{ fontSize: { xs: "10px", md: "14px" } }}
+                  fontFamily={fontFamilies.bold}
+                >
+                  عنوان:
+                </Typography>
+                <TextField
+                  placeholder="عنوان"
+                  variant="standard"
+                  sx={{
+                    fontSize: { xs: "10px", md: "16px" },
+                    mx: 1.5,
+                    "& .MuiInputBase-root": {
+                      fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+                    },
+                    "& .MuiInputLabel-root": {
+                      fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+                    },
+                  }}
+                  value={title} // مقدار از Redux گرفته شده
+                  onChange={handleNameChange}
+                />
+              </Box>
+            </Paper>
             <Box
               sx={{
                 marginTop: "10px",
@@ -835,7 +902,7 @@ function EditProgram() {
                   fontSize: { xs: "10px", md: "16px", width: "50%" },
                 }}
               >
-                ذخیره
+                بروزرسانی
               </Button>
             </Box>
           </>
@@ -898,7 +965,7 @@ function EditProgram() {
                   fontSize: { xs: "12px", md: "16px" },
                 }}
               >
-                آیا برای ذخیره برنامه تمرینی مطمئن هستید؟
+                آیا برای بروزرسانی برنامه تمرینی مطمئن هستید؟
               </Typography>
               <Box
                 sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
