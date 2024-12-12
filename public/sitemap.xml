@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- صفحه اصلی -->
+    <url>
+        <loc>https://a-five.ir</loc>
+        <lastmod>2024-12-12</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- صفحه ثبت‌نام -->
+    <url>
+        <loc>https://a-five.ir/signup</loc>
+        <lastmod>2024-12-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- صفحه تمرینات -->
+    <url>
+        <loc>https://a-five.ir/exercises</loc>
+        <lastmod>2024-12-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- صفحه برنامه‌ریزی -->
+    <url>
+        <loc>https://a-five.ir/programming</loc>
+        <lastmod>2024-12-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.7</priority>
+    </url>
+</urlset>
