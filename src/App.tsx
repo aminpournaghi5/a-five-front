@@ -20,7 +20,6 @@ import ResetPasswordPage from "./Pages/ResetPassword/ResetPassword";
 import NotFound from "./Pages/NotFound/NotFound";
 import ProgramDetails from "./Pages/ProgramDetails/ProgramDetails";
 import Contact from "./Pages/Contact/Contact";
-import EditProgram from "./Pages/EditProgram/EditProgram";
 
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -195,18 +194,6 @@ const App: React.FC = () => {
               <Navbar />
               <PageContainer>
                 <Contact />
-              </PageContainer>
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/edit-program/:id"
-          element={
-            <>
-              <Navbar />
-              <PageContainer>
-                <EditProgram />
               </PageContainer>
               <Footer />
             </>
