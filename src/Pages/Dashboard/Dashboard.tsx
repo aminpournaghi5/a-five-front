@@ -9,6 +9,7 @@ import {
   Card,
   IconButton,
   Modal,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logoutUser } from "../../services/loginAuth";
@@ -363,22 +364,26 @@ export default function Dashboard() {
                         </Typography>
                       </Box>
                       <Box>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => handleEditIcon(exercise._id)}
-                        >
-                          <Edit
-                            color="primary"
-                            sx={{ mx: 1 }}
-                            fontSize="small"
-                          />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => openModal(exercise._id)}
-                        >
-                          <Delete color="error" fontSize="small" />
-                        </IconButton>
+                        <Tooltip title={"ویرایش برنامه تمرینی"}>
+                          <IconButton
+                            aria-label="edit"
+                            onClick={() => handleEditIcon(exercise._id)}
+                          >
+                            <Edit
+                              color="primary"
+                              sx={{ mx: 1 }}
+                              fontSize="small"
+                            />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={"حذف برنامه تمرینی"}>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => openModal(exercise._id)}
+                          >
+                            <Delete color="error" fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </Box>
                   </Card>
