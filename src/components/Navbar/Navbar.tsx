@@ -22,6 +22,9 @@ const Navbar: React.FC = () => {
   const exerciselist = useSelector(
     (state: RootState) => state.exerciseList.exerciselist
   );
+  const exerciseId = useSelector(
+    (state: RootState) => state.exerciseList.exerciseId
+  );
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn); // دریافت وضعیت ورود
 
   // تعریف منو با استفاده از isLoggedIn
@@ -138,8 +141,10 @@ const Navbar: React.FC = () => {
               }}
             >
               {exerciselist.length
-                ? "مشاهده  برنامه تمرینی"
-                : "برنامه تمرینی جدید"}
+                ? "مشاهده برنامه تمرینی"
+                : exerciseId === ""
+                ? "برنامه تمرینی جدید"
+                : "ویرایش برنامه تمرینی"}
               {exerciselist.length > 0 && (
                 <Typography
                   variant="subtitle2"

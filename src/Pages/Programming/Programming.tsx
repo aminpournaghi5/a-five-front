@@ -22,7 +22,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import theme, { fontFamilies } from "../../../theme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import {
@@ -38,6 +38,7 @@ import {
   removeSuperSet,
   setNote,
   setDescription,
+  unsetInitialState,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { Add, Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
@@ -47,6 +48,7 @@ function Programing() {
   const exerciselist = useSelector(
     (state: RootState) => state.exerciseList.exerciselist
   );
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -890,22 +892,59 @@ function Programing() {
               src="/utilImage/noprogram.png"
             ></Box>
             <Typography sx={{ fontSize: { xs: "12px", md: "16px" } }}>
-              در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!
+              {exerciseId === "" ? (
+                "در حال حاضر هیچ تمرینی در لیست وجود ندارد، آن‌ها را اضافه کنید!"
+              ) : (
+                <span>
+                  شما در حال ویرایش برنامه تمرینی <b>{title}</b> هستید. برای
+                  ادامه، تمرین جدیدی اضافه کرده و تغییرات را ذخیره کنید. در صورت
+                  انصراف، روی دکمه لغو کلیک کنید.
+                </span>
+              )}
             </Typography>
-            <Button
-              component={Link}
-              to={"/exercises"}
-              sx={{
-                width: "250px",
-                backgroundColor: theme.palette.secondary.main,
-                color: "white",
-                fontFamily: fontFamilies.bold,
-                my: "10px",
-                fontSize: { xs: "10px", md: "16px" },
-              }}
+            <Box
+              width={"90%"}
+              display={"flex"}
+              my={"10px"}
+              justifyContent={"center"}
             >
-              اضافه کردن تمرین جدید
-            </Button>
+              <Button
+                component={Link}
+                to={"/exercises"}
+                sx={{
+                  width: "content-fit",
+                  padding: "10px",
+                  backgroundColor:
+                    exerciseId === ""
+                      ? theme.palette.secondary.main
+                      : theme.palette.success.dark,
+                  color: "white",
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "10px", md: "16px" },
+                  mx: "5px",
+                }}
+              >
+                اضافه کردن تمرین جدید
+              </Button>
+              {exerciseId !== "" && (
+                <Button
+                  onClick={() => {
+                    dispatch(unsetInitialState());
+                    navigate("/dashboard");
+                  }}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: theme.palette.error.main,
+                    width: "content-fit",
+                    padding: "10px",
+                    fontSize: { xs: "10px", md: "16px" },
+                    mx: "5px",
+                  }}
+                >
+                  لغو
+                </Button>
+              )}
+            </Box>
           </Box>
         )}
       </Box>
