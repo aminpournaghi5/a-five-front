@@ -149,19 +149,18 @@ function Programing() {
   };
 
   const title = useSelector((state: any) => state.exerciseList.title);
-  const date = useSelector((state: any) => state.exerciseList.date);
   const description = useSelector(
     (state: any) => state.exerciseList.description
   );
   const exerciseList = useSelector(
     (state: any) => state.exerciseList.exerciselist
   );
+  const exerciseId = useSelector((state: any) => state.exerciseList.exerciseId);
   const addExerciseList = async () => {
     setIsLoading(true);
     try {
       const payload = {
         title: title,
-        date: date,
         description: description,
         exerciselist: exerciseList,
       };
@@ -181,6 +180,44 @@ function Programing() {
       );
       setModalOpen(true);
     } finally {
+      setIsLoading(false);
+    }
+  };
+  const UpExerciseList = async () => {
+    setIsLoading(true);
+    try {
+      // آماده‌سازی داده‌ها برای ارسال به سرور
+      const payload = {
+        title: title.trim(),
+        description: description.trim(),
+        exerciselist: exerciseList,
+        exerciseId: exerciseId,
+      };
+
+      // درخواست PUT برای بروزرسانی
+      const response = await axiosInstance.put(
+        "/api/exerciselist/update",
+        payload
+      );
+
+      // بررسی وضعیت پاسخ و انتقال کاربر به صفحه مورد نظر
+      if (response.status === 200) {
+        window.location.href = `/programming/${exerciseId}`;
+      } else {
+        throw new Error("پاسخ نامعتبر از سرور دریافت شد");
+      }
+    } catch (error: any) {
+      console.error("خطا در بروزرسانی برنامه تمرینی:", error.message);
+
+      // نمایش پیام خطا در مودال
+      setModalType("error");
+      setModalMessage(
+        error.response?.data?.message ||
+          "خطایی در بروزرسانی برنامه تمرینی رخ داده است."
+      );
+      setModalOpen(true);
+    } finally {
+      // پایان وضعیت بارگذاری
       setIsLoading(false);
     }
   };
@@ -834,7 +871,7 @@ function Programing() {
                   fontSize: { xs: "10px", md: "16px", width: "50%" },
                 }}
               >
-                ذخیره
+                {exerciseId === "" ? "ذخیره" : "بروزرسانی"}
               </Button>
             </Box>
           </>
@@ -897,7 +934,9 @@ function Programing() {
                   fontSize: { xs: "12px", md: "16px" },
                 }}
               >
-                آیا برای ذخیره برنامه تمرینی مطمئن هستید؟
+                {exerciseList.exerciseId === ""
+                  ? "آیا برای ذخیره برنامه تمرینی مطمئن هستید؟"
+                  : "آیا برای بروزرسانی برنامه تمرینی مطمئن هستید؟"}
               </Typography>
               <Box
                 sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
@@ -905,7 +944,7 @@ function Programing() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={addExerciseList}
+                  onClick={exerciseId === "" ? addExerciseList : UpExerciseList}
                   sx={{
                     width: "45%",
                     fontFamily: fontFamilies.bold,

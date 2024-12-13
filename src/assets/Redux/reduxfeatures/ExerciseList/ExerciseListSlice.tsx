@@ -39,6 +39,7 @@ export interface ExerciseListState {
   title: string;
   description: string;
   exerciselist: Exercise[]; // Array of exercises with rows
+  exerciseId?: string;
 }
 
 // Initial state
@@ -46,6 +47,7 @@ const initialState: ExerciseListState = {
   exerciselist: [],
   title: "",
   description: "",
+  exerciseId: "",
 };
 
 // Slice definition
@@ -280,6 +282,18 @@ export const exerciseListSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
+    setInitialState: (state, action) => {
+      state.description = action.payload.description;
+      state.title = action.payload.title;
+      state.exerciselist = action.payload.exerciselist;
+      state.exerciseId = action.payload.exerciseId;
+    },
+    unsetInitialState: (state) => {
+      state.title = "";
+      state.description = "";
+      state.exerciselist = [];
+      state.exerciseId = "";
+    },
   },
 });
 
@@ -298,6 +312,8 @@ export const {
   setTitle,
   setNote,
   setDescription,
+  setInitialState,
+  unsetInitialState,
 } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

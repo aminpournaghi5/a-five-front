@@ -22,10 +22,14 @@ import "moment-jalaali";
 import "moment-timezone";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
-import { Delete } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 import noExerciseList from "/utilImage/noexerciselist.gif";
 import { format } from "date-fns-jalali";
+import {
+  setInitialState,
+  unsetInitialState,
+} from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 
 // const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
@@ -127,6 +131,32 @@ export default function Dashboard() {
       }
     } catch (error: any) {
       console.error(error.response?.data || error.message);
+    }
+  };
+  const handleEditIcon = async (exerciseId: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/exerciselist/get/${exerciseId}`
+      );
+      const title = response.data.exercise.title;
+      const description = response.data.exercise.description;
+      const exerciselist = response.data.exercise.exerciselist;
+      const exId = response.data.exercise._id;
+
+      if (response.status === 200) {
+        dispatch(unsetInitialState());
+        dispatch(
+          setInitialState({
+            title,
+            description,
+            exerciselist,
+            exerciseId: exId,
+          })
+        );
+        navigate("/programming");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -333,6 +363,16 @@ export default function Dashboard() {
                         </Typography>
                       </Box>
                       <Box>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleEditIcon(exercise._id)}
+                        >
+                          <Edit
+                            color="primary"
+                            sx={{ mx: 1 }}
+                            fontSize="small"
+                          />
+                        </IconButton>
                         <IconButton
                           aria-label="delete"
                           onClick={() => openModal(exercise._id)}
