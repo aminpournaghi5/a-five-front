@@ -843,7 +843,7 @@ function Programing() {
 
             <Box
               display={"flex"}
-              justifyContent={"center"}
+              justifyContent={"space-evenly"}
               mb={5}
               alignItems={"center"}
               width="100%"
@@ -857,7 +857,7 @@ function Programing() {
                   fontFamily: fontFamilies.bold,
                   mx: "5px",
                   fontSize: { xs: "10px", md: "16px" },
-                  width: "50%",
+                  width: "40%",
                 }}
               >
                 اضافه کردن تمرین جدید
@@ -870,11 +870,28 @@ function Programing() {
                 variant="contained"
                 sx={{
                   mx: "5px",
-                  fontSize: { xs: "10px", md: "16px", width: "50%" },
+                  fontSize: { xs: "10px", md: "16px", width: "35%" },
                 }}
               >
                 {exerciseId === "" ? "ذخیره" : "بروزرسانی"}
               </Button>
+
+              {exerciseId !== "" && (
+                <Button
+                  onClick={() => {
+                    dispatch(unsetInitialState());
+                    navigate("/dashboard");
+                  }}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: theme.palette.error.main,
+                    width: "15%",
+                    fontSize: { xs: "10px", md: "16px" },
+                  }}
+                >
+                  لغو
+                </Button>
+              )}
             </Box>
           </>
         ) : (
