@@ -10,6 +10,7 @@ import chest from "/landingImage/Chest.gif";
 import biceps from "/landingImage/Biceps.gif";
 import CarouselComponentSkeleton from "../../components/CarouselComponent/CarouselComponentSkeleton";
 import { fontFamilies } from "../../../theme";
+import { Helmet } from "react-helmet";
 
 interface CounterProps {
   target: number;
@@ -96,6 +97,14 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>A-Five</title>
+        <meta name="description" content="پلتفرم طراحی برنامه‌های تمرینی" />
+        <meta
+          name="keywords"
+          content="برنامه تمرینی آنلاین, برنامه تمرینی, مربیان ورزشی, ورزشکاران حرفه‌ای, طراحی برنامه تمرینی, تمرینات قدرتی, حرکات بدنسازی, خانه, صفحه اصلی"
+        />
+      </Helmet>
       {/* Business Theme Section */}
       <Box sx={{ padding: 6 }}>
         <Grid container spacing={1}>

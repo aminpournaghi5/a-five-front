@@ -13,7 +13,7 @@
         <loc>https://a-five.ir/signup</loc>
         <lastmod>2024-12-10</lastmod>
         <changefreq>daily</changefreq>
-        <priority>0.9</priority>
+        <priority>0.7</priority>
     </url>
 
     <!-- صفحه تمرینات -->
@@ -21,7 +21,7 @@
         <loc>https://a-five.ir/exercises</loc>
         <lastmod>2024-12-10</lastmod>
         <changefreq>daily</changefreq>
-        <priority>0.8</priority>
+        <priority>0.6</priority>
     </url>
 
     <!-- صفحه برنامه‌ریزی -->
@@ -29,6 +29,6 @@
         <loc>https://a-five.ir/programming</loc>
         <lastmod>2024-12-10</lastmod>
         <changefreq>daily</changefreq>
-        <priority>0.7</priority>
+        <priority>0.5</priority>
     </url>
 </urlset>

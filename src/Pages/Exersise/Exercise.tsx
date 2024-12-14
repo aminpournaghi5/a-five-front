@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../assets/Redux/store";
 import axiosInstance from "../../api/axiosInstance";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 function Exercise() {
   const params = useParams<{ id: string }>();
@@ -119,6 +120,24 @@ function Exercise() {
 
   return (
     <>
+      <Helmet>
+        <title>{isEnglish ? exercise.Name : exercise.NameFarsi}</title>
+        <meta
+          name="keywords"
+          content={
+            (exercise.Abzar,
+            exercise.Name,
+            exercise.NameFarsi,
+            exercise.Equipment,
+            exercise.Synergist,
+            exercise.SynergistFarsi,
+            exercise.Target,
+            exercise.TargetFarsi,
+            exercise.Type,
+            exercise.TargetFarsi)
+          }
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",

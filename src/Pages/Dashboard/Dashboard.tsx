@@ -31,6 +31,7 @@ import {
   setInitialState,
   unsetInitialState,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
+import { Helmet } from "react-helmet";
 
 // const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
@@ -166,39 +167,47 @@ export default function Dashboard() {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        justifyContent: "space-evenly",
-      }}
-    >
+    <>
+      <Helmet>
+        <title>حساب کاربری</title>
+        <meta name="description" content="حساب کاربری" />
+        <meta name="keywords" content="حساب کاربری, پنل کاربری, داشبورد" />
+        <link rel="canonical" href="https://a-five.ir/dashboard" />
+      </Helmet>
+
       <Box
         sx={{
-          my: 2,
-          width: "25%",
           display: "flex",
-          flexDirection: "column",
-          minHeight: "70vh",
+          width: "100%",
+          justifyContent: "space-evenly",
         }}
       >
-        <Typography
-          variant="h6"
+        <Box
           sx={{
-            fontFamily: fontFamilies.bold,
-            textAlign: "right",
-            fontSize: { xs: "12px", sm: "16px" },
-            py: "10px",
-            px: "5px",
+            my: 2,
+            width: "25%",
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "70vh",
           }}
         >
-          {userInfo} عزیز،
-          <br />
-          خوش آمدید!
-        </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: fontFamilies.bold,
+              textAlign: "right",
+              fontSize: { xs: "12px", sm: "16px" },
+              py: "10px",
+              px: "5px",
+            }}
+          >
+            {userInfo} عزیز،
+            <br />
+            خوش آمدید!
+          </Typography>
 
-        <Box sx={{ flexGrow: 1 }}>
-          {/* {NAVIGATION.map((item, index) => (
+          <Box sx={{ flexGrow: 1 }}>
+            {/* {NAVIGATION.map((item, index) => (
             <Box key={index} sx={{ my: "5px", borderBottom: "1px solid #ccc" }}>
               <Box
                 sx={{
@@ -223,275 +232,280 @@ export default function Dashboard() {
               </Box>
             </Box>
           ))} */}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              py: "10px",
+              px: "5px",
+            }}
+          >
+            <Button
+              sx={{
+                width: "80%",
+                fontSize: { xs: "10px", md: "16px" },
+                fontFamily: fontFamilies.bold,
+              }}
+              variant="contained"
+              color="secondary"
+              fullWidth
+              onClick={handleDialogOpen}
+            >
+              خروج
+            </Button>
+          </Box>
         </Box>
+
         <Box
           sx={{
-            display: "flex",
-            width: "100%",
-            py: "10px",
-            px: "5px",
+            width: "75%",
+            my: 2,
+            borderRight: "1px solid #ccc",
+            minHeight: "65vh",
           }}
         >
-          <Button
-            sx={{
-              width: "80%",
-              fontSize: { xs: "10px", md: "16px" },
-              fontFamily: fontFamilies.bold,
-            }}
-            variant="contained"
-            color="secondary"
-            fullWidth
-            onClick={handleDialogOpen}
-          >
-            خروج
-          </Button>
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          width: "75%",
-          my: 2,
-          borderRight: "1px solid #ccc",
-          minHeight: "65vh",
-        }}
-      >
-        <Grid container spacing={2} padding={2}>
-          {exerciselists.length === 0 ? (
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              flexDirection={"column"}
-              justifyContent={"center"}
-              minHeight={"65vh"}
-              width={"100%"}
-              my={"20px"}
-            >
+          <Grid container spacing={2} padding={2}>
+            {exerciselists.length === 0 ? (
               <Box
-                component="img"
-                src={noExerciseList}
-                sx={{
-                  width: "180px", // مقدار عددی برای px نیازی به علامت " نیست
-                  height: "auto",
-                  mb: 1, // از مقادیر عددی مقیاس Theme استفاده کنید
-                }}
-              />
-
-              <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
-                هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
-                <br />
-                برای شروع، یک برنامه تمرینی جدید بسازید.
-              </Typography>
-              <Button
-                component={Link}
-                to={"/exercises"}
-                sx={{
-                  width: "content-fit",
-                  backgroundColor: theme.palette.secondary.main,
-                  color: "white",
-                  fontFamily: fontFamilies.bold,
-                  my: "10px",
-                  fontSize: { xs: "10px", md: "16px" },
-                }}
+                display={"flex"}
+                alignItems={"center"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                minHeight={"65vh"}
+                width={"100%"}
+                my={"20px"}
               >
-                برنامه تمرینی جدید
-              </Button>
-            </Box>
-          ) : (
-            exerciselists.map((exercise: any, index: number) => {
-              const iranTime = convertToIranTime(exercise.date);
+                <Box
+                  component="img"
+                  src={noExerciseList}
+                  sx={{
+                    width: "180px", // مقدار عددی برای px نیازی به علامت " نیست
+                    height: "auto",
+                    mb: 1, // از مقادیر عددی مقیاس Theme استفاده کنید
+                  }}
+                />
 
-              return (
-                <Grid item xs={12} key={index}>
-                  <Card
-                    sx={{
-                      padding: "20px",
-                      borderRadius: "20px",
-                      margin: "10px",
-                      height: "150px",
-                      boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
-                      ":hover": {
-                        backgroundColor: "#e0e0e0",
-                        cursor: "pointer",
-                      },
-                    }}
-                  >
-                    <Link to={`/programming/${exercise._id}`}>
+                <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
+                  هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
+                  <br />
+                  برای شروع، یک برنامه تمرینی جدید بسازید.
+                </Typography>
+                <Button
+                  component={Link}
+                  to={"/exercises"}
+                  sx={{
+                    width: "content-fit",
+                    backgroundColor: theme.palette.secondary.main,
+                    color: "white",
+                    fontFamily: fontFamilies.bold,
+                    my: "10px",
+                    fontSize: { xs: "10px", md: "16px" },
+                  }}
+                >
+                  برنامه تمرینی جدید
+                </Button>
+              </Box>
+            ) : (
+              exerciselists.map((exercise: any, index: number) => {
+                const iranTime = convertToIranTime(exercise.date);
+
+                return (
+                  <Grid item xs={12} key={index}>
+                    <Card
+                      sx={{
+                        padding: "20px",
+                        borderRadius: "20px",
+                        margin: "10px",
+                        height: "150px",
+                        boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
+                        ":hover": {
+                          backgroundColor: "#e0e0e0",
+                          cursor: "pointer",
+                        },
+                      }}
+                    >
+                      <Link to={`/programming/${exercise._id}`}>
+                        <Box
+                          display={"flex"}
+                          justifyContent={"space-between"}
+                          gap={2}
+                          height={"85%"}
+                        >
+                          <Typography
+                            variant="h4"
+                            sx={{
+                              fontFamily: fontFamilies.bold,
+                              fontSize: { xs: "14px", md: "24px" },
+                            }}
+                            textAlign={"right"}
+                          >
+                            {exercise.title}
+                          </Typography>
+                        </Box>
+                      </Link>
                       <Box
                         display={"flex"}
                         justifyContent={"space-between"}
-                        gap={2}
-                        height={"85%"}
+                        alignItems={"center"}
+                        height={"15%"}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{
-                            fontFamily: fontFamilies.bold,
-                            fontSize: { xs: "14px", md: "24px" },
-                          }}
-                          textAlign={"right"}
-                        >
-                          {exercise.title}
-                        </Typography>
-                      </Box>
-                    </Link>
-                    <Box
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                      height={"15%"}
-                    >
-                      <Box display={"flex"} flexDirection={"row"} gap={2}>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontSize: { xs: "10px", md: "16px" },
-                            textAlign: "left",
-                            fontFamily: fontFamilies.bold,
-                          }}
-                        >
-                          {iranTime}
-                        </Typography>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontSize: { xs: "10px", md: "16px" },
-                            textAlign: "left",
-                            fontFamily: fontFamilies.bold,
-                          }}
-                        >
-                          {convertToShamsiDate(exercise.date)}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Tooltip title={"ویرایش برنامه تمرینی"}>
-                          <IconButton
-                            aria-label="edit"
-                            onClick={() => handleEditIcon(exercise._id)}
+                        <Box display={"flex"} flexDirection={"row"} gap={2}>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              fontSize: { xs: "10px", md: "16px" },
+                              textAlign: "left",
+                              fontFamily: fontFamilies.bold,
+                            }}
                           >
-                            <Edit
-                              color="primary"
-                              sx={{ mx: 1 }}
-                              fontSize="small"
-                            />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title={"حذف برنامه تمرینی"}>
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => openModal(exercise._id)}
+                            {iranTime}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              fontSize: { xs: "10px", md: "16px" },
+                              textAlign: "left",
+                              fontFamily: fontFamilies.bold,
+                            }}
                           >
-                            <Delete color="error" fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
+                            {convertToShamsiDate(exercise.date)}
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Tooltip title={"ویرایش برنامه تمرینی"}>
+                            <IconButton
+                              aria-label="edit"
+                              onClick={() => handleEditIcon(exercise._id)}
+                            >
+                              <Edit
+                                color="primary"
+                                sx={{ mx: 1 }}
+                                fontSize="small"
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title={"حذف برنامه تمرینی"}>
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => openModal(exercise._id)}
+                            >
+                              <Delete color="error" fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Card>
-                </Grid>
-              );
-            })
-          )}
-        </Grid>
-      </Box>
+                    </Card>
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
+        </Box>
 
-      {/* Logout Confirmation Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogContent>
-          <Typography
-            variant="body1"
-            sx={{
-              fontFamily: fontFamilies.bold,
-              fontSize: { xs: "10px", md: "16px" },
-            }}
-          >
-            آیا می‌خواهید از حساب خود خارج شوید؟
-          </Typography>
-          {logoutError && <Typography color="error">{logoutError}</Typography>}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={() => handleDialogClose(true)}
-            sx={{
-              mx: 2,
-              fontFamily: fontFamilies.bold,
-              fontSize: { xs: "10px", md: "16px" },
-            }}
-          >
-            بله
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handleDialogClose(false)}
-            color="secondary"
-            sx={{
-              mx: 2,
-              fontFamily: fontFamilies.bold,
-              fontSize: { xs: "10px", md: "16px" },
-            }}
-          >
-            خیر
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Modal open={modalOpen} onClose={closeModal}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            borderRadius: 2,
-            p: 4,
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            variant="body1"
-            mb={2}
-            sx={{
-              fontFamily: fontFamilies.bold,
-              fontSize: { xs: "12px", md: "16px" },
-            }}
-          >
-            آیا از حذف این برنامه تمرینی مطمئن هستید؟
-          </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        {/* Logout Confirmation Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogContent>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "10px", md: "16px" },
+              }}
+            >
+              آیا می‌خواهید از حساب خود خارج شوید؟
+            </Typography>
+            {logoutError && (
+              <Typography color="error">{logoutError}</Typography>
+            )}
+          </DialogContent>
+          <DialogActions>
             <Button
               variant="contained"
-              color="error"
-              onClick={() => {
-                if (exerciseToDelete) {
-                  handleDelete(exerciseToDelete); // حذف تمرین
-                }
-                closeModal(); // بستن مودال پس از انجام عملیات
-              }}
+              onClick={() => handleDialogClose(true)}
               sx={{
-                width: "45%",
+                mx: 2,
                 fontFamily: fontFamilies.bold,
-                fontSize: { xs: "12px", md: "16px" },
+                fontSize: { xs: "10px", md: "16px" },
               }}
             >
               بله
             </Button>
             <Button
-              variant="outlined"
-              color="primary"
-              onClick={closeModal}
+              variant="contained"
+              onClick={() => handleDialogClose(false)}
+              color="secondary"
               sx={{
-                width: "45%",
+                mx: 2,
                 fontFamily: fontFamilies.bold,
-                fontSize: { xs: "12px", md: "16px" },
+                fontSize: { xs: "10px", md: "16px" },
               }}
             >
               خیر
             </Button>
+          </DialogActions>
+        </Dialog>
+        <Modal open={modalOpen} onClose={closeModal}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              borderRadius: 2,
+              p: 4,
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="body1"
+              mb={2}
+              sx={{
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "12px", md: "16px" },
+              }}
+            >
+              آیا از حذف این برنامه تمرینی مطمئن هستید؟
+            </Typography>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
+            >
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  if (exerciseToDelete) {
+                    handleDelete(exerciseToDelete); // حذف تمرین
+                  }
+                  closeModal(); // بستن مودال پس از انجام عملیات
+                }}
+                sx={{
+                  width: "45%",
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "12px", md: "16px" },
+                }}
+              >
+                بله
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={closeModal}
+                sx={{
+                  width: "45%",
+                  fontFamily: fontFamilies.bold,
+                  fontSize: { xs: "12px", md: "16px" },
+                }}
+              >
+                خیر
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
-    </Box>
+        </Modal>
+      </Box>
+    </>
   );
 }

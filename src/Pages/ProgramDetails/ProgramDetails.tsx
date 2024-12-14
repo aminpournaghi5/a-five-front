@@ -21,6 +21,7 @@ import {
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import axios from "axios";
 import ProgramDetailsSkeleton from "./ProgramDetailsSkeleton";
+import { Helmet } from "react-helmet";
 
 const ExerciseDetails = () => {
   const params = useParams<{ id: string }>();
@@ -72,6 +73,9 @@ const ExerciseDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>A-Five</title>
+      </Helmet>
       <Box
         sx={{
           my: 2,

@@ -33,6 +33,7 @@ import { add } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListS
 import { debounce } from "lodash";
 import OffCanvasMenu from "../../components/OffCanvasMenu/OffCanvasMenu";
 import axiosInstance from "../../api/axiosInstance";
+import { Helmet } from "react-helmet";
 
 function Exercises() {
   const [exercises, setExercises] = useState<IExercise[]>([]);
@@ -288,362 +289,382 @@ function Exercises() {
 
   const typeOptions: string[] = ["قدرتی", "کششی", "هوازی"];
 
+  const keywords = [...bodyOptions, ...musclesOptions, ...typeOptions].join(
+    ", "
+  );
   return (
-    <Box sx={{ p: 2 }}>
-      <Box sx={{ my: 2 }}>
-        <TextField
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "20px",
-            },
-          }}
-          fullWidth
-          placeholder="جستجو..."
-          onChange={onSearchInputChange} // Use the new input change handler
+    <>
+      <Helmet>
+        <title>تمرینات ورزشی</title>
+        <meta name="keywords" content={keywords} />
+        <meta
+          name="description"
+          content="مجموعه‌ای از تمرینات ورزشی شامل تمرینات قدرتی، کششی، هوازی، حرکات اصلاحی و پلایومتریک با تصاویر متحرک برای بهبود تناسب اندام و افزایش عملکرد ورزشی."
         />
-      </Box>
-      <Box sx={{ display: { sm: "block", lg: "none" }, my: 1 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <OffCanvasMenu
-            Options={equipmentOptions}
-            ButtonText={"تمام تجهیزات"}
-            setSelectedFilter={async (filter) => {
-              setIsLoading(true); // فعال کردن حالت بارگذاری
-              await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
-              setCurrentPage(1);
-              setSelectedFilter(filter); // اعمال فیلتر
-              setIsLoading(false); // غیرفعال کردن حالت بارگذاری
+        <link rel="canonical" href="https://a-five.ir/exercises" />
+      </Helmet>
+      <Box sx={{ p: 2 }}>
+        <Box sx={{ my: 2 }}>
+          <TextField
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "20px",
+              },
             }}
-          />
-          <OffCanvasMenu
-            Options={bodyOptions}
-            ButtonText={"کل بدن"}
-            setSelectedFilter={async (filter) => {
-              setIsLoading(true); // فعال کردن حالت بارگذاری
-              await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
-              setCurrentPage(1);
-              setBodyFilter(filter); // اعمال فیلتر
-              setIsLoading(false); // غیرفعال کردن حالت بارگذاری
-            }}
-          />
-          <OffCanvasMenu
-            Options={musclesOptions}
-            ButtonText={"تمام عضلات"}
-            setSelectedFilter={async (filter) => {
-              setIsLoading(true); // فعال کردن حالت بارگذاری
-              await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
-              setCurrentPage(1);
-              setMusclesFilter(filter); // اعمال فیلتر
-              setIsLoading(false); // غیرفعال کردن حالت بارگذاری
-            }}
+            fullWidth
+            placeholder="جستجو..."
+            onChange={onSearchInputChange} // Use the new input change handler
           />
         </Box>
-      </Box>
+        <Box sx={{ display: { sm: "block", lg: "none" }, my: 1 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+            <OffCanvasMenu
+              Options={equipmentOptions}
+              ButtonText={"تمام تجهیزات"}
+              setSelectedFilter={async (filter) => {
+                setIsLoading(true); // فعال کردن حالت بارگذاری
+                await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
+                setCurrentPage(1);
+                setSelectedFilter(filter); // اعمال فیلتر
+                setIsLoading(false); // غیرفعال کردن حالت بارگذاری
+              }}
+            />
+            <OffCanvasMenu
+              Options={bodyOptions}
+              ButtonText={"کل بدن"}
+              setSelectedFilter={async (filter) => {
+                setIsLoading(true); // فعال کردن حالت بارگذاری
+                await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
+                setCurrentPage(1);
+                setBodyFilter(filter); // اعمال فیلتر
+                setIsLoading(false); // غیرفعال کردن حالت بارگذاری
+              }}
+            />
+            <OffCanvasMenu
+              Options={musclesOptions}
+              ButtonText={"تمام عضلات"}
+              setSelectedFilter={async (filter) => {
+                setIsLoading(true); // فعال کردن حالت بارگذاری
+                await new Promise((resolve) => setTimeout(resolve, 0)); // شبیه‌سازی عملیات غیرهمزمان
+                setCurrentPage(1);
+                setMusclesFilter(filter); // اعمال فیلتر
+                setIsLoading(false); // غیرفعال کردن حالت بارگذاری
+              }}
+            />
+          </Box>
+        </Box>
 
-      <Grid container spacing={1} margin={1}>
-        {/* Filters */}
-        <Grid item lg={2.5} sx={{ display: { xs: "none", lg: "block" } }}>
-          <Box
-            sx={{
-              display: "flex",
-              mb: 2,
-              justifyContent: "center",
-              flexDirection: "column",
-            }}
-          >
-            <Button
-              sx={{ marginBottom: "10px" }}
-              variant="contained"
-              onClick={clearFilters}
-              style={{
-                display:
-                  selectedFilter || bodyFilter || typeFilter || musclesFilter
-                    ? "block"
-                    : "none",
+        <Grid container spacing={1} margin={1}>
+          {/* Filters */}
+          <Grid item lg={2.5} sx={{ display: { xs: "none", lg: "block" } }}>
+            <Box
+              sx={{
+                display: "flex",
+                mb: 2,
+                justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              پاک کردن فیلترها
-            </Button>
-
-            <Accordion
-              expanded={expandedPanels.equipment}
-              onChange={handleAccordionChange("equipment")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
-                >
-                  تجهیزات
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {equipmentOptions.map((option: any, index: number) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={selectedFilter === option}
-                        onChange={(e) =>
-                          handleCheckboxChange(e, setSelectedFilter)
-                        }
-                      />
-                    }
-                    label={
-                      <Typography
-                        sx={{
-                          fontSize: "15px",
-                          fontFamily: fontFamilies.medium,
-                        }}
-                      >
-                        {option}
-                      </Typography>
-                    }
-                  />
-                ))}
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion
-              expanded={expandedPanels.body}
-              onChange={handleAccordionChange("body")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
-                >
-                  ناحیه بدن
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {bodyOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={bodyFilter === option}
-                        onChange={(e) => handleCheckboxChange(e, setBodyFilter)}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: "15px" }}>
-                        {option}
-                      </Typography>
-                    }
-                  />
-                ))}
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion
-              expanded={expandedPanels.muscles}
-              onChange={handleAccordionChange("muscles")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
-                >
-                  عضلات
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {musclesOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={musclesFilter === option}
-                        onChange={(e) =>
-                          handleCheckboxChange(e, setMusclesFilter)
-                        }
-                      />
-                    }
-                    label={
-                      <Typography
-                        sx={{
-                          textAlign: "right",
-                          fontSize: "15px",
-                          fontFamily: fontFamilies.medium,
-                        }}
-                      >
-                        {option}
-                      </Typography>
-                    }
-                  />
-                ))}
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expandedPanels.type}
-              onChange={handleAccordionChange("type")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
-                >
-                  نوع
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {typeOptions.map((option, index) => (
-                  <FormControlLabel
-                    sx={{
-                      margin: "0px",
-                      padding: "0px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      direction: "ltr",
-                    }}
-                    key={index}
-                    control={
-                      <Checkbox
-                        value={option}
-                        checked={typeFilter === option}
-                        onChange={(e) => handleCheckboxChange(e, setTypeFilter)}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: "15px" }}>
-                        {option}
-                      </Typography>
-                    }
-                  />
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-        </Grid>
-
-        {/* Exercise Cards */}
-        <Grid item xs={12} md={12} lg={9.5}>
-          <Grid container spacing={3}>
-            {isLoading ? (
-              Array.from({ length: itemsPerPage }).map((_, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-                  <SkeletonExerciseCard />
-                </Grid>
-              ))
-            ) : currentItems.length ? (
-              currentItems.map((exercise, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-                  <Card
-                    sx={{
-                      width: "auto",
-                      height: "auto",
-                      margin: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      borderRadius: "30px",
-                    }}
-                  >
-                    <Link to={`/exercise/${exercise._id}`}>
-                      <ExerciseCard exercise={exercise} />
-                    </Link>
-                    <Box
-                      display="flex"
-                      justifyContent="end"
-                      alignItems="center"
-                      padding={1}
-                    >
-                      <Tooltip title={"افزودن به لیست برنامه تمرینی"}>
-                        <IconButton
-                          aria-label="add to list"
-                          onClick={() => handleAddExercise(exercise)}
-                          color={isInList(exercise.ID) ? "success" : "default"}
-                        >
-                          {isInList(exercise.ID) ? (
-                            <AddTaskIcon />
-                          ) : (
-                            <AddIcon />
-                          )}
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <Grid
-                item
-                xs={12}
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
+              <Button
+                sx={{ marginBottom: "10px" }}
+                variant="contained"
+                onClick={clearFilters}
+                style={{
+                  display:
+                    selectedFilter || bodyFilter || typeFilter || musclesFilter
+                      ? "block"
+                      : "none",
+                }}
               >
-                <Box
-                  component={"img"}
-                  sx={{ height: "auto", width: "300px", margin: 4 }}
-                  src="/utilImage/notfound.png"
-                ></Box>
-                <Typography
-                  variant="h6"
-                  textAlign="center"
-                  sx={{ fontSize: { xs: "12px" } }}
-                >
-                  <SearchOffIcon sx={{ marginLeft: 1 }} />
-                  {"متاسفانه هیچ تمرینی با این مشخصات پیدا نشد!"}
-                  <br />
-                  {"دوباره تلاش کنید."}
-                </Typography>
-              </Grid>
-            )}
+                پاک کردن فیلترها
+              </Button>
+
+              <Accordion
+                expanded={expandedPanels.equipment}
+                onChange={handleAccordionChange("equipment")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
+                  >
+                    تجهیزات
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {equipmentOptions.map((option: any, index: number) => (
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={selectedFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setSelectedFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "15px",
+                            fontFamily: fontFamilies.medium,
+                          }}
+                        >
+                          {option}
+                        </Typography>
+                      }
+                    />
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion
+                expanded={expandedPanels.body}
+                onChange={handleAccordionChange("body")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
+                  >
+                    ناحیه بدن
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {bodyOptions.map((option, index) => (
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={bodyFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setBodyFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography sx={{ fontSize: "15px" }}>
+                          {option}
+                        </Typography>
+                      }
+                    />
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion
+                expanded={expandedPanels.muscles}
+                onChange={handleAccordionChange("muscles")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
+                  >
+                    عضلات
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {musclesOptions.map((option, index) => (
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={musclesFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setMusclesFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            textAlign: "right",
+                            fontSize: "15px",
+                            fontFamily: fontFamilies.medium,
+                          }}
+                        >
+                          {option}
+                        </Typography>
+                      }
+                    />
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedPanels.type}
+                onChange={handleAccordionChange("type")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontSize: "16px", fontFamily: fontFamilies.bold }}
+                  >
+                    نوع
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {typeOptions.map((option, index) => (
+                    <FormControlLabel
+                      sx={{
+                        margin: "0px",
+                        padding: "0px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        direction: "ltr",
+                      }}
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={option}
+                          checked={typeFilter === option}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setTypeFilter)
+                          }
+                        />
+                      }
+                      label={
+                        <Typography sx={{ fontSize: "15px" }}>
+                          {option}
+                        </Typography>
+                      }
+                    />
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+            </Box>
           </Grid>
 
-          {/* Snackbar for feedback */}
-          <Snackbar
-            open={openSnackbar}
-            autoHideDuration={3000}
-            onClose={handleCloseSnackbar}
-            message={snackbarMessage}
-          />
+          {/* Exercise Cards */}
+          <Grid item xs={12} md={12} lg={9.5}>
+            <Grid container spacing={3}>
+              {isLoading ? (
+                Array.from({ length: itemsPerPage }).map((_, index) => (
+                  <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+                    <SkeletonExerciseCard />
+                  </Grid>
+                ))
+              ) : currentItems.length ? (
+                currentItems.map((exercise, index) => (
+                  <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+                    <Card
+                      sx={{
+                        width: "auto",
+                        height: "auto",
+                        margin: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        borderRadius: "30px",
+                      }}
+                    >
+                      <Link to={`/exercise/${exercise._id}`}>
+                        <ExerciseCard exercise={exercise} />
+                      </Link>
+                      <Box
+                        display="flex"
+                        justifyContent="end"
+                        alignItems="center"
+                        padding={1}
+                      >
+                        <Tooltip title={"افزودن به لیست برنامه تمرینی"}>
+                          <IconButton
+                            aria-label="add to list"
+                            onClick={() => handleAddExercise(exercise)}
+                            color={
+                              isInList(exercise.ID) ? "success" : "default"
+                            }
+                          >
+                            {isInList(exercise.ID) ? (
+                              <AddTaskIcon />
+                            ) : (
+                              <AddIcon />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Grid
+                  item
+                  xs={12}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Box
+                    component={"img"}
+                    sx={{ height: "auto", width: "300px", margin: 4 }}
+                    src="/utilImage/notfound.png"
+                  ></Box>
+                  <Typography
+                    variant="h6"
+                    textAlign="center"
+                    sx={{ fontSize: { xs: "12px" } }}
+                  >
+                    <SearchOffIcon sx={{ marginLeft: 1 }} />
+                    {"متاسفانه هیچ تمرینی با این مشخصات پیدا نشد!"}
+                    <br />
+                    {"دوباره تلاش کنید."}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
 
-          {/* Pagination */}
-          {isLoading ? (
-            <></>
-          ) : (
-            <Box mt={3} display="flex" justifyContent="center">
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                siblingCount={1} // تعداد دکمه‌های اطراف صفحه جاری
-                boundaryCount={0} // تعداد دکمه‌ها در ابتدا و انتها
-              />
-            </Box>
-          )}
+            {/* Snackbar for feedback */}
+            <Snackbar
+              open={openSnackbar}
+              autoHideDuration={3000}
+              onClose={handleCloseSnackbar}
+              message={snackbarMessage}
+            />
+
+            {/* Pagination */}
+            {isLoading ? (
+              <></>
+            ) : (
+              <Box mt={3} display="flex" justifyContent="center">
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                  siblingCount={1} // تعداد دکمه‌های اطراف صفحه جاری
+                  boundaryCount={0} // تعداد دکمه‌ها در ابتدا و انتها
+                />
+              </Box>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 }
 

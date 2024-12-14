@@ -2,9 +2,13 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import notFoundImage from "/utilImage/404image.png";
 import { fontFamilies } from "../../../theme";
+import { Helmet } from "react-helmet";
 function NotFound() {
   return (
     <>
+      <Helmet>
+        <title>A-Five</title>
+      </Helmet>
       <Box
         sx={{
           display: "flex",
@@ -28,7 +32,6 @@ function NotFound() {
 
         <Typography
           variant="h5"
-
           sx={{
             fontFamily: fontFamilies.extraBold,
             fontSize: { xs: "16px", sm: "20px" },

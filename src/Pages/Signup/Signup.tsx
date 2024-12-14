@@ -3,6 +3,7 @@ import SignupAuthForm from "../../components/AuthForm/SignUpForm";
 import { signupUser } from "../../services/signupAuth";
 import { Box, Modal, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 interface AuthData {
   email: string;
@@ -44,60 +45,73 @@ const Signup: React.FC = () => {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        textAlign: "center",
-      }}
-    >
-      <Box sx={{ width: "100%", maxWidth: 400, padding: 2 }}>
-        <SignupAuthForm onSubmit={handleSignup} />
-        {/* Modal برای نمایش پیام سرور */}
-        <Modal open={modalOpen} onClose={closeModal}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 300,
-              boxShadow: 24,
-              p: 4,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              textAlign: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              mb={2}
+    <>
+      <Helmet>
+        <title>ورود / ثبت‌نام</title>
+        <meta name="description" content="ثبت‌نام در سایت" />
+        <meta name="keywords" content="ثبت‌نام, ثبت‌نام در سایت" />
+        <link
+          rel="icon"
+          href="/src/assets/Logo/favicon.ico"
+          type="image/x-icon"
+        />
+        <link rel="canonical" href="https://a-five.ir/signup" />
+      </Helmet>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          textAlign: "center",
+        }}
+      >
+        <Box sx={{ width: "100%", maxWidth: 400, padding: 2 }}>
+          <SignupAuthForm onSubmit={handleSignup} />
+          {/* Modal برای نمایش پیام سرور */}
+          <Modal open={modalOpen} onClose={closeModal}>
+            <Box
               sx={{
-                color: modalType === "success" ? "green" : "red",
-                fontWeight: "bold",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 300,
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+                bgcolor: "background.paper",
+                textAlign: "center",
               }}
             >
-              {modalType === "success" ? "موفقیت" : "خطا"}
-            </Typography>
-            <Typography variant="body1" mb={2}>
-              {modalMessage}
-            </Typography>
-            <Button
-              variant="contained"
-              color={modalType === "error" ? "error" : "primary"}
-              onClick={
-                modalType === "error" ? closeModal : () => navigate("/login")
-              } // در صورت موفقیت، هدایت به صفحه ورود
-              fullWidth
-            >
-              {modalType === "error" ? "بستن" : "صفحه ورود"}
-            </Button>
-          </Box>
-        </Modal>
+              <Typography
+                variant="h6"
+                mb={2}
+                sx={{
+                  color: modalType === "success" ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {modalType === "success" ? "موفقیت" : "خطا"}
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                {modalMessage}
+              </Typography>
+              <Button
+                variant="contained"
+                color={modalType === "error" ? "error" : "primary"}
+                onClick={
+                  modalType === "error" ? closeModal : () => navigate("/login")
+                } // در صورت موفقیت، هدایت به صفحه ورود
+                fullWidth
+              >
+                {modalType === "error" ? "بستن" : "صفحه ورود"}
+              </Button>
+            </Box>
+          </Modal>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
