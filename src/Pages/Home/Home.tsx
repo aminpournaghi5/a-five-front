@@ -99,11 +99,15 @@ const Home: React.FC = () => {
     <>
       <Helmet>
         <title>A-Five</title>
-        <meta name="description" content="پلتفرم طراحی برنامه‌های تمرینی" />
+        <meta
+          name="description"
+          content="پلتفرم طراحی برنامه‌های تمرینی اختصاصی با رابط کاربری ساده و تصاویر متحرک که به مربیان کمک می‌کند برنامه‌های تمرینی مؤثر برای ورزشکاران طراحی کنند."
+        />
         <meta
           name="keywords"
           content="برنامه تمرینی آنلاین, برنامه تمرینی, مربیان ورزشی, ورزشکاران حرفه‌ای, طراحی برنامه تمرینی, تمرینات قدرتی, حرکات بدنسازی, خانه, صفحه اصلی"
         />
+        <link rel="canonical" href="https://a-five.ir/" />
       </Helmet>
       {/* Business Theme Section */}
       <Box sx={{ padding: 6 }}>

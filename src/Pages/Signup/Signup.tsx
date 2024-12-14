@@ -48,7 +48,6 @@ const Signup: React.FC = () => {
     <>
       <Helmet>
         <title>ورود / ثبت‌نام</title>
-        <meta name="description" content="ثبت‌نام در سایت" />
         <meta name="keywords" content="ثبت‌نام, ثبت‌نام در سایت" />
         <link
           rel="icon"

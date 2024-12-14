@@ -170,7 +170,6 @@ export default function Dashboard() {
     <>
       <Helmet>
         <title>حساب کاربری</title>
-        <meta name="description" content="حساب کاربری" />
         <meta name="keywords" content="حساب کاربری, پنل کاربری, داشبورد" />
         <link rel="canonical" href="https://a-five.ir/dashboard" />
       </Helmet>
