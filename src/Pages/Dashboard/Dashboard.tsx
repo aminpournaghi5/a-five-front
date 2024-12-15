@@ -128,7 +128,7 @@ export default function Dashboard() {
         setExerciselists(
           exerciselists.filter((session: any) => session._id !== exerciseId)
         );
-        unsetInitialState();
+        dispatch(unsetInitialState());
       } else {
         console.error("خطایی در حذف برنامه تمرینی رخ داده است.");
       }
