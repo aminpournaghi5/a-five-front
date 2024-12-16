@@ -23,6 +23,8 @@ export interface ExerciseRow {
   reps?: number;
   minReps?: number;
   maxReps?: number;
+  minute?: number;
+  second?: number;
 }
 
 // Define the structure of exercises including rows
@@ -30,7 +32,7 @@ export interface Exercise extends IExercise {
   index: number;
   note: string;
   rows: ExerciseRow[];
-  repType: "single" | "range";
+  repType: "single" | "range" | "time";
   superSetId: string | null;
 }
 
@@ -114,7 +116,10 @@ export const exerciseListSlice = createSlice({
     // Set the type of exercise (single or range)
     setRepType: (
       state,
-      action: PayloadAction<{ exerciseId: number; type: "single" | "range" }>
+      action: PayloadAction<{
+        exerciseId: number;
+        type: "single" | "range" | "time";
+      }>
     ) => {
       const { exerciseId, type } = action.payload;
       const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
@@ -127,9 +132,19 @@ export const exerciseListSlice = createSlice({
             row.minReps = 0;
             row.maxReps = 0;
             delete row.reps; // Remove reps for "range"
-          } else {
+            delete row.minute; // Remove minute for "range"
+            delete row.second;
+          } else if (type === "single") {
             row.reps = 0;
             delete row.minReps; // Remove range values for "single"
+            delete row.maxReps;
+            delete row.minute; // Remove minute for "single"
+            delete row.second;
+          } else {
+            row.minute = 0;
+            row.second = 0;
+            delete row.reps; // Remove reps for "time"
+            delete row.minReps; // Remove range values for "time"
             delete row.maxReps;
           }
         });
@@ -172,8 +187,11 @@ export const exerciseListSlice = createSlice({
         if (exercise.repType === "range") {
           newRow.minReps = 0; // Default minReps value
           newRow.maxReps = 0; // Default maxReps value
-        } else {
+        } else if (exercise.repType === "single") {
           newRow.reps = 0; // Default reps value
+        } else {
+          newRow.minute = 0; // Default minute value
+          newRow.second = 0; // Default second value
         }
 
         exercise.rows.push(newRow);
@@ -235,6 +253,27 @@ export const exerciseListSlice = createSlice({
       }
       ``;
     },
+
+    // Update the time values (minute, second) for a specific row in a specific exercise (for "time" type)
+    updateTime: (
+      state,
+      action: PayloadAction<{
+        exerciseId: number;
+        rowIndex: number;
+        minute: number;
+        second: number;
+      }>
+    ) => {
+      const { exerciseId, rowIndex, minute, second } = action.payload;
+      const exercise = state.exerciselist.find((ex) => ex.index === exerciseId);
+
+      if (exercise && exercise.repType === "time" && exercise.rows[rowIndex]) {
+        // مقدار دقیقه و ثانیه را به‌روز می‌کنیم
+        exercise.rows[rowIndex].minute = minute;
+        exercise.rows[rowIndex].second = second;
+      }
+    },
+
     addSuperSet: (
       state,
       action: PayloadAction<{
@@ -314,6 +353,7 @@ export const {
   setDescription,
   setInitialState,
   unsetInitialState,
+  updateTime,
 } = exerciseListSlice.actions;
 
 export default exerciseListSlice.reducer;

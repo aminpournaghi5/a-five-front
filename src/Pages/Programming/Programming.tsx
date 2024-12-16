@@ -39,6 +39,7 @@ import {
   setNote,
   setDescription,
   unsetInitialState,
+  updateTime,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { Add, Clear, MoreVert } from "@mui/icons-material";
 import ExerciseInformation from "../../components/ExerciseInformation/ExerciseInformation";
@@ -149,6 +150,23 @@ function Programing() {
     maxReps: number
   ) => {
     dispatch(updateRange({ exerciseId, rowIndex: index, minReps, maxReps }));
+  };
+
+  // Handle minute change for "time" type
+  const handleTimeChange = (
+    exerciseId: number,
+    index: number,
+    minute: number,
+    second: number
+  ) => {
+    dispatch(
+      updateTime({
+        exerciseId,
+        rowIndex: index,
+        minute,
+        second,
+      })
+    );
   };
 
   const title = useSelector((state: any) => state.exerciseList.title);
@@ -573,6 +591,16 @@ function Programing() {
                                 >
                                   محدوده
                                 </MenuItem>
+                                <MenuItem
+                                  sx={{
+                                    py: 0,
+                                    fontFamily: fontFamilies.bold,
+                                    fontSize: { xs: "10px", md: "16px" },
+                                  }}
+                                  value="time"
+                                >
+                                  زمان
+                                </MenuItem>
                               </Select>
                             </TableCell>
                           </TableRow>
@@ -758,34 +786,115 @@ function Programing() {
                                       }}
                                     />
                                   </>
-                                ) : (
-                                  <TextField
-                                    size="small"
-                                    variant="standard"
-                                    type="number"
-                                    value={row.reps === 0 ? "" : row.reps}
-                                    onChange={(e) =>
-                                      handleRepsChange(
-                                        exercise.index,
-                                        index,
-                                        Math.max(
-                                          0,
-                                          Math.floor(Number(e.target.value))
+                                ) : exercise.repType === "single" ? (
+                                  <>
+                                    <TextField
+                                      size="small"
+                                      variant="standard"
+                                      type="number"
+                                      value={row.reps === 0 ? "" : row.reps}
+                                      onChange={(e) =>
+                                        handleRepsChange(
+                                          exercise.index,
+                                          index,
+                                          Math.max(
+                                            0,
+                                            Math.floor(Number(e.target.value))
+                                          )
                                         )
-                                      )
-                                    }
-                                    sx={{
-                                      width: "50px",
-                                      "& .MuiInput-underline:after": {
-                                        border: "none", // حذف خط زیر هنگام فوکوس
-                                      },
-                                      "& input": {
-                                        padding: "4px",
-                                        textAlign: "center",
-                                        fontSize: { xs: "10px", md: "16px" },
-                                      },
-                                    }}
-                                  />
+                                      }
+                                      sx={{
+                                        width: "50px",
+                                        "& .MuiInput-underline:after": {
+                                          border: "none", // حذف خط زیر هنگام فوکوس
+                                        },
+                                        "& input": {
+                                          padding: "4px",
+                                          textAlign: "center",
+                                          fontSize: { xs: "10px", md: "16px" },
+                                        },
+                                      }}
+                                    />
+                                  </>
+                                ) : (
+                                  <>
+                                    {/* Input for seconds */}
+                                    <TextField
+                                      size="small"
+                                      variant="standard"
+                                      type="number"
+                                      value={row.second === 0 ? "" : row.second} // مقدار فعلی ثانیه
+                                      onChange={(e) =>
+                                        handleTimeChange(
+                                          exercise.index,
+                                          index,
+                                          row.minute || 0, // حفظ مقدار فعلی دقیقه
+                                          Math.max(
+                                            0,
+                                            Math.min(
+                                              59,
+                                              Math.floor(Number(e.target.value))
+                                            )
+                                          ) // محدود کردن ثانیه به 0 تا 59
+                                        )
+                                      }
+                                      sx={{
+                                        width: "70px",
+                                        "& .MuiInput-underline:after": {
+                                          border: "none", // حذف خط زیر هنگام فوکوس
+                                        },
+                                        "& input": {
+                                          padding: "4px",
+                                          textAlign: "center",
+                                          fontSize: { xs: "10px", md: "16px" },
+                                        },
+                                      }}
+                                    />
+                                    <Typography
+                                      display="inline"
+                                      mx="5px"
+                                      fontSize={{ xs: "10px", md: "16px" }}
+                                    >
+                                      ثانیه
+                                    </Typography>
+
+                                    {/* Input for minutes */}
+                                    <TextField
+                                      size="small"
+                                      variant="standard"
+                                      type="number"
+                                      value={row.minute === 0 ? "" : row.minute} // مقدار فعلی دقیقه
+                                      onChange={(e) =>
+                                        handleTimeChange(
+                                          exercise.index,
+                                          index,
+                                          Math.max(
+                                            0,
+                                            Math.floor(Number(e.target.value))
+                                          ), // مقدار دقیقه جدید
+                                          row.second || 0 // حفظ مقدار فعلی ثانیه
+                                        )
+                                      }
+                                      sx={{
+                                        width: "70px",
+                                        "& .MuiInput-underline:after": {
+                                          border: "none", // حذف خط زیر هنگام فوکوس
+                                        },
+                                        "& input": {
+                                          padding: "4px",
+                                          textAlign: "center",
+                                          fontSize: { xs: "10px", md: "16px" },
+                                        },
+                                      }}
+                                    />
+                                    <Typography
+                                      display="inline"
+                                      mx="5px"
+                                      fontSize={{ xs: "10px", md: "16px" }}
+                                    >
+                                      دقیقه
+                                    </Typography>
+                                  </>
                                 )}
                               </TableCell>
                               <TableCell
