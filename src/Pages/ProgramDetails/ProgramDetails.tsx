@@ -64,18 +64,14 @@ const ExerciseDetails = () => {
       .replace(/\d/g, (d: string) => persianDigits[parseInt(d)]);
   };
   const navigate = useNavigate();
-  if (isLoading) {
-    return;
-    <>
-      <ProgramDetailsSkeleton />;
-    </>;
-  }
+  const formatTime = (time: any) => (time < 10 ? `0${time}` : time);
 
   return (
     <>
       <Helmet>
         <title>A-Five</title>
       </Helmet>
+      {isLoading && <ProgramDetailsSkeleton />}
       <Box
         sx={{
           my: 2,
@@ -262,7 +258,11 @@ const ExerciseDetails = () => {
                         width: "50%",
                       }}
                     >
-                      {exercise.repType === "single" ? "تکرار" : "محدوده"}
+                      {exercise.repType === "single"
+                        ? "تکرار"
+                        : exercise.repType === "range"
+                        ? "محدوده"
+                        : "زمان"}
                     </TableCell>
                   </TableRow>
 
@@ -318,11 +318,22 @@ const ExerciseDetails = () => {
                               row.minReps
                             )} تا ${toPersianDigits(row.maxReps)}`}
                           </Typography>
-                        ) : (
+                        ) : exercise.repType === "single" ? (
                           <Typography
                             sx={{ fontSize: { xs: "10px", md: "16px" } }}
                           >
                             {toPersianDigits(row.reps)}{" "}
+                          </Typography>
+                        ) : (
+                          <Typography
+                            sx={{
+                              fontSize: { xs: "10px", md: "16px" },
+                              direction: "ltr",
+                            }}
+                          >
+                            {`${toPersianDigits(formatTime(row.minute))} `}
+                            {`' : ${toPersianDigits(formatTime(row.second))} `}
+                            {`"`}
                           </Typography>
                         )}
                       </TableCell>
