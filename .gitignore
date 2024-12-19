@@ -28,3 +28,6 @@ dist-ssr
 *.sw?
 public/Workouts/
 .dockerignore
+public/Workouts/
+public/utilImage/
+public/landingImage/

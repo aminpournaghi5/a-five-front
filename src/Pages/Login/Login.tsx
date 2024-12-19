@@ -56,7 +56,7 @@ const Login: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>ورود / ثبت‌نام</title>
+        <title>ورود</title>
         <meta
           name="keywords"
           content="ورود, حساب کاربری, ورود به حساب کاربری"
