@@ -1,6 +1,6 @@
-public/Workouts/*
-public/utilImage/*
-public/landingImage/*
+public/Workouts/
+public/utilImage/
+public/landingImage/
 node_modules/
 dist/
 *.log
