@@ -103,9 +103,20 @@ const Contact = () => {
       <Helmet>
         <title>تماس با ما</title>
         <meta
-          name="keywords"
-          content="تلگرام, اینستاگرام,تماس با ما, شماره تماس, آدرس ایمیل, پشتیبانی"
+          name="description"
+          content="صفحه تماس با ما برای ارتباط با پشتیبانی"
         />
+        <meta
+          name="keywords"
+          content="تلگرام, اینستاگرام, تماس با ما, شماره تماس, آدرس ایمیل, پشتیبانی"
+        />
+        <meta property="og:title" content="تماس با ما" />
+        <meta
+          property="og:description"
+          content="صفحه تماس با ما برای ارتباط با پشتیبانی"
+        />
+        <meta property="og:url" content="https://a-five.ir/contact" />
+        <meta property="og:type" content="website" />
         <link rel="canonical" href="https://a-five.ir/contact" />
       </Helmet>
 

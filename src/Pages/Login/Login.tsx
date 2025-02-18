@@ -57,12 +57,18 @@ const Login: React.FC = () => {
     <>
       <Helmet>
         <title>ورود</title>
+        <meta name="description" content="صفحه ورود به حساب کاربری" />
         <meta
           name="keywords"
           content="ورود, حساب کاربری, ورود به حساب کاربری"
         />
+        <meta property="og:title" content="ورود" />
+        <meta property="og:description" content="صفحه ورود به حساب کاربری" />
+        <meta property="og:url" content="https://a-five.ir/login" />
+        <meta property="og:type" content="website" />
         <link rel="canonical" href="https://a-five.ir/login" />
       </Helmet>
+
       <Box
         sx={{
           display: "flex",

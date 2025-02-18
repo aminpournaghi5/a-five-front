@@ -248,11 +248,23 @@ function Programing() {
       <Helmet>
         <title>طراحی برنامه تمرینی</title>
         <meta
-          name="keywords"
-          content="برنامه تمرینی آنلاین, برنامه تمرینی, مربیان ورزشی, ورزشکاران حرفه‌ای, طراحی برنامه تمرینی, تمرینات قدرتی, حرکات بدنسازی, A-FIVE"
+          name="description"
+          content="طراحی برنامه‌های تمرینی اختصاصی با راهنمایی مربیان و تصاویر متحرک برای بهبود عملکرد ورزشی و تناسب اندام."
         />
+        <meta
+          name="keywords"
+          content="برنامه تمرینی آنلاین, برنامه تمرینی, مربیان ورزشی, ورزشکاران حرفه‌ای, طراحی برنامه تمرینی, تمرینات قدرتی, حرکات بدنسازی, تناسب اندام, فیتنس, A-FIVE"
+        />
+        <meta property="og:title" content="طراحی برنامه تمرینی" />
+        <meta
+          property="og:description"
+          content="ایجاد برنامه تمرینی مؤثر برای ورزشکاران با استفاده از ابزارهای حرفه‌ای و تصاویر متحرک."
+        />
+        <meta property="og:url" content="https://a-five.ir/programming" />
+        <meta property="og:type" content="website" />
         <link rel="canonical" href="https://a-five.ir/programming" />
       </Helmet>
+
       <Box
         sx={{
           display: "flex",
@@ -1117,7 +1129,7 @@ function Programing() {
                     fontSize: { xs: "12px", md: "16px" },
                   }}
                 >
-                  {exerciseList.exerciseId === ""
+                  {exerciseId === ""
                     ? "آیا برای ذخیره برنامه تمرینی مطمئن هستید؟"
                     : "آیا برای بروزرسانی برنامه تمرینی مطمئن هستید؟"}
                 </Typography>

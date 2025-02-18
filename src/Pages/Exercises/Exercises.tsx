@@ -17,11 +17,11 @@ import {
   Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import axios from "axios";
+
 import ExerciseCard from "../../components/ExerciseCard/ExerciseCard";
 import { IExercise } from "../../Type/Type";
 import { fontFamilies } from "../../../theme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "./../../assets/Redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonExerciseCard from "../../components/ExerciseCard/SkeletonExerciseCard";
@@ -32,7 +32,7 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { add } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { debounce } from "lodash";
 import OffCanvasMenu from "../../components/OffCanvasMenu/OffCanvasMenu";
-import axiosInstance from "../../api/axiosInstance";
+import { axiosInstanceWithoutAuth } from "../../api/axiosInstance";
 import { Helmet } from "react-helmet";
 
 function Exercises() {
@@ -53,7 +53,6 @@ function Exercises() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const exerciseList = useSelector(
     (state: RootState) => state.exerciseList.exerciselist
@@ -63,14 +62,12 @@ function Exercises() {
     const fetchExercises = async () => {
       setIsLoading(true);
       try {
-        const result = await axiosInstance.get<IExercise[]>("/api/exercises"); // استفاده از /api/exercise
+        const result = await axiosInstanceWithoutAuth.get<IExercise[]>(
+          "/api/exercises"
+        ); // استفاده از /api/exercise
         setExercises(result.data);
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 401) {
-          navigate("/login"); // هدایت به صفحه لاگین در صورت خطای 401
-        } else {
-          console.error(error);
-        }
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -299,10 +296,18 @@ function Exercises() {
         <meta name="keywords" content={keywords} />
         <meta
           name="description"
-          content="مجموعه‌ای از تمرینات شامل تمرینات قدرتی، کششی، هوازی، حرکات اصلاحی و پلایومتریک با تصاویر متحرک برای بهبود تناسب اندام و افزایش عملکرد ورزشی."
+          content="مجموعه‌ای از تمرینات ورزشی شامل حرکات قدرتی، کششی، هوازی، اصلاحی و پلایومتریک همراه با تصاویر متحرک برای بهبود تناسب اندام و افزایش عملکرد ورزشی."
         />
+        <meta property="og:title" content="تمرینات ورزشی" />
+        <meta
+          property="og:description"
+          content="دسترسی به تمرینات ورزشی و بدنسازی متنوع با تصاویر متحرک آموزشی"
+        />
+        <meta property="og:url" content="https://a-five.ir/exercises" />
+        <meta property="og:type" content="website" />
         <link rel="canonical" href="https://a-five.ir/exercises" />
       </Helmet>
+
       <Box sx={{ p: 2 }}>
         <Box sx={{ my: 2 }}>
           <TextField

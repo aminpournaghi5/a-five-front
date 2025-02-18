@@ -28,8 +28,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { add } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../assets/Redux/store";
-import axiosInstance from "../../api/axiosInstance";
-import axios from "axios";
+import { axiosInstanceWithoutAuth } from "../../api/axiosInstance";
 import { Helmet } from "react-helmet";
 
 function Exercise() {
@@ -51,17 +50,13 @@ function Exercise() {
     const fetchExercise = async () => {
       setIsLoading(true);
       try {
-        const result = await axiosInstance.get<IExercise>(
+        const result = await axiosInstanceWithoutAuth.get<IExercise>(
           `/api/exercises/${params.id}`
         );
         setExercise(result.data);
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 401) {
-          navigate("/login"); // هدایت به صفحه لاگین در صورت خطای 401
-        } else {
-          console.error(error);
-          setError("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
-        }
+        console.error(error);
+        setError("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
       } finally {
         setIsLoading(false);
       }
@@ -124,20 +119,23 @@ function Exercise() {
         <title>{isEnglish ? exercise.Name : exercise.NameFarsi}</title>
         <meta
           name="keywords"
-          content={
-            (exercise.Abzar,
-            exercise.Name,
-            exercise.NameFarsi,
-            exercise.Equipment,
-            exercise.Synergist,
-            exercise.SynergistFarsi,
-            exercise.Target,
-            exercise.TargetFarsi,
-            exercise.Type,
-            exercise.TargetFarsi)
-          }
+          content={`${exercise.Name}, ${exercise.NameFarsi}, ${exercise.Equipment}, ${exercise.Abzar}, ${exercise.Synergist}, ${exercise.SynergistFarsi}, ${exercise.Target}, ${exercise.TargetFarsi}, ${exercise.Type}`}
+        />
+        <meta
+          property="og:title"
+          content={isEnglish ? exercise.Name : exercise.NameFarsi}
+        />
+        <meta
+          property="og:url"
+          content={`https://a-five.ir/exercise/${exercise._id}`}
+        />
+        <meta property="og:type" content="website" />
+        <link
+          rel="canonical"
+          href={`https://a-five.ir/exercise/${exercise._id}`}
         />
       </Helmet>
+
       <Box
         sx={{
           display: "flex",

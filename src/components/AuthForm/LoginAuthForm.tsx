@@ -74,7 +74,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
             />
           </a>
         </Box>
-
+        <Typography
+          variant="h5"
+          color={theme.palette.primary.contrastText}
+          mb={2}
+        >
+          ورود به حساب
+        </Typography>
         <Typography
           variant="body2"
           color={theme.palette.primary.contrastText}

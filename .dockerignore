@@ -1,6 +1,4 @@
 public/Workouts/
-public/utilImage/
-public/landingImage/
 node_modules/
 dist/
 *.log

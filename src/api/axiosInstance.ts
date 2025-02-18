@@ -4,6 +4,10 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: "https://api.a-five.ir/",
 });
+// نمونه‌ی دوم بدون هدر توکن
+export const axiosInstanceWithoutAuth: AxiosInstance = axios.create({
+  baseURL: "https://api.a-five.ir/",
+});
 
 // افزودن توکن به هدر درخواست‌ها
 axiosInstance.interceptors.request.use(
