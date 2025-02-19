@@ -24,7 +24,27 @@ import Contact from "./Pages/Contact/Contact";
 const PageContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <Container component="main" sx={{ flexGrow: 1 }}>
+  <Container
+    component="main"
+    sx={{
+      flexGrow: 1,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    {children}
+  </Container>
+);
+const ExercisesContainer: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
+  <Container
+    component="main"
+    sx={{
+      flexGrow: 1,
+    }}
+  >
     {children}
   </Container>
 );
@@ -88,9 +108,9 @@ const App: React.FC = () => {
           element={
             <>
               <Navbar />
-              <PageContainer>
+              <ExercisesContainer>
                 <Exercises />
-              </PageContainer>
+              </ExercisesContainer>
               <Footer />
             </>
           }

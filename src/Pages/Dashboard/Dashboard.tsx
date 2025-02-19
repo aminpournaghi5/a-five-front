@@ -10,6 +10,7 @@ import {
   IconButton,
   Modal,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logoutUser } from "../../services/loginAuth";
@@ -182,16 +183,14 @@ export default function Dashboard() {
         sx={{
           display: "flex",
           width: "100%",
-          justifyContent: "space-evenly",
+          py: 2,
         }}
       >
         <Box
           sx={{
-            my: 2,
             width: "25%",
             display: "flex",
             flexDirection: "column",
-            minHeight: "70vh",
           }}
         >
           <Typography
@@ -199,7 +198,7 @@ export default function Dashboard() {
             sx={{
               fontFamily: fontFamilies.bold,
               textAlign: "right",
-              fontSize: { xs: "12px", sm: "16px" },
+              fontSize: { xs: "10px", sm: "20px" },
               py: "10px",
               px: "5px",
             }}
@@ -263,9 +262,7 @@ export default function Dashboard() {
         <Box
           sx={{
             width: "75%",
-            my: 2,
             borderRight: "1px solid #ccc",
-            minHeight: "65vh",
           }}
         >
           <Grid container spacing={2} padding={2}>
@@ -274,8 +271,7 @@ export default function Dashboard() {
                 display={"flex"}
                 alignItems={"center"}
                 flexDirection={"column"}
-                justifyContent={"center"}
-                minHeight={"65vh"}
+                justifyContent={"start"}
                 width={"100%"}
                 my={"20px"}
               >
@@ -319,7 +315,7 @@ export default function Dashboard() {
                       sx={{
                         padding: "20px",
                         borderRadius: "20px",
-                        margin: "10px",
+                        margin: "5px",
                         height: "150px",
                         boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
                         ":hover": {
@@ -333,13 +329,13 @@ export default function Dashboard() {
                           display={"flex"}
                           justifyContent={"space-between"}
                           gap={2}
-                          height={"85%"}
+                          height={"70%"}
                         >
                           <Typography
                             variant="h4"
                             sx={{
                               fontFamily: fontFamilies.bold,
-                              fontSize: { xs: "14px", md: "24px" },
+                              fontSize: { xs: "12px", md: "24px" },
                             }}
                             textAlign={"right"}
                           >
@@ -351,9 +347,9 @@ export default function Dashboard() {
                         display={"flex"}
                         justifyContent={"space-between"}
                         alignItems={"center"}
-                        height={"15%"}
+                        height={"30%"}
                       >
-                        <Box display={"flex"} flexDirection={"row"} gap={2}>
+                        <Box display={"flex"} flexDirection={"row"}>
                           <Typography
                             variant="body1"
                             sx={{
@@ -370,22 +366,19 @@ export default function Dashboard() {
                               fontSize: { xs: "10px", md: "16px" },
                               textAlign: "left",
                               fontFamily: fontFamilies.bold,
+                              mx: "8px",
                             }}
                           >
                             {convertToShamsiDate(exercise.date)}
                           </Typography>
                         </Box>
-                        <Box>
+                        <Box display={"flex"} mx={"5px"}>
                           <Tooltip title={"ویرایش برنامه تمرینی"}>
                             <IconButton
                               aria-label="edit"
                               onClick={() => handleEditIcon(exercise._id)}
                             >
-                              <Edit
-                                color="primary"
-                                sx={{ mx: 1 }}
-                                fontSize="small"
-                              />
+                              <Edit color="primary" fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={"حذف برنامه تمرینی"}>
@@ -431,8 +424,13 @@ export default function Dashboard() {
                 fontFamily: fontFamilies.bold,
                 fontSize: { xs: "10px", md: "16px" },
               }}
+              disabled={isLoading}
             >
-              بله
+              {isLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "بله"
+              )}
             </Button>
             <Button
               variant="contained"

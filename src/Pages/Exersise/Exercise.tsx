@@ -144,6 +144,7 @@ function Exercise() {
           justifyContent: "center",
           textAlign: "center",
           padding: "20px",
+          width: "100%",
         }}
       >
         <TableContainer
@@ -185,7 +186,7 @@ function Exercise() {
                   <CardMedia
                     sx={{
                       width: "100%",
-                      height: "180px",
+                      height: "330px",
                       objectFit: "contain",
                       margin: "0 auto",
                     }}
@@ -285,7 +286,7 @@ function Exercise() {
         </TableContainer>
         <Box
           sx={{
-            mt: 1,
+            my: 4,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

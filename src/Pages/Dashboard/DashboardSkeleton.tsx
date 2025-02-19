@@ -6,7 +6,6 @@ export default function DashboardSkeleton() {
       sx={{
         display: "flex",
         width: "100%",
-        minHeight: "65vh",
         justifyContent: "space-evenly",
       }}
     >
@@ -45,7 +44,6 @@ export default function DashboardSkeleton() {
           width: "75%",
           my: 2,
           borderRight: "1px solid #ccc",
-          height: "70vh",
         }}
       >
         <Grid container spacing={2} padding={2}>

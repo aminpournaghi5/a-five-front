@@ -71,338 +71,345 @@ const ExerciseDetails = () => {
       <Helmet>
         <title>A-Five</title>
       </Helmet>
-      {isLoading && <ProgramDetailsSkeleton />}
-      <Box
-        sx={{
-          my: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      {isLoading ? (
+        <ProgramDetailsSkeleton />
+      ) : (
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
             my: 2,
-            backgroundColor: theme.palette.background.paper,
-            padding: "10px",
-            borderRadius: "8px",
-            boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
           }}
         >
-          <Box>
-            <Typography
-              sx={{
-                width: "content-fit",
-                display: "inline-block",
-                fontSize: { xs: "10px", md: "20px" },
-                mx: 1,
-              }}
-              fontFamily={fontFamilies.extraBold}
-            >
-              عنوان:
-            </Typography>
-            <Typography
-              sx={{
-                display: "inline-block",
-                width: "content-fit",
-                fontSize: { xs: "10px", md: "18px" },
-              }}
-              fontFamily={fontFamilies.bold}
-            >
-              {program.title}
-            </Typography>
-          </Box>
-
-          <Button
-            sx={{
-              fontSize: { xs: "10px", md: "16px" },
-              color: "black",
-            }}
-            startIcon={<ArrowBackIcon sx={{ mx: 1 }} />}
-            onClick={() => navigate(-1)}
-          >
-            بازگشت
-          </Button>
-        </Box>
-
-        {program.exerciselist.map((exercise, index) => (
           <Box
-            key={index}
             sx={{
               display: "flex",
-              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
               width: "100%",
+              my: 2,
+              backgroundColor: theme.palette.background.paper,
+              padding: "10px",
               borderRadius: "8px",
               boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
-              margin: "5px",
-              backgroundColor: theme.palette.background.paper,
             }}
           >
-            <Box display={"flex"} alignItems={"center"} flexGrow={1}>
-              <Box sx={{ textAlign: "center", width: "10%" }}>
-                <Typography
-                  sx={{
-                    fontFamily: fontFamilies.bold,
-                    fontSize: { xs: "12px", sm: "16px" },
-                  }}
-                >
-                  {toPersianDigits(index + 1)}
-                </Typography>
-              </Box>
+            <Box>
+              <Typography
+                sx={{
+                  width: "content-fit",
+                  display: "inline-block",
+                  fontSize: { xs: "10px", md: "20px" },
+                  mx: 1,
+                }}
+                fontFamily={fontFamilies.extraBold}
+              >
+                عنوان:
+              </Typography>
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  width: "content-fit",
+                  fontSize: { xs: "10px", md: "18px" },
+                }}
+                fontFamily={fontFamilies.bold}
+              >
+                {program.title}
+              </Typography>
+            </Box>
 
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Card
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    boxShadow: "none",
-                    backgroundColor: "transparent",
-                    margin: 2,
-                  }}
-                >
-                  <Link to={`/exercise/${exercise._id}`}>
-                    <CardMedia
-                      sx={{
-                        width: { xs: "80px", sm: "160px" },
-                        height: { xs: "80px", sm: "160px" },
-                        objectFit: "contain",
-                        borderRadius: "50%",
-                        padding: "5px",
-                        margin: "5px",
-                        boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
-                      }}
-                      component="img"
-                      image={`/Workouts/${exercise.ID}.gif`}
-                      alt={exercise.NameFarsi}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/utilImage/noimage.jpg";
-                      }}
-                    />
-                  </Link>
-                  <Box>
-                    <Typography
-                      sx={{
-                        fontFamily: fontFamilies.bold,
-                        fontSize: { xs: "10px", md: "18px" },
-                        textAlign: "right",
-                        marginRight: "15px",
-                      }}
-                    >
-                      {exercise.NameFarsi}
-                    </Typography>
+            <Button
+              sx={{
+                fontSize: { xs: "10px", md: "16px" },
+                color: "black",
+              }}
+              startIcon={<ArrowBackIcon sx={{ mx: 1 }} />}
+              onClick={() => navigate(-1)}
+            >
+              بازگشت
+            </Button>
+          </Box>
 
-                    {exercise.superSetId && (
-                      <Box
+          {program.exerciselist.map((exercise, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "8px",
+                boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+                margin: "5px",
+                backgroundColor: theme.palette.background.paper,
+              }}
+            >
+              <Box display={"flex"} alignItems={"center"} flexGrow={1}>
+                <Box sx={{ textAlign: "center", width: "10%" }}>
+                  <Typography
+                    sx={{
+                      fontFamily: fontFamilies.bold,
+                      fontSize: { xs: "12px", sm: "16px" },
+                    }}
+                  >
+                    {toPersianDigits(index + 1)}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Card
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      boxShadow: "none",
+                      backgroundColor: "transparent",
+                      margin: 2,
+                    }}
+                  >
+                    <Link to={`/exercise/${exercise._id}`}>
+                      <CardMedia
                         sx={{
-                          fontFamily: fontFamilies.light,
-                          fontSize: { xs: "7px", md: "16px" },
-                          backgroundColor: exercise.superSetId,
-                          width: "fit-content",
-                          padding: "4px",
-                          borderRadius: "20px",
-                          color: theme.palette.primary.contrastText,
-                          marginTop: "5px",
+                          width: { xs: "80px", sm: "160px" },
+                          height: { xs: "80px", sm: "160px" },
+                          objectFit: "contain",
+                          borderRadius: "50%",
+                          padding: "5px",
+                          margin: "5px",
+                          boxShadow: "1px 1px 5px 1px rgba(128, 128, 128, 0.3)",
+                        }}
+                        component="img"
+                        image={`/Workouts/${exercise.ID}.gif`}
+                        alt={exercise.NameFarsi}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/utilImage/noimage.jpg";
+                        }}
+                      />
+                    </Link>
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontFamily: fontFamilies.bold,
+                          fontSize: { xs: "10px", md: "18px" },
                           textAlign: "right",
                           marginRight: "15px",
                         }}
                       >
-                        سوپرست
-                      </Box>
-                    )}
-                  </Box>
-                </Card>
-              </Box>
-            </Box>
+                        {exercise.NameFarsi}
+                      </Typography>
 
-            <Box
-              sx={{
-                alignItems: "center",
-                direction: "rtl",
-              }}
-            >
-              <Table
-                sx={{
-                  marginRight: "10%",
-                  my: 2,
-                  width: "45%",
-                  borderCollapse: "collapse",
-                }}
-              >
-                <TableBody>
-                  <TableRow sx={{ borderBottom: "1px solid #ccc" }}>
-                    <TableCell
-                      sx={{
-                        fontFamily: fontFamilies.extraBold,
-                        textAlign: "right",
-                        fontSize: { xs: "10px", md: "16px" },
-                        py: "2px",
-                        border: "none",
-                        width: "50%",
-                      }}
-                    >
-                      ست
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: fontFamilies.extraBold,
-                        textAlign: "center",
-                        fontSize: { xs: "10px", md: "16px" },
-                        py: "2px",
-                        border: "none",
-                        width: "50%",
-                      }}
-                    >
-                      {exercise.repType === "single"
-                        ? "تکرار"
-                        : exercise.repType === "range"
-                        ? "محدوده"
-                        : "زمان"}
-                    </TableCell>
-                  </TableRow>
-
-                  {exercise.rows.map((row: ExerciseRow, index: number) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        borderBottom: "1px solid #ccc",
-                      }}
-                    >
-                      <TableCell
-                        sx={{
-                          textAlign: "right",
-                          fontSize: { xs: "10px", md: "16px" },
-                          py: "4px",
-                          border: "none",
-                        }}
-                      >
-                        <Typography
+                      {exercise.superSetId && (
+                        <Box
                           sx={{
-                            fontSize: { xs: "10px", md: "16px" },
-                            color: (() => {
-                              switch (row.set) {
-                                case "گرم کردن":
-                                  return "orange";
-                                case "تا واماندگی":
-                                  return "red";
-                                case "دراپ ست":
-                                  return "blue";
-                                default:
-                                  return "inherit"; // رنگ پیش‌فرض
-                              }
-                            })(),
+                            fontFamily: fontFamilies.light,
+                            fontSize: { xs: "7px", md: "16px" },
+                            backgroundColor: exercise.superSetId,
+                            width: "fit-content",
+                            padding: "4px",
+                            borderRadius: "20px",
+                            color: theme.palette.primary.contrastText,
+                            marginTop: "5px",
+                            textAlign: "right",
+                            marginRight: "15px",
                           }}
                         >
-                          {typeof row.set === "number"
-                            ? toPersianDigits(row.set)
-                            : row.set}
-                        </Typography>
+                          سوپرست
+                        </Box>
+                      )}
+                    </Box>
+                  </Card>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  alignItems: "center",
+                  direction: "rtl",
+                }}
+              >
+                <Table
+                  sx={{
+                    marginRight: "10%",
+                    my: 2,
+                    width: "45%",
+                    borderCollapse: "collapse",
+                  }}
+                >
+                  <TableBody>
+                    <TableRow sx={{ borderBottom: "1px solid #ccc" }}>
+                      <TableCell
+                        sx={{
+                          fontFamily: fontFamilies.extraBold,
+                          textAlign: "right",
+                          fontSize: { xs: "10px", md: "16px" },
+                          py: "2px",
+                          border: "none",
+                          width: "50%",
+                        }}
+                      >
+                        ست
                       </TableCell>
                       <TableCell
                         sx={{
-                          py: "4px",
-                          border: "none",
+                          fontFamily: fontFamilies.extraBold,
                           textAlign: "center",
+                          fontSize: { xs: "10px", md: "16px" },
+                          py: "2px",
+                          border: "none",
+                          width: "50%",
                         }}
                       >
-                        {exercise.repType === "range" ? (
-                          <Typography
-                            sx={{ fontSize: { xs: "10px", md: "16px" } }}
-                          >
-                            {`${toPersianDigits(
-                              row.minReps
-                            )} تا ${toPersianDigits(row.maxReps)}`}
-                          </Typography>
-                        ) : exercise.repType === "single" ? (
-                          <Typography
-                            sx={{ fontSize: { xs: "10px", md: "16px" } }}
-                          >
-                            {toPersianDigits(row.reps)}{" "}
-                          </Typography>
-                        ) : (
+                        {exercise.repType === "single"
+                          ? "تکرار"
+                          : exercise.repType === "range"
+                          ? "محدوده"
+                          : "زمان"}
+                      </TableCell>
+                    </TableRow>
+
+                    {exercise.rows.map((row: ExerciseRow, index: number) => (
+                      <TableRow
+                        key={index}
+                        sx={{
+                          borderBottom: "1px solid #ccc",
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            textAlign: "right",
+                            fontSize: { xs: "10px", md: "16px" },
+                            py: "4px",
+                            border: "none",
+                          }}
+                        >
                           <Typography
                             sx={{
                               fontSize: { xs: "10px", md: "16px" },
-                              direction: "ltr",
+                              color: (() => {
+                                switch (row.set) {
+                                  case "گرم کردن":
+                                    return "orange";
+                                  case "تا واماندگی":
+                                    return "red";
+                                  case "دراپ ست":
+                                    return "blue";
+                                  default:
+                                    return "inherit"; // رنگ پیش‌فرض
+                                }
+                              })(),
                             }}
                           >
-                            {`${toPersianDigits(formatTime(row.minute))} `}
-                            {`' : ${toPersianDigits(formatTime(row.second))} `}
-                            {`"`}
+                            {typeof row.set === "number"
+                              ? toPersianDigits(row.set)
+                              : row.set}
                           </Typography>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Divider sx={{ display: exercise.note ? "block" : "none" }} />
-              <Box my={1} sx={{ display: exercise.note ? "block" : "none" }}>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontFamily: fontFamilies.extraBold,
-                    fontSize: { xs: "10px", md: "16px" },
-                    mx: "10%",
-                    marginLeft: "5px",
-                    padding: 1,
-                  }}
-                >
-                  یادداشت:
-                </Typography>
-                <Typography
-                  sx={{
-                    display: "block",
-                    fontSize: { xs: "10px", md: "16px" },
-                    mx: "10%",
-                    padding: 1,
-                    textAlign: "justify",
-                  }}
-                >
-                  {exercise.note}
-                </Typography>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            py: "4px",
+                            border: "none",
+                            textAlign: "center",
+                          }}
+                        >
+                          {exercise.repType === "range" ? (
+                            <Typography
+                              sx={{ fontSize: { xs: "10px", md: "16px" } }}
+                            >
+                              {`${toPersianDigits(
+                                row.minReps
+                              )} تا ${toPersianDigits(row.maxReps)}`}
+                            </Typography>
+                          ) : exercise.repType === "single" ? (
+                            <Typography
+                              sx={{ fontSize: { xs: "10px", md: "16px" } }}
+                            >
+                              {toPersianDigits(row.reps)}{" "}
+                            </Typography>
+                          ) : (
+                            <Typography
+                              sx={{
+                                fontSize: { xs: "10px", md: "16px" },
+                                direction: "ltr",
+                              }}
+                            >
+                              {`${toPersianDigits(formatTime(row.minute))} `}
+                              {`' : ${toPersianDigits(
+                                formatTime(row.second)
+                              )} `}
+                              {`"`}
+                            </Typography>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <Divider sx={{ display: exercise.note ? "block" : "none" }} />
+                <Box my={1} sx={{ display: exercise.note ? "block" : "none" }}>
+                  <Typography
+                    sx={{
+                      display: "inline-block",
+                      fontFamily: fontFamilies.extraBold,
+                      fontSize: { xs: "10px", md: "16px" },
+                      mx: "10%",
+                      marginLeft: "5px",
+                      padding: 1,
+                    }}
+                  >
+                    یادداشت:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      display: "block",
+                      fontSize: { xs: "10px", md: "16px" },
+                      mx: "10%",
+                      padding: 1,
+                      textAlign: "justify",
+                    }}
+                  >
+                    {exercise.note}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
 
-        <Box
-          my={3}
-          sx={{
-            backgroundColor: theme.palette.primary.contrastText,
-            display: program.description ? "block" : "none",
-            padding: "20px",
-            width: "100%",
-            boxShadow: theme.shadows[5],
-          }}
-        >
-          <Typography
+          <Box
+            my={3}
             sx={{
-              display: "inline-block",
-              fontFamily: fontFamilies.extraBold,
-              fontSize: { xs: "10px", md: "20px" },
-              marginBottom: 2,
+              backgroundColor: theme.palette.primary.contrastText,
+              display: program.description ? "block" : "none",
+              padding: "20px",
+              width: "100%",
+              boxShadow: theme.shadows[5],
             }}
           >
-            توضیحات:
-          </Typography>
-          <Typography
-            sx={{
-              display: "block",
-              width: "100%",
-              fontSize: { xs: "10px", md: "16px" },
-              textAlign: "justify",
-              p: 1,
-            }}
-            dangerouslySetInnerHTML={{ __html: program.description }}
-          />
+            <Typography
+              sx={{
+                display: "inline-block",
+                fontFamily: fontFamilies.extraBold,
+                fontSize: { xs: "10px", md: "20px" },
+                marginBottom: 2,
+              }}
+            >
+              توضیحات:
+            </Typography>
+            <Typography
+              sx={{
+                display: "block",
+                width: "100%",
+                fontSize: { xs: "10px", md: "16px" },
+                textAlign: "justify",
+                p: 1,
+              }}
+              dangerouslySetInnerHTML={{ __html: program.description }}
+            />
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };
