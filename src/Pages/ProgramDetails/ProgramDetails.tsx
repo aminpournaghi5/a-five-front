@@ -29,6 +29,7 @@ const ExerciseDetails = () => {
     title: "",
     description: "",
     exerciselist: [],
+    athleteEmail: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 

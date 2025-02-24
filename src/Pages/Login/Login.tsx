@@ -32,7 +32,7 @@ const Login: React.FC = () => {
 
       // پس از دریافت اطلاعات کاربر، پیام موفقیت را تنظیم می‌کنیم
       setSnackbarOpen(true);
-      setModalMessage(`${info.data.name} عزیز با موفقیت وارد شدید!`);
+      setModalMessage(`${info.data.nameOfuser} عزیز با موفقیت وارد شدید!`);
 
       // نقل مکان به صفحه اصلی پس از ۱.۵ ثانیه
       setTimeout(() => {

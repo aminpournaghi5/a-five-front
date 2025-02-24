@@ -14,7 +14,7 @@ const ExerciseHeader = () => {
   const athleteEmail = useSelector(
     (state: any) => state.exerciseList.athleteEmail
   );
-
+  const exerciseId = useSelector((state: any) => state.exerciseList.exerciseId);
   // تابع برای تغییر title
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle(event.target.value));
@@ -79,37 +79,39 @@ const ExerciseHeader = () => {
             onChange={handleNameChange}
           />
         </Box>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          mx={1}
-          width={"90%"}
-        >
-          <Typography
-            sx={{ display: "flex", fontSize: { xs: "10px", md: "14px" } }}
-            fontFamily={fontFamilies.bold}
+        {exerciseId == "" && (
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            mx={1}
+            width={"90%"}
           >
-            ورزشکار:
-          </Typography>
-          <TextField
-            placeholder="ورزشکار را مشخص کنید."
-            variant="standard"
-            sx={{
-              fontSize: { xs: "10px", md: "16px" },
-              minWidth: "85% !important",
-              mx: 1.5,
-              "& .MuiInputBase-root": {
-                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
-              },
-              "& .MuiInputLabel-root": {
-                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
-              },
-            }}
-            value={athleteEmail} // مقدار از Redux گرفته شده
-            onChange={handleAthleteEmailChange}
-          />
-        </Box>
+            <Typography
+              sx={{ display: "flex", fontSize: { xs: "10px", md: "14px" } }}
+              fontFamily={fontFamilies.bold}
+            >
+              ورزشکار:
+            </Typography>
+            <TextField
+              placeholder="ورزشکار را مشخص کنید."
+              variant="standard"
+              sx={{
+                fontSize: { xs: "10px", md: "16px" },
+                minWidth: "85% !important",
+                mx: 1.5,
+                "& .MuiInputBase-root": {
+                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+                },
+              }}
+              value={athleteEmail} // مقدار از Redux گرفته شده
+              onChange={handleAthleteEmailChange}
+            />
+          </Box>
+        )}
       </Box>
     </Paper>
   );

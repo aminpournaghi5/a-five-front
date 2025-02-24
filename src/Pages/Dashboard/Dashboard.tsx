@@ -33,6 +33,7 @@ import {
   unsetInitialState,
 } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice";
 import { Helmet } from "react-helmet";
+import RequestsTab from "../../components/RequestsTab/RequestsTab";
 
 // const NAVIGATION = [{ segment: "dashboard", title: "برنامه های من", icon: "" }];
 
@@ -47,6 +48,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [exerciseToDelete, setExerciseToDelete] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("exercises");
   const closeModal = () => {
     setModalOpen(false); // بستن مودال
     setExerciseToDelete(null); // پاک کردن وضعیت تمرین انتخابی
@@ -193,6 +195,7 @@ export default function Dashboard() {
             width: "25%",
             display: "flex",
             flexDirection: "column",
+            minHeight: "80vh",
           }}
         >
           <Typography
@@ -210,32 +213,48 @@ export default function Dashboard() {
             خوش آمدید!
           </Typography>
 
-          <Box sx={{ flexGrow: 1 }}>
-            {/* {NAVIGATION.map((item, index) => (
-            <Box key={index} sx={{ my: "5px", borderBottom: "1px solid #ccc" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  "&:hover": { backgroundColor: "#e0e0e0" },
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontFamily: fontFamilies.bold,
-                    textAlign: "right",
-                    fontSize: { xs: "10px", sm: "16px" },
-                    py: "10px",
-                    px: "5px",
-                  }}
-                >
-                  {item.title}
-                </Typography>
-              </Box>
-            </Box>
-          ))} */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Button
+              variant="text"
+              onClick={() => setActiveTab("exercises")}
+              sx={{
+                textAlign: "center",
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "8px", sm: "16px" },
+                width: "90%",
+                backgroundColor:
+                  activeTab === "exercises" ? "#d3c9a7a9" : "transparent",
+                color: activeTab === "exercises" ? "black" : "inherit",
+                borderRadius: "0px",
+              }}
+            >
+              برنامه‌های تمرینی
+            </Button>
+
+            <Button
+              variant="text"
+              onClick={() => setActiveTab("requests")}
+              sx={{
+                textAlign: "center",
+                fontFamily: fontFamilies.bold,
+                fontSize: { xs: "8px", sm: "16px" },
+                width: "90%",
+                backgroundColor:
+                  activeTab === "requests" ? "#d3c9a7a9" : "transparent",
+                color: activeTab === "requests" ? "black" : "inherit",
+                borderRadius: "0px",
+              }}
+            >
+              درخواست‌ها
+            </Button>
           </Box>
           <Box
             sx={{
@@ -267,159 +286,162 @@ export default function Dashboard() {
             borderRight: "1px solid #ccc",
           }}
         >
-          <Grid container spacing={2} padding={2}>
-            {exerciselists.length === 0 ? (
-              <Box
-                display={"flex"}
-                alignItems={"center"}
-                flexDirection={"column"}
-                justifyContent={"start"}
-                width={"100%"}
-                my={"20px"}
-              >
+          {activeTab === "exercises" ? (
+            <Grid container spacing={2} padding={2} height={"100%"}>
+              {exerciselists.length === 0 ? (
                 <Box
-                  component="img"
-                  src={noExerciseList}
-                  sx={{
-                    width: "180px", // مقدار عددی برای px نیازی به علامت " نیست
-                    height: "auto",
-                    mb: 1, // از مقادیر عددی مقیاس Theme استفاده کنید
-                  }}
-                />
-
-                <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
-                  هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
-                  <br />
-                  برای شروع، یک برنامه تمرینی جدید بسازید.
-                </Typography>
-                <Button
-                  component={Link}
-                  to={"/exercises"}
-                  sx={{
-                    width: "content-fit",
-                    backgroundColor: theme.palette.secondary.main,
-                    color: "white",
-                    fontFamily: fontFamilies.bold,
-                    my: "10px",
-                    fontSize: { xs: "10px", md: "16px" },
-                  }}
+                  display={"flex"}
+                  alignItems={"center"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  width={"100%"}
+                  my={"20px"}
                 >
-                  برنامه تمرینی جدید
-                </Button>
-              </Box>
-            ) : (
-              exerciselists.map((exercise: any, index: number) => {
-                const iranTime = convertToIranTime(exercise.date);
+                  <Box
+                    component="img"
+                    src={noExerciseList}
+                    sx={{
+                      width: "180px", // مقدار عددی برای px نیازی به علامت " نیست
+                      height: "auto",
+                      mb: 1, // از مقادیر عددی مقیاس Theme استفاده کنید
+                    }}
+                  />
 
-                return (
-                  <Grid item xs={12} key={index}>
-                    <Card
-                      sx={{
-                        borderRadius: "20px",
-                        boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
+                  <Typography sx={{ fontSize: { xs: "10px", md: "16px" } }}>
+                    هیچ برنامه تمرینی در حال حاضر ذخیره نشده است.
+                    <br />
+                    برای شروع، یک برنامه تمرینی جدید بسازید.
+                  </Typography>
+                  <Button
+                    component={Link}
+                    to={"/exercises"}
+                    sx={{
+                      width: "content-fit",
+                      backgroundColor: theme.palette.secondary.main,
+                      color: "white",
+                      fontFamily: fontFamilies.bold,
+                      my: "10px",
+                      fontSize: { xs: "10px", md: "16px" },
+                    }}
+                  >
+                    برنامه تمرینی جدید
+                  </Button>
+                </Box>
+              ) : (
+                exerciselists.map((exercise: any, index: number) => {
+                  const iranTime = convertToIranTime(exercise.date);
 
-                        ":hover": {
-                          backgroundColor: "#e0e0e0",
-                          cursor: "pointer",
-                        },
-                      }}
-                    >
-                      <Link to={`/programming/${exercise._id}`}>
+                  return (
+                    <Grid item xs={12} key={index}>
+                      <Card
+                        sx={{
+                          borderRadius: "20px",
+                          boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
+
+                          ":hover": {
+                            backgroundColor: "#e0e0e0",
+                            cursor: "pointer",
+                          },
+                        }}
+                      >
+                        <Link to={`/programming/${exercise._id}`}>
+                          <Box
+                            display={"flex"}
+                            gap={2}
+                            height={"60%"}
+                            padding={4}
+                          >
+                            <Typography
+                              variant="h4"
+                              sx={{
+                                fontFamily: fontFamilies.bold,
+                                fontSize: { xs: "12px", md: "24px" },
+                              }}
+                              textAlign={"right"}
+                            >
+                              {exercise.title}
+                            </Typography>
+                          </Box>
+                        </Link>
                         <Box
                           display={"flex"}
-                          gap={2}
-                          height={"60%"}
+                          flexDirection={"column"}
+                          justifyContent={"space-between"}
+                          alignItems={"center"}
+                          height={"40%"}
+                          gap={1}
                           padding={4}
                         >
-                          <Typography
-                            variant="h4"
-                            sx={{
-                              fontFamily: fontFamilies.bold,
-                              fontSize: { xs: "12px", md: "24px" },
-                            }}
-                            textAlign={"right"}
+                          <Box
+                            display={"flex"}
+                            alignItems={"center"}
+                            width={"100%"}
+                            justifyContent={"end"}
+                            gap={2}
                           >
-                            {exercise.title}
-                          </Typography>
-                        </Box>
-                      </Link>
-                      <Box
-                        display={"flex"}
-                        flexDirection={"column"}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                        height={"40%"}
-                        gap={1}
-                        padding={4}
-                      >
-                        <Box
-                          display={"flex"}
-                          alignItems={"center"}
-                          width={"100%"}
-                          justifyContent={"end"}
-                          gap={2}
-                        >
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontSize: { xs: "10px", md: "16px" },
-                              fontFamily: fontFamilies.bold,
-                            }}
-                          >
-                            {convertToShamsiDate(exercise.date)}
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontSize: { xs: "10px", md: "16px" },
-                              textAlign: "left",
-                              fontFamily: fontFamilies.bold,
-                            }}
-                          >
-                            {iranTime}
-                          </Typography>
-                        </Box>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontSize: { xs: "10px", md: "16px" },
+                                fontFamily: fontFamilies.bold,
+                              }}
+                            >
+                              {convertToShamsiDate(exercise.date)}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontSize: { xs: "10px", md: "16px" },
+                                textAlign: "left",
+                                fontFamily: fontFamilies.bold,
+                              }}
+                            >
+                              {iranTime}
+                            </Typography>
+                          </Box>
 
-                        <Box
-                          display={"flex"}
-                          width={"100%"}
-                          justifyContent={"end"}
-                          alignItems={"center"}
-                        >
-                          <Box display={"flex"} gap={2}>
-                            {IdOfUser === exercise.userId && (
-                              <Tooltip title={"ویرایش برنامه تمرینی"}>
+                          <Box
+                            display={"flex"}
+                            width={"100%"}
+                            justifyContent={"end"}
+                            alignItems={"center"}
+                          >
+                            <Box display={"flex"} gap={2}>
+                              {IdOfUser === exercise.userId && (
+                                <Tooltip title={"ویرایش برنامه تمرینی"}>
+                                  <IconButton
+                                    sx={{ padding: 0, margin: 0 }}
+                                    aria-label="edit"
+                                    onClick={() => handleEditIcon(exercise._id)}
+                                  >
+                                    <Edit
+                                      sx={{ color: "CaptionText" }}
+                                      fontSize="small"
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
+                              <Tooltip title={"حذف برنامه تمرینی"}>
                                 <IconButton
                                   sx={{ padding: 0, margin: 0 }}
-                                  aria-label="edit"
-                                  onClick={() => handleEditIcon(exercise._id)}
+                                  aria-label="delete"
+                                  onClick={() => openModal(exercise._id)}
                                 >
-                                  <Edit
-                                    sx={{ color: "CaptionText" }}
-                                    fontSize="small"
-                                  />
+                                  <Delete color="error" fontSize="small" />
                                 </IconButton>
                               </Tooltip>
-                            )}
-
-                            <Tooltip title={"حذف برنامه تمرینی"}>
-                              <IconButton
-                                sx={{ padding: 0, margin: 0 }}
-                                aria-label="delete"
-                                onClick={() => openModal(exercise._id)}
-                              >
-                                <Delete color="error" fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
+                            </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    </Card>
-                  </Grid>
-                );
-              })
-            )}
-          </Grid>
+                      </Card>
+                    </Grid>
+                  );
+                })
+              )}
+            </Grid>
+          ) : activeTab === "requests" ? (
+            <RequestsTab />
+          ) : null}
         </Box>
 
         {/* Logout Confirmation Dialog */}
