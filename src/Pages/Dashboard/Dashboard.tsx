@@ -313,11 +313,9 @@ export default function Dashboard() {
                   <Grid item xs={12} key={index}>
                     <Card
                       sx={{
-                        padding: "20px",
                         borderRadius: "20px",
-                        margin: "5px",
-                        height: "150px",
                         boxShadow: "7px 6px 6px rgba(0, 0, 0, 0.4)",
+
                         ":hover": {
                           backgroundColor: "#e0e0e0",
                           cursor: "pointer",
@@ -327,9 +325,9 @@ export default function Dashboard() {
                       <Link to={`/programming/${exercise._id}`}>
                         <Box
                           display={"flex"}
-                          justifyContent={"space-between"}
                           gap={2}
-                          height={"70%"}
+                          height={"60%"}
+                          padding={4}
                         >
                           <Typography
                             variant="h4"
@@ -345,11 +343,29 @@ export default function Dashboard() {
                       </Link>
                       <Box
                         display={"flex"}
+                        flexDirection={"column"}
                         justifyContent={"space-between"}
                         alignItems={"center"}
-                        height={"30%"}
+                        height={"40%"}
+                        gap={1}
+                        padding={4}
                       >
-                        <Box display={"flex"} flexDirection={"row"}>
+                        <Box
+                          display={"flex"}
+                          alignItems={"center"}
+                          width={"100%"}
+                          justifyContent={"end"}
+                          gap={2}
+                        >
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              fontSize: { xs: "10px", md: "16px" },
+                              fontFamily: fontFamilies.bold,
+                            }}
+                          >
+                            {convertToShamsiDate(exercise.date)}
+                          </Typography>
                           <Typography
                             variant="body1"
                             sx={{
@@ -360,35 +376,58 @@ export default function Dashboard() {
                           >
                             {iranTime}
                           </Typography>
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontSize: { xs: "10px", md: "16px" },
-                              textAlign: "left",
-                              fontFamily: fontFamilies.bold,
-                              mx: "8px",
-                            }}
-                          >
-                            {convertToShamsiDate(exercise.date)}
-                          </Typography>
                         </Box>
-                        <Box display={"flex"} mx={"5px"}>
-                          <Tooltip title={"ویرایش برنامه تمرینی"}>
-                            <IconButton
-                              aria-label="edit"
-                              onClick={() => handleEditIcon(exercise._id)}
+
+                        <Box
+                          display={"flex"}
+                          width={"100%"}
+                          justifyContent={"end"}
+                          alignItems={"center"}
+                        >
+                          <Box display={"flex"} gap={2}>
+                            {/* <Button
+                              sx={{
+                                fontSize: { xs: "8px", md: "16px" },
+                                padding: "5px",
+                              }}
+                              variant="contained"
+                              color="primary"
                             >
-                              <Edit color="primary" fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title={"حذف برنامه تمرینی"}>
-                            <IconButton
-                              aria-label="delete"
-                              onClick={() => openModal(exercise._id)}
-                            >
-                              <Delete color="error" fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
+                              ارسال
+                              <IconButton
+                                sx={{ padding: 0, mx: "4px" }}
+                                aria-label="send"
+                                onClick={() => openModal(exercise._id)}
+                              >
+                                <Send
+                                  sx={{ color: "white" }}
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Button> */}
+
+                            <Tooltip title={"ویرایش برنامه تمرینی"}>
+                              <IconButton
+                                sx={{ padding: 0, margin: 0 }}
+                                aria-label="edit"
+                                onClick={() => handleEditIcon(exercise._id)}
+                              >
+                                <Edit
+                                  sx={{ color: "CaptionText" }}
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title={"حذف برنامه تمرینی"}>
+                              <IconButton
+                                sx={{ padding: 0, margin: 0 }}
+                                aria-label="delete"
+                                onClick={() => openModal(exercise._id)}
+                              >
+                                <Delete color="error" fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
                         </Box>
                       </Box>
                     </Card>

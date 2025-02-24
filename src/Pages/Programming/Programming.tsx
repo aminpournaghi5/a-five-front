@@ -851,7 +851,7 @@ function Programing() {
                                         )
                                       }
                                       sx={{
-                                        width: "70px",
+                                        width: { xs: "30px", md: "70px" },
                                         "& .MuiInput-underline:after": {
                                           border: "none", // حذف خط زیر هنگام فوکوس
                                         },
@@ -888,7 +888,7 @@ function Programing() {
                                         )
                                       }
                                       sx={{
-                                        width: "70px",
+                                        width: { xs: "30px", md: "70px" },
                                         "& .MuiInput-underline:after": {
                                           border: "none", // حذف خط زیر هنگام فوکوس
                                         },

@@ -32,7 +32,8 @@ const ExerciseHeader = () => {
         display={"flex"}
         alignItems={"center"}
         justifyContent={"center"}
-        mx={2}
+        mx={1}
+        width={"100%"}
       >
         <Typography
           sx={{ fontSize: { xs: "10px", md: "14px" } }}
@@ -45,6 +46,7 @@ const ExerciseHeader = () => {
           variant="standard"
           sx={{
             fontSize: { xs: "10px", md: "16px" },
+            minWidth: "85% !important",
             mx: 1.5,
             "& .MuiInputBase-root": {
               fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value

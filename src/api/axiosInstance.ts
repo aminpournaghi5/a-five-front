@@ -2,11 +2,13 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
 // ساخت نمونه axios
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "https://api.a-five.ir/",
+  // baseURL: "https://api.a-five.ir/",
+  baseURL: "http://localhost:8000",
 });
 // نمونه‌ی دوم بدون هدر توکن
 export const axiosInstanceWithoutAuth: AxiosInstance = axios.create({
-  baseURL: "https://api.a-five.ir/",
+  // baseURL: "https://api.a-five.ir/",
+  baseURL: "http://localhost:8000",
 });
 
 // افزودن توکن به هدر درخواست‌ها
