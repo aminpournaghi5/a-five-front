@@ -1,6 +1,9 @@
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setTitle } from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice"; // فرض بر این است که اکشن setTitle در slice شما وجود دارد
+import {
+  setAthleteEmail,
+  setTitle,
+} from "../../assets/Redux/reduxfeatures/ExerciseList/ExerciseListSlice"; // فرض بر این است که اکشن setTitle در slice شما وجود دارد
 import theme, { fontFamilies } from "../../../theme";
 
 const ExerciseHeader = () => {
@@ -8,16 +11,25 @@ const ExerciseHeader = () => {
 
   // استفاده از useSelector برای گرفتن اطلاعات از Redux
   const title = useSelector((state: any) => state.exerciseList.title);
+  const athleteEmail = useSelector(
+    (state: any) => state.exerciseList.athleteEmail
+  );
 
   // تابع برای تغییر title
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle(event.target.value));
+  };
+  const handleAthleteEmailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(setAthleteEmail(event.target.value));
   };
 
   return (
     <Paper
       sx={{
         display: "flex",
+        flexDirection: "column",
         marginTop: "10px",
         py: "10px",
         alignItems: "center",
@@ -30,34 +42,74 @@ const ExerciseHeader = () => {
       {/* عنوان */}
       <Box
         display={"flex"}
+        flexDirection={"column"}
         alignItems={"center"}
         justifyContent={"center"}
         mx={1}
         width={"100%"}
       >
-        <Typography
-          sx={{ fontSize: { xs: "10px", md: "14px" } }}
-          fontFamily={fontFamilies.bold}
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          mx={1}
+          width={"90%"}
         >
-          عنوان:
-        </Typography>
-        <TextField
-          placeholder="عنوان"
-          variant="standard"
-          sx={{
-            fontSize: { xs: "10px", md: "16px" },
-            minWidth: "85% !important",
-            mx: 1.5,
-            "& .MuiInputBase-root": {
-              fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
-            },
-            "& .MuiInputLabel-root": {
-              fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
-            },
-          }}
-          value={title} // مقدار از Redux گرفته شده
-          onChange={handleNameChange}
-        />
+          <Typography
+            sx={{ display: "flex", fontSize: { xs: "10px", md: "14px" } }}
+            fontFamily={fontFamilies.bold}
+          >
+            عنوان:
+          </Typography>
+          <TextField
+            placeholder="عنوان برنامه تمرینی را وارد کنید."
+            variant="standard"
+            sx={{
+              fontSize: { xs: "10px", md: "16px" },
+              minWidth: "85% !important",
+              mx: 1.5,
+              "& .MuiInputBase-root": {
+                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+              },
+            }}
+            value={title} // مقدار از Redux گرفته شده
+            onChange={handleNameChange}
+          />
+        </Box>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          mx={1}
+          width={"90%"}
+        >
+          <Typography
+            sx={{ display: "flex", fontSize: { xs: "10px", md: "14px" } }}
+            fontFamily={fontFamilies.bold}
+          >
+            ورزشکار:
+          </Typography>
+          <TextField
+            placeholder="ورزشکار را مشخص کنید."
+            variant="standard"
+            sx={{
+              fontSize: { xs: "10px", md: "16px" },
+              minWidth: "85% !important",
+              mx: 1.5,
+              "& .MuiInputBase-root": {
+                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز متن value
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "10px", md: "14px" }, // تغییر سایز placeholder
+              },
+            }}
+            value={athleteEmail} // مقدار از Redux گرفته شده
+            onChange={handleAthleteEmailChange}
+          />
+        </Box>
       </Box>
     </Paper>
   );

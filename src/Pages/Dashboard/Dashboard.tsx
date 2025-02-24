@@ -38,7 +38,8 @@ import { Helmet } from "react-helmet";
 
 export default function Dashboard() {
   const [exerciselists, setExerciselists] = useState([]);
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userName, setUserName] = useState<any>();
+  const [IdOfUser, setIdOfUser] = useState<any>();
   const [openDialog, setOpenDialog] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,7 +92,8 @@ export default function Dashboard() {
         setIsLoading(true);
         const result = await axiosInstance.get(`/api/exerciselist/getall`);
         const userInfo = await axiosInstance.get(`/api/profile/info`);
-        await setUserInfo(userInfo.data.name);
+        await setUserName(userInfo.data.nameOfuser);
+        await setIdOfUser(userInfo.data.id);
         await setExerciselists(result.data.exerciselists);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
@@ -203,7 +205,7 @@ export default function Dashboard() {
               px: "5px",
             }}
           >
-            {userInfo} عزیز،
+            {userName} عزیز،
             <br />
             خوش آمدید!
           </Typography>
@@ -385,39 +387,21 @@ export default function Dashboard() {
                           alignItems={"center"}
                         >
                           <Box display={"flex"} gap={2}>
-                            {/* <Button
-                              sx={{
-                                fontSize: { xs: "8px", md: "16px" },
-                                padding: "5px",
-                              }}
-                              variant="contained"
-                              color="primary"
-                            >
-                              ارسال
-                              <IconButton
-                                sx={{ padding: 0, mx: "4px" }}
-                                aria-label="send"
-                                onClick={() => openModal(exercise._id)}
-                              >
-                                <Send
-                                  sx={{ color: "white" }}
-                                  fontSize="small"
-                                />
-                              </IconButton>
-                            </Button> */}
+                            {IdOfUser === exercise.userId && (
+                              <Tooltip title={"ویرایش برنامه تمرینی"}>
+                                <IconButton
+                                  sx={{ padding: 0, margin: 0 }}
+                                  aria-label="edit"
+                                  onClick={() => handleEditIcon(exercise._id)}
+                                >
+                                  <Edit
+                                    sx={{ color: "CaptionText" }}
+                                    fontSize="small"
+                                  />
+                                </IconButton>
+                              </Tooltip>
+                            )}
 
-                            <Tooltip title={"ویرایش برنامه تمرینی"}>
-                              <IconButton
-                                sx={{ padding: 0, margin: 0 }}
-                                aria-label="edit"
-                                onClick={() => handleEditIcon(exercise._id)}
-                              >
-                                <Edit
-                                  sx={{ color: "CaptionText" }}
-                                  fontSize="small"
-                                />
-                              </IconButton>
-                            </Tooltip>
                             <Tooltip title={"حذف برنامه تمرینی"}>
                               <IconButton
                                 sx={{ padding: 0, margin: 0 }}

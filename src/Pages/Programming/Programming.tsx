@@ -177,6 +177,9 @@ function Programing() {
     (state: any) => state.exerciseList.exerciselist
   );
   const exerciseId = useSelector((state: any) => state.exerciseList.exerciseId);
+  const athleteEmail = useSelector(
+    (state: any) => state.exerciseList.athleteEmail
+  );
   const addExerciseList = async () => {
     setIsLoading(true);
     try {
@@ -184,6 +187,7 @@ function Programing() {
         title: title,
         description: description,
         exerciselist: exerciseList,
+        athleteEmail,
       };
 
       const response = await axiosInstance.post(
@@ -1130,7 +1134,7 @@ function Programing() {
                   }}
                 >
                   {exerciseId === ""
-                    ? "آیا برای ذخیره برنامه تمرینی مطمئن هستید؟"
+                    ? "آیا برای ذخیره و ارسال برنامه تمرینی مطمئن هستید؟"
                     : "آیا برای بروزرسانی برنامه تمرینی مطمئن هستید؟"}
                 </Typography>
                 <Box
