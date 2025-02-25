@@ -268,7 +268,7 @@ const Contact = () => {
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
               <Link
-                href="https://t.me/afive_website"
+                href="https://t.me/a_five_support"
                 target="_blank"
                 underline="none"
                 color="inherit"

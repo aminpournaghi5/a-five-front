@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
               <PhoneIcon />
             </IconButton>
             <IconButton
-              href="https://t.me/afive_website"
+              href="https://t.me/a_five_support"
               rel="noopener noreferrer"
               size="small"
               sx={{ color: "white" }}

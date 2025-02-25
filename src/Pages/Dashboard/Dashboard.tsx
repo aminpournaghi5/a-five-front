@@ -11,6 +11,7 @@ import {
   Modal,
   Tooltip,
   CircularProgress,
+  Divider,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logoutUser } from "../../services/loginAuth";
@@ -222,6 +223,14 @@ export default function Dashboard() {
               gap: 1,
             }}
           >
+            <Divider
+              sx={{
+                width: "100%",
+                backgroundColor: "black",
+                height: "1px",
+              }}
+            />
+
             <Button
               variant="text"
               onClick={() => setActiveTab("exercises")}

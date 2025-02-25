@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Box, Card, Tab, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Snackbar,
+  Tab,
+  Typography,
+} from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import axiosInstance from "../../api/axiosInstance";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import theme, { fontFamilies } from "../../../theme";
 import { Close, Done } from "@mui/icons-material";
@@ -10,9 +19,17 @@ import { Close, Done } from "@mui/icons-material";
 function RequestsTab() {
   const [value, setValue] = useState("1");
   const [isLoading, setIsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(null);
   const [sentRequests, setSentRequests] = useState([]);
   const [receivedRequests, setReceivedRequests] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -42,36 +59,110 @@ function RequestsTab() {
     fetchRequests();
   }, []);
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const handleApprove = async (_id: string) => {
-    try {
-      await axiosInstance.post(
-        "/api/requestedexerciselist/approveexerciselist",
-        {
-          requestId: _id,
-        }
-      );
-      console.log("درخواست تأیید شد:", _id);
-    } catch (error) {
-      console.error("خطا در تأیید درخواست:", error);
-    } finally {
+  const handleResponse = (
+    response: AxiosResponse<any, any>,
+    _id: string,
+    successMessage: string
+  ) => {
+    if (response.status === 200) {
+      setSnackbar({ open: true, message: successMessage, severity: "success" });
+    } else {
+      setSnackbar({
+        open: true,
+        message: response.data?.message || "خطایی رخ داده است.",
+        severity: "error",
+      });
     }
   };
 
-  const handleReject = async (_id: string) => {
+  const handleError = (error: any) => {
+    setSnackbar({
+      open: true,
+      message: error.response?.data?.message || "خطا در ارتباط با سرور",
+      severity: "error",
+    });
+  };
+
+  const handleApprove = async (_id: any) => {
+    setActionLoading(_id);
     try {
-      await axiosInstance.post(
-        "/api/requestedexerciselist/rejectexerciselist",
-        {
-          requestId: _id,
-        }
+      setIsLoading(true);
+      await delay(1200);
+      const response = await axiosInstance.post(
+        "/api/requestedexerciselist/approveexerciselist",
+        { requestId: _id }
       );
-      console.log("درخواست رد شد:", _id);
+      if (response.status === 200) {
+        setReceivedRequests(
+          receivedRequests.filter((request: any) => request._id !== _id)
+        );
+      }
+      handleResponse(
+        response,
+        _id,
+        "برنامه تمرینی با موفقیت تایید و اضافه شد."
+      );
     } catch (error) {
-      console.error("خطا در رد درخواست:", error);
+      handleError(error);
     } finally {
+      setIsLoading(false);
+      setActionLoading(null);
+      window.location.reload();
+    }
+  };
+
+  const handleReject = async (_id: any) => {
+    setActionLoading(_id);
+    try {
+      setIsLoading(true);
+      await delay(1200);
+      const response = await axiosInstance.post(
+        "/api/requestedexerciselist/rejectexerciselist",
+        { requestId: _id }
+      );
+      if (response.status === 200) {
+        setReceivedRequests(
+          receivedRequests.filter((request: any) => request._id !== _id)
+        );
+      }
+      handleResponse(response, _id, "درخواست رد شد.");
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+      setActionLoading(null);
+    }
+  };
+  const handleResend = async (_id: any) => {
+    setActionLoading(_id);
+    try {
+      setIsLoading(true);
+      await delay(1200);
+      const response = await axiosInstance.post(
+        "/api/requestedexerciselist/resendexerciselist",
+        { requestId: _id }
+      );
+      if (response.status === 200) {
+        setSentRequests((prevRequests: any) =>
+          prevRequests.map((request: any) =>
+            request._id === _id && request.status === "rejected"
+              ? { ...request, status: "pending" } // فقط تغییر وضعیت درخواست با آیدی خاص به "pending"
+              : request
+          )
+        );
+      }
+      handleResponse(response, _id, "برنامه تمرینی با موفقیت مجددا ارسال شد.");
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+      setActionLoading(null);
     }
   };
 
@@ -94,11 +185,11 @@ function RequestsTab() {
         </Box>
         <TabPanel value="1">
           {sentRequests.map((request: any) => (
-            <Card key={request.id} sx={{ marginBottom: 2, padding: 2 }}>
+            <Card key={request._id} sx={{ marginBottom: 2, padding: 2 }}>
               <Typography
                 variant="body1"
                 sx={{
-                  fontSize: { xs: "10px", md: "18px" },
+                  fontSize: { xs: "8px", md: "18px" },
                   fontFamily: fontFamilies.medium,
                 }}
               >
@@ -130,21 +221,44 @@ function RequestsTab() {
                       : request.status === "rejected"
                       ? theme.palette.error.main
                       : "transparent",
-                  width: "fit-content",
-                  padding: "5px",
-                  fontSize: { xs: "10px", md: "18px" },
-                  borderRadius: "8px",
+                  padding: "5px 8px",
+                  fontSize: { xs: "9px", md: "13px" },
+                  borderRadius: "20px",
                   marginTop: "5px",
                   float: "left",
+                  display: "inline-flex",
+                  alignItems: "center",
                 }}
               >
-                {request.status === "pending"
-                  ? "ارسال شده"
-                  : request.status === "approved"
-                  ? "دریافت شد"
-                  : request.status === "rejected"
-                  ? "رد شد"
-                  : request.status}
+                {request.status === "pending" ? (
+                  "ارسال شده"
+                ) : request.status === "approved" ? (
+                  "دریافت شد"
+                ) : request.status === "rejected" ? (
+                  <>
+                    {actionLoading === request._id ? (
+                      <CircularProgress sx={{ color: "white" }} size={24} />
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          fontSize: { xs: "9px", md: "13px" },
+                          padding: "3px 10px",
+                          borderRadius: "20px",
+                          backgroundColor: "transparent",
+                          color: "white",
+                          border: (theme) =>
+                            `1px ${theme.palette.secondary.contrastText} solid`,
+                        }}
+                        onClick={() => handleResend(request._id)} // تابع برای ارسال مجدد
+                      >
+                        عدم تایید، ارسال مجدد
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  request.status
+                )}
               </Typography>
             </Card>
           ))}
@@ -179,29 +293,54 @@ function RequestsTab() {
 
               {request.status === "pending" && (
                 <>
-                  <Done
-                    sx={{
-                      color: theme.palette.success.main,
-                      float: "left",
-                      marginTop: "5px",
-                      marginRight: "5px",
-                    }}
-                    onClick={() => handleApprove(request._id)}
-                  />
-                  <Close
-                    sx={{
-                      color: theme.palette.error.main,
-                      float: "left",
-                      marginTop: "5px",
-                    }}
-                    onClick={() => handleReject(request._id)}
-                  />
+                  {actionLoading === request._id ? (
+                    <CircularProgress
+                      size={24}
+                      sx={{ float: "left", marginTop: "5px" }}
+                    />
+                  ) : (
+                    <>
+                      <Done
+                        sx={{
+                          color: theme.palette.success.main,
+                          float: "left",
+                          margin: "5px",
+                        }}
+                        onClick={() => handleApprove(request._id)}
+                      />
+                      <Close
+                        sx={{
+                          color: theme.palette.error.main,
+                          float: "left",
+                          margin: "5px",
+                        }}
+                        onClick={() => handleReject(request._id)}
+                      />
+                    </>
+                  )}
                 </>
               )}
             </Card>
           ))}
         </TabPanel>
       </TabContext>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{
+            width: "100%",
+            backgroundColor: theme.palette.success.main,
+            fontFamily: fontFamilies.medium,
+            fontSize: { xs: "10px", md: "18px" },
+          }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
